@@ -49,7 +49,7 @@ namespace Game.Player.States
         public override void Sleep()
         {
             base.Sleep();
-            Model.Move(Vector3.one * 15);
+            Model.Move(Vector3.zero);
         }
     }
 }
