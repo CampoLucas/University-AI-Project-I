@@ -5,6 +5,6 @@ namespace Game.Interfaces
 {
     public interface IAttack
     {
-        void Attack(Weapon weapon, View anim);
+        void Attack(Weapon weapon, EntityView anim);
     }
 }

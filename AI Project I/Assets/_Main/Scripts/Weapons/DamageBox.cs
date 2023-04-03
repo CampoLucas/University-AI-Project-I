@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Game.SO;
@@ -25,7 +24,7 @@ namespace Game.Items.Weapons
 
         private void Start()
         {
-            _trigger.OnOverlapEnter += CastEnter;
+            _trigger.OnCastEnter += CastEnter;
         }
 
         private void Damage(Damageable damageable)
@@ -36,6 +35,10 @@ namespace Game.Items.Weapons
         private void CastEnter(Collider other)
         {
             var otherGameObject = other.gameObject;
+            if (other.gameObject == gameObject)
+            {
+                Debug.Log("this");
+            }
             if (_damageables.TryGetValue(otherGameObject, out var damageable))
             {
                 Damage(damageable);
@@ -53,6 +56,7 @@ namespace Game.Items.Weapons
 
         private void OnDestroy()
         {
+            _trigger.OnCastEnter -= CastEnter;
             _trigger = null;
             _data = null;
             _damageables = null;

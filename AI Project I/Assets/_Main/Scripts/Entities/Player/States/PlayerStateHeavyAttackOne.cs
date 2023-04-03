@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game.Entities;
+using UnityEngine;
 
 namespace Game.Player.States
 {
@@ -19,9 +20,6 @@ namespace Game.Player.States
         {
             base.Awake();
             Model.HeavyAttack(View);
-#if UNITY_EDITOR
-            Debug.Log("Heavy");
-#endif
         }
 
         public override void Execute()

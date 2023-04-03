@@ -17,12 +17,6 @@ namespace Game.Player.States
             _inDamage = inDamage;
         }
 
-        public override void Awake()
-        {
-            base.Awake();
-            Debug.Log("Idle");
-        }
-
         public override void Execute()
         {
             base.Execute();

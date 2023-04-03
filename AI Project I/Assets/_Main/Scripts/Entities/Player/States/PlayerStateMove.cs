@@ -16,12 +16,6 @@ namespace Game.Player.States
             _inHeavyAttack = inHeavyAttack;
             _inDamage = inDamage;
         }
-        
-        public override void Awake()
-        {
-            base.Awake();
-            Debug.Log("Move");
-        }
 
         public override void Execute()
         {

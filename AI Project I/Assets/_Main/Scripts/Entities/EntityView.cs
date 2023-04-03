@@ -5,7 +5,7 @@ using UnityEngine.Animations;
 
 namespace Game.Entities
 {
-    public class View : MonoBehaviour
+    public class EntityView : MonoBehaviour
     {
         private Animator _animator;
         private static readonly int MoveAmount = Animator.StringToHash("MoveAmount");

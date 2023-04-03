@@ -8,7 +8,7 @@ namespace Game.Entities
 {
     public class LightAttack : MonoBehaviour, IAttack
     {
-        public void Attack(Weapon weapon, View anim)
+        public void Attack(Weapon weapon, EntityView anim)
         {
             anim.PlayTargetAnimation(weapon.GetData().LightAttack01, true);
         }

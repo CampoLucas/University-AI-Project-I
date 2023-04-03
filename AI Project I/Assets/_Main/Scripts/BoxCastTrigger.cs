@@ -6,9 +6,9 @@ namespace Game.Sheared
 {
     public class BoxCastTrigger : MonoBehaviour
     {
-        public Action<Collider> OnOverlapEnter;
-        public Action<Collider> OnOverlapStay;
-        public Action<Collider> OnOverlapExit;
+        public Action<Collider> OnCastEnter;
+        public Action<Collider> OnCastStay;
+        public Action<Collider> OnCastExit;
         [SerializeField] private Vector3 boxSize;
         [SerializeField] private Vector3 boxCenter;
         [SerializeField] private LayerMask damageLayerMask;
@@ -17,6 +17,11 @@ namespace Game.Sheared
         private readonly List<Collider> _collidersInBox = new();
         private List<Collider> _cachedNewColliders;
         private bool _enable;
+
+        private void Start()
+        {
+            OnCastEnter += (Collider other) => Debug.Log("Enter GameObject: " + other.gameObject.name);
+        }
 
         private void Update()
         {
@@ -33,12 +38,12 @@ namespace Game.Sheared
                     var hit = _hits[i].collider;
                     if (hit != null && !_collidersInBox.Contains(hit))
                     {
-                        OnOverlapEnter?.Invoke(hit);
+                        OnCastEnter?.Invoke(hit);
                         _cachedNewColliders.Add(hit);
                     }
                     else if (hit != null)
                     {
-                        OnOverlapStay?.Invoke(hit);
+                        OnCastStay?.Invoke(hit);
                     }
                 }
 
@@ -48,7 +53,7 @@ namespace Game.Sheared
                     var other = _collidersInBox[i];
                     if (!Array.Exists(_hits, element => element.collider == other))
                     {
-                        OnOverlapExit?.Invoke(other);
+                        OnCastExit?.Invoke(other);
                         _collidersInBox.RemoveAt(i);
                     }
                 }
@@ -71,7 +76,7 @@ namespace Game.Sheared
             _enable = false;
             foreach (var other in _collidersInBox)
             {
-                OnOverlapExit?.Invoke(other);
+                OnCastExit?.Invoke(other);
             }
             _collidersInBox.Clear();
         }
@@ -81,6 +86,8 @@ namespace Game.Sheared
             var color = Color.green;
             if (!_enable)
                 color = new Color(0.5f, 0, 0, 1);
+            if (_collidersInBox.Count > 0)
+                color = new Color(0.5f, 0, 1, 1);
             Gizmos.color = color;
             Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
             Gizmos.DrawWireCube(boxCenter, boxSize);

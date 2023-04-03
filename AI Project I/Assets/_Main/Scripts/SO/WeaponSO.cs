@@ -11,7 +11,7 @@ namespace Game.SO
 
         [field: SerializeField] public string HandIdle { get; private set; }
         [field: SerializeField] public string LightAttack01 { get; private set; }
-        [field: SerializeField] public string LightAttack02 { get; private set; }
+        //[field: SerializeField] public string LightAttack02 { get; private set; }
         [field: SerializeField] public string HeavyAttack01 { get; private set; }
 
         [field: SerializeField] public float Damage { get; private set; }

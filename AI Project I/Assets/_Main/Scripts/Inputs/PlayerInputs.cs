@@ -34,7 +34,7 @@ namespace Game.InputActions
                     ""type"": ""Value"",
                     ""id"": ""41dd023d-6a73-4a4d-a627-366c03b75835"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
