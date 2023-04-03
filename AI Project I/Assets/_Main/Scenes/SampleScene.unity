@@ -941,7 +941,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.3
+      value: -2.79
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -949,11 +949,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.78
+      value: 4.26
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5036774
+      value: -0.013215446
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalRotation.x
@@ -961,7 +961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.86389184
+      value: 0.99991274
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalRotation.z
@@ -973,7 +973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 119.513
+      value: 181.514
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -981,7 +981,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6875458475346691989, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: angle
-      value: 60.98
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 6875458475346691989, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+      propertyPath: range
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8985879467679423952, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: target
