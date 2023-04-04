@@ -6,6 +6,20 @@ using UnityEngine;
 
 namespace Game.Player
 {
+    [System.Serializable]
+    public struct Transition
+    {
+        [SerializeField] private PlayerStatesEnum key;
+        [SerializeField] private PlayerStateBase<PlayerStatesEnum> state;
+    }
+
+    [System.Serializable]
+    public struct State
+    {
+        [SerializeField] private string name;
+        [SerializeField] private PlayerStatesEnum[] inputs;
+    }
+    
     public class PlayerController : MonoBehaviour
     {
         private PlayerModel _model;
@@ -13,6 +27,8 @@ namespace Game.Player
         private PlayerInputHandler _inputs;
         private FSM<PlayerStatesEnum> _fsm;
         private List<PlayerStateBase<PlayerStatesEnum>> _states;
+        [SerializeField] private Transition[] tr;
+        [SerializeField] private State[] st;
 
         private void InitFSM()
         {

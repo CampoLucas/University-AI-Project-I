@@ -18,7 +18,8 @@ namespace Game.Player.States
         public override void Awake()
         {
             base.Awake();
-            Model.LightAttack(View);
+            Model.LightAttack();
+            View.PlayTargetAnimation(Model.CurrentWeapon().GetData().HeavyAttack01.EventName);
         }
 
         public override void Execute()

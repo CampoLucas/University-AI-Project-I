@@ -1,23 +1,73 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using Game.SO;
+using UnityEngine;
 
 namespace Game.Entities
 {
     public class Damageable : MonoBehaviour
     {
-        public bool IsInvulnerable { get; private set; }
+        private StatSO _data;
         private float _currentLife;
-        
-        /// <summary>
-        /// All the damage is rounded in n / n.75 / n.5 / n.25
-        /// </summary>
-        /// <param name="damage"></param>
-        public virtual void TakeDamage(float damage)
+        private bool _isInvulnerable;
+        private bool _hasTakenDamage;
+
+        private void InitStats()
         {
-            var roundedDamage = Mathf.Round(damage * 4) / 4f;
-            _currentLife -= roundedDamage;
+            _currentLife = _data.MaxHealth;
+        }
+        private void Awake()
+        {
+            _data = GetComponent<EntityModel>().GetData();
+        }
+
+        private void Start()
+        {
+            InitStats();
+        }
+
+        private void Update()
+        {
+            if (HasTakenDamage())
+                print("ouch");
+        }
+
+        private void LateUpdate()
+        {
+            _hasTakenDamage = false;
+        }
+
+        public bool IsAlive() => _currentLife > 0;
+        public bool IsInvulnerable() => _isInvulnerable;
+        public bool HasTakenDamage() => _hasTakenDamage;
+        
+        public void TakeDamage(float damage)
+        {
+            if (IsAlive() && !_isInvulnerable)
+            {
+                var roundedDamage = Mathf.Round(damage * 4) / 4f;
+                _currentLife -= roundedDamage;
+
+                _hasTakenDamage = true;
+                TurnInvulnerable();
+            }
+        }
+
+        private void TurnInvulnerable()
+        {
+            _isInvulnerable = true;
+            StartCoroutine(InvulnerableCooldown());
+        }
+
+        private IEnumerator InvulnerableCooldown()
+        {
+            yield return new WaitForSeconds(_data.InvulnerableCooldown);
+            _isInvulnerable = false;
         }
         
+        public void Die()
+        {
+            gameObject.SetActive(false);
+        } 
     }
-    
-    
 }

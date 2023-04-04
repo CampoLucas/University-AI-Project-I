@@ -31,7 +31,7 @@ namespace Game.Entities
             _animator.SetFloat(MoveAmount, amount, 0.1f, Time.deltaTime);
         }
         
-        public void PlayTargetAnimation(string stateName, bool isInteracting)
+        public void PlayTargetAnimation(string stateName, bool isInteracting = false)
         {
             _animator.SetBool(Interacting, isInteracting);
             _animator.CrossFade(stateName, 0.2f);

@@ -20,6 +20,11 @@ namespace Game.Player.States
         public override void Execute()
         {
             base.Execute();
+            if (Model.TakesDamage())
+            {
+                Fsm.Transitions(_inDamage);
+            }
+            
             if (Inputs.MoveDir == Vector3.zero)
             {
                 Fsm.Transitions(_inIdle);

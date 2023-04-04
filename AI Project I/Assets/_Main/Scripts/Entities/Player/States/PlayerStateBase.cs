@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Game.Player.States
 {
+    [System.Serializable]
     public class PlayerStateBase<T> : State<T>
     {
         protected PlayerModel Model;

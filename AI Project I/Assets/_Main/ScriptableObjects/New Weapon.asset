@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fcc7180e965724d9abc208182d7b73, type: 3}
   m_Name: New Weapon
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 0}
-  <HandIdle>k__BackingField: 0
-  <LightAttack01>k__BackingField: Sword Light Attack 01
-  <LightAttack02>k__BackingField: Sword Light Attack 02
-  <HeavyAttack01>k__BackingField: Sword Heavy Attack 01
-  <Damage>k__BackingField: 0
-  <HeavyAttackMultiplier>k__BackingField: 0
+  <LightAttack01>k__BackingField: {fileID: 11400000, guid: 3608ac9c3017c9f4ead688bb653162c4, type: 2}
+  <HeavyAttack01>k__BackingField: {fileID: 11400000, guid: 5e5e39cd5544d0b4ca486c9859d48a31, type: 2}
+  <Damage>k__BackingField: 1
+  <HeavyAttackMultiplier>k__BackingField: 3

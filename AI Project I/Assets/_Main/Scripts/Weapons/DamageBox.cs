@@ -8,9 +8,11 @@ namespace Game.Items.Weapons
 {
     public class DamageBox : MonoBehaviour
     {
+        private Damageable _damageable;
         private BoxCastTrigger _trigger;
         private WeaponSO _data;
         private Dictionary<GameObject, Damageable> _damageables = new();
+        
 
         public void InitData(WeaponSO data)
         {
@@ -20,6 +22,7 @@ namespace Game.Items.Weapons
         private void Awake()
         {
             _trigger = GetComponent<BoxCastTrigger>();
+            _damageable = GetComponentInParent<Damageable>();
         }
 
         private void Start()
@@ -35,23 +38,23 @@ namespace Game.Items.Weapons
         private void CastEnter(Collider other)
         {
             var otherGameObject = other.gameObject;
-            if (other.gameObject == gameObject)
+            if (!other.gameObject == _damageable.gameObject)
             {
-                Debug.Log("this");
-            }
-            if (_damageables.TryGetValue(otherGameObject, out var damageable))
-            {
-                Damage(damageable);
-            }
-            else
-            {
-                damageable = otherGameObject.GetComponent<Damageable>();
-                if (damageable)
+                if (_damageables.TryGetValue(otherGameObject, out var damageable))
                 {
-                    _damageables[otherGameObject] = damageable;
                     Damage(damageable);
                 }
+                else
+                {
+                    damageable = otherGameObject.GetComponent<Damageable>();
+                    if (damageable)
+                    {
+                        _damageables[otherGameObject] = damageable;
+                        Damage(damageable);
+                    }
+                }
             }
+            
         }
 
         private void OnDestroy()

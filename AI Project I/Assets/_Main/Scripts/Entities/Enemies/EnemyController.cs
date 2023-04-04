@@ -15,14 +15,54 @@ namespace Game.Entities.Enemies
 
         private void Update()
         {
-            if (target && _model.CheckRange(target) && _model.CheckAngle(target) && _model.CheckView(target))
+            if (target && SeePlayer())
             {
-                print("Dentro");
+                _model.FollowTarget(target);
             }
             else
             {
-                print("Fuera");
+                
             }
+        }
+
+        private bool TriesToScape() => _model.TriesToScape();
+        private bool CloseEnoughToAttack() => _model.CloseEnoughToAttack(target);
+        private bool SeePlayer() => _model.SeePlayer(target);
+        //private bool IsLifeLow() =>
+        
+        private void ActionFollowTarget()
+        {
+            
+        }
+
+        private void ActionLightAttack()
+        {
+            
+        }
+
+        private void ActionHeavyAttack()
+        {
+            
+        }
+
+        private void ActionScape()
+        {
+            
+        }
+
+        private void ActionLookAround()
+        {
+            
+        }
+
+        private void ActionPatrol()
+        {
+            
+        }
+
+        private void ActionIdle()
+        {
+            
         }
     }
 }

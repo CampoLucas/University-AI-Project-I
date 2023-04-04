@@ -8,9 +8,19 @@ namespace Game.Entities
 {
     public class HeavyAttack : MonoBehaviour, IAttack
     {
-        public void Attack(Weapon weapon, EntityView anim)
+        public float aTime = 0.18f;
+        public float dTime = 0.4f;
+        public void Attack(Weapon weapon)
         {
-            anim.PlayTargetAnimation(weapon.GetData().HeavyAttack01, true);
+            StartCoroutine(AttackCoroutine(weapon));
+        }
+
+        private IEnumerator AttackCoroutine(Weapon weapon)
+        {
+            yield return new WaitForSeconds(aTime);
+            weapon.EnableTrigger();
+            yield return new WaitForSeconds(dTime);
+            weapon.DisableTrigger();
         }
     }
 }
