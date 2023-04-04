@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Game.Entities.Enemies
+namespace Game.Enemies
 {
     public class FieldOfView : MonoBehaviour
     {

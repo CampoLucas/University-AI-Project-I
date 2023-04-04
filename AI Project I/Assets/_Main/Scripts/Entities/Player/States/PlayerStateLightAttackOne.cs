@@ -6,15 +6,13 @@ namespace Game.Player.States
     {
         private readonly T _inIdle;
         private readonly T _inMoving;
-        private readonly T _inLightAttackTwo;
         private readonly T _inDamage;
         private float _timeElapsed;
 
-        public PlayerStateLightAttackOne(T inIdle, T inMoving, T inLightAttackTwo, T inDamage)
+        public PlayerStateLightAttackOne(T inIdle, T inMoving, T inDamage)
         {
             _inIdle = inIdle;
             _inMoving = inMoving;
-            _inLightAttackTwo = inLightAttackTwo;
             _inDamage = inDamage;
         }
 

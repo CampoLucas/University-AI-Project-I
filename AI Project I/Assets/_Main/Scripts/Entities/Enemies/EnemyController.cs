@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using Game.Entities;
 
-namespace Game.Entities.Enemies
+namespace Game.Enemies
 {
     public class EnemyController : MonoBehaviour
     {
@@ -25,8 +26,10 @@ namespace Game.Entities.Enemies
             }
         }
 
-        private bool TriesToScape() => _model.TriesToScape();
-        private bool CloseEnoughToAttack() => _model.CloseEnoughToAttack(target);
+        //private bool 
+        
+        //private bool TriesToScape() => _model.TriesToScape();
+        //private bool CloseEnoughToAttack() => _model.CloseEnoughToAttack(target);
         private bool SeePlayer() => _model.SeePlayer(target);
         //private bool IsLifeLow() =>
         

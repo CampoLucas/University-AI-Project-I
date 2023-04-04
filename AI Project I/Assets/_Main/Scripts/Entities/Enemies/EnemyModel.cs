@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using Game.Entities;
 
-namespace Game.Entities.Enemies
+namespace Game.Enemies
 {
     public class EnemyModel : EntityModel
     {

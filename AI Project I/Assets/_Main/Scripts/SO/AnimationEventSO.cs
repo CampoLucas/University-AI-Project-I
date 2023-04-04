@@ -5,7 +5,8 @@ namespace Game.SO
     [CreateAssetMenu(fileName = "AnimationEvent", menuName = "SO/AnimationEvent", order = 2)]
     public class AnimationEventSO : ScriptableObject
     {
-        public string EventName => eventName;
+        //public string EventName => eventName;
+        public int EventName => Animator.StringToHash(eventName);
         public float Duration => duration;
         
         [SerializeField] private string eventName;

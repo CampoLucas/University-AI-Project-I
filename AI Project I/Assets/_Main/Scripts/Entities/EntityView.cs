@@ -9,14 +9,12 @@ namespace Game.Entities
     {
         private Animator _animator;
         private static readonly int MoveAmount = Animator.StringToHash("MoveAmount");
-        private static readonly int Interacting = Animator.StringToHash("IsInteracting");
         
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
         }
 
-        public bool IsInteracting() => _animator.GetBool(Interacting);
         public void UpdateMovementValues(float moveAmount)
         {
             var amount = moveAmount switch
@@ -31,10 +29,14 @@ namespace Game.Entities
             _animator.SetFloat(MoveAmount, amount, 0.1f, Time.deltaTime);
         }
         
-        public void PlayTargetAnimation(string stateName, bool isInteracting = false)
+        public void PlayTargetAnimation(string stateName, float transitionDuration = 0.2f)
         {
-            _animator.SetBool(Interacting, isInteracting);
-            _animator.CrossFade(stateName, 0.2f);
+            _animator.CrossFade(stateName, transitionDuration);
+        }
+
+        public void PlayTargetAnimation(int stateHash, float transitionDuration = 0.2f)
+        {
+            _animator.CrossFade(stateHash, transitionDuration);
         }
     }
 }

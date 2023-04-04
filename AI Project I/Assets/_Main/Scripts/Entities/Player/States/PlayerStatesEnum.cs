@@ -4,9 +4,8 @@ namespace Game.Player.States
     {
         Idle,
         Moving,
-        LightAttack01,
-        LightAttack02,
-        HeavyAttack01,
+        LightAttack,
+        HeavyAttack,
         Die,
         Damage,
     }

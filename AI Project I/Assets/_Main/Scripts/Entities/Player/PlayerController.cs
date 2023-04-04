@@ -35,52 +35,42 @@ namespace Game.Player
             _fsm = new FSM<PlayerStatesEnum>();
             _states = new List<PlayerStateBase<PlayerStatesEnum>>();
             
-            var idle = new PlayerStateIdle<PlayerStatesEnum>(PlayerStatesEnum.Moving, PlayerStatesEnum.LightAttack01, PlayerStatesEnum.HeavyAttack01, PlayerStatesEnum.Damage);
-            var move = new PlayerStateMove<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.LightAttack01, PlayerStatesEnum.HeavyAttack01, PlayerStatesEnum.Damage);
-            var lightAttackOne = new PlayerStateLightAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.LightAttack02, PlayerStatesEnum.Damage);
-            var lightAttackTwo = new PlayerStateLightAttackTwo<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage);
-            var heavyAttackOne = new PlayerStateHeavyAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage);
+            var idle = new PlayerStateIdle<PlayerStatesEnum>(PlayerStatesEnum.Moving, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage);
+            var move = new PlayerStateMove<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage);
+            var lightAttack = new PlayerStateLightAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage);
+            var heavyAttack = new PlayerStateHeavyAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage);
             var damage = new PlayerStateDamage<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving);
             
             _states.Add(idle);
             _states.Add(move);
-            _states.Add(lightAttackOne);
-            _states.Add(lightAttackTwo);
-            _states.Add(heavyAttackOne);
+            _states.Add(lightAttack);
+            _states.Add(heavyAttack);
             _states.Add(damage);
 
             idle.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
             {
                 { PlayerStatesEnum.Moving, move },
-                { PlayerStatesEnum.LightAttack01, lightAttackOne },
-                { PlayerStatesEnum.HeavyAttack01, heavyAttackOne },
+                { PlayerStatesEnum.LightAttack, lightAttack },
+                { PlayerStatesEnum.HeavyAttack, heavyAttack },
                 { PlayerStatesEnum.Damage, damage },
             });
             
             move.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
             {
                 { PlayerStatesEnum.Idle, idle },
-                { PlayerStatesEnum.LightAttack01, lightAttackOne },
-                { PlayerStatesEnum.HeavyAttack01, heavyAttackOne },
+                { PlayerStatesEnum.LightAttack, lightAttack },
+                { PlayerStatesEnum.HeavyAttack, heavyAttack },
                 { PlayerStatesEnum.Damage, damage },
             });
             
-            lightAttackOne.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
-            {
-                { PlayerStatesEnum.Idle, idle },
-                { PlayerStatesEnum.Moving, move },
-                { PlayerStatesEnum.LightAttack02, lightAttackTwo},
-                { PlayerStatesEnum.Damage, damage },
-            });
-            
-            lightAttackTwo.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
+            lightAttack.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
             {
                 { PlayerStatesEnum.Idle, idle },
                 { PlayerStatesEnum.Moving, move },
                 { PlayerStatesEnum.Damage, damage },
             });
             
-            heavyAttackOne.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
+            heavyAttack.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
             {
                 { PlayerStatesEnum.Idle, idle },
                 { PlayerStatesEnum.Moving, move },
