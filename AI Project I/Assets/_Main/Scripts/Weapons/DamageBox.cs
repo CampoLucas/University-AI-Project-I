@@ -38,20 +38,17 @@ namespace Game.Items.Weapons
         private void CastEnter(Collider other)
         {
             var otherGameObject = other.gameObject;
-            if (!other.gameObject == _damageable.gameObject)
+            if (_damageables.TryGetValue(otherGameObject, out var damageable))
             {
-                if (_damageables.TryGetValue(otherGameObject, out var damageable))
+                Damage(damageable);
+            }
+            else
+            {
+                damageable = otherGameObject.GetComponent<Damageable>();
+                if (damageable)
                 {
+                    _damageables[otherGameObject] = damageable;
                     Damage(damageable);
-                }
-                else
-                {
-                    damageable = otherGameObject.GetComponent<Damageable>();
-                    if (damageable)
-                    {
-                        _damageables[otherGameObject] = damageable;
-                        Damage(damageable);
-                    }
                 }
             }
             

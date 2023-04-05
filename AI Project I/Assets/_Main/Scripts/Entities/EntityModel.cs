@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Game.Interfaces;
 using Game.Items.Weapons;
 using Game.SO;
@@ -7,13 +8,13 @@ namespace Game.Entities
 {
     public class EntityModel : MonoBehaviour
     {
+        public Damageable Damageable { get; private set; }
         [SerializeField] private StatSO stats;
         [SerializeField] private Weapon weapon;
         private IMovement _move;
         private IRotation _rotate;
         private IAttack _lightAttack;
         private IAttack _heavyAttack;
-        private Damageable _damageable;
         private WaitTimer _waitTimer;
 
         protected virtual void Awake()
@@ -22,7 +23,7 @@ namespace Game.Entities
             _rotate = GetComponent<IRotation>();
             _lightAttack = GetComponent<LightAttack>();
             _heavyAttack = GetComponent<HeavyAttack>();
-            _damageable = GetComponent<Damageable>();
+            Damageable = GetComponent<Damageable>();
             _waitTimer = GetComponent<WaitTimer>();
         }
 
@@ -34,9 +35,9 @@ namespace Game.Entities
         /// Current life is grater than 0
         /// </summary>
         /// <returns></returns>
-        public bool IsAlive() => _damageable.IsAlive();
-        public bool IsInvulnerable() => _damageable.IsInvulnerable();
-        public bool TakesDamage() => _damageable.HasTakenDamage();
+        public bool IsAlive() => Damageable.IsAlive();
+        public bool IsInvulnerable() => Damageable.IsInvulnerable();
+        public bool HasTakenDamage() => Damageable.HasTakenDamage();
         public Weapon CurrentWeapon() => weapon;
         
         // It will be useful when there are different SO that inherit from StatSO

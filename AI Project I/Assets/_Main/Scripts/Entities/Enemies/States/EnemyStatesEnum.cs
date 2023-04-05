@@ -3,7 +3,7 @@
     public enum EnemyStatesEnum
     {
         Idle,
-        Moving,
+        Chase,
         LightAttack,
         HeavyAttack,
         Die,

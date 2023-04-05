@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using Game.DecisionTree;
+using Game.Enemies.States;
 using UnityEngine;
-using Game.Entities;
+using Game.FSM;
 
 namespace Game.Enemies
 {
@@ -8,57 +11,176 @@ namespace Game.Enemies
     {
         [field: SerializeField] public Transform Target { get; private set; }
         private EnemyModel _model;
+        private EnemyView _view;
+        private FSM<EnemyStatesEnum> _fsm;
+        private List<EnemyStateBase<EnemyStatesEnum>> _states;
+        private ITreeNode _root;
 
+        public void InitFsm()
+        {
+            _fsm = new FSM<EnemyStatesEnum>();
+            _states = new List<EnemyStateBase<EnemyStatesEnum>>();
+
+            var idle = new EnemyStateIdle<EnemyStatesEnum>();
+            var chase = new EnemyStateChase<EnemyStatesEnum>();
+            var damage = new EnemyStateDamage<EnemyStatesEnum>();
+            var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
+            var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
+            
+            _states.Add(idle);
+            _states.Add(chase);
+            _states.Add(damage);
+            _states.Add(lightAttack);
+            _states.Add(heavyAttack);
+            
+            idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            {
+                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.LightAttack, lightAttack },
+                { EnemyStatesEnum.HeavyAttack, heavyAttack },
+                { EnemyStatesEnum.Damage, damage },
+            });
+            
+            chase.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            {
+                { EnemyStatesEnum.Idle, idle },
+                { EnemyStatesEnum.LightAttack, lightAttack },
+                { EnemyStatesEnum.HeavyAttack, heavyAttack },
+                { EnemyStatesEnum.Damage, damage },
+            });
+            
+            lightAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            {
+                { EnemyStatesEnum.Idle, idle },
+                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.Damage, damage },
+            });
+            
+            heavyAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            {
+                { EnemyStatesEnum.Idle, idle },
+                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.Damage, damage },
+            });
+            
+            damage.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            {
+                { EnemyStatesEnum.Idle, idle },
+                { EnemyStatesEnum.Chase, chase },
+            });
+
+            foreach (var state in _states)
+            {
+                state.Init(_model, _view, this, _fsm);
+            }
+            _states = null;
+            _fsm.SetInit(idle);
+        }
+
+        public void InitTree()
+        {
+            var idle = new TreeAction(ActionIdle);
+            var chase = new TreeAction(ActionChase);
+            var damage = new TreeAction(ActionDamage);
+            var lightAttack = new TreeAction(ActionLightAttack);
+            var heavyAttack = new TreeAction(ActionHeavyAttack);
+            var die = new TreeAction(ActionDie);
+
+            var isInAttackRange = new TreeQuestion(IsInAttackingRange, lightAttack, chase);
+            var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, idle);
+            var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
+            var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isWaitTimeOver);
+            var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
+
+            _root = isAlive;
+        }
+        
         private void Awake()
         {
             _model = GetComponent<EnemyModel>();
+            _view = GetComponent<EnemyView>();
+            InitFsm();
+            InitTree();
         }
 
         private void Update()
         {
+            // if (_model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target))
+            // {
+            //     Debug.Log("I see you");
+            //     //_model.SetPlayerInSight(true);
+            //     ActionChase();
+            // }
+            // else
+            // {
+            //     //_model.SetPlayerInSight(false);
+            //     ActionIdle();
+            //     //Debug.Log("I dont you");
+            // }
             
+            Debug.Log("Update");
+            _fsm.OnUpdate();
+            _root.Execute();
         }
 
-        //private bool 
-        
-        //private bool TriesToScape() => _model.TriesToScape();
-        //private bool CloseEnoughToAttack() => _model.CloseEnoughToAttack(target);
-        private bool SeePlayer() => _model.SeePlayer(Target);
-        //private bool IsLifeLow() =>
-        
-        private void ActionFollowTarget()
+        private bool IsInAttackingRange()
         {
-            
+            Debug.Log("Attack Range " + _model.IsInAttackingRange(Target));
+            return _model.IsInAttackingRange(Target);
+        }
+
+        private bool IsPlayerInSight()
+        {
+            Debug.Log("Player In " + _model.IsPlayerInSight());
+            return _model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target);
+        }
+
+        private bool IsWaitTimeOver()
+        {
+            Debug.Log("WaitTime " + (_model.GetCurrentTimer() <= 0));
+            return _model.GetCurrentTimer() <= 0; //ToDo: Make a Idle WaitTime script
+        }
+
+        private bool HasTakenDamage()
+        {
+            Debug.Log("Has taken damage " + _model.HasTakenDamage());
+            return _model.HasTakenDamage();
+        }
+
+        private bool IsAlive()
+        {
+            Debug.Log("Is Alive " + _model.IsAlive());
+            return _model.IsAlive();
+        }
+
+        private void ActionChase()
+        {
+            _fsm.Transitions(EnemyStatesEnum.Chase);
         }
 
         private void ActionLightAttack()
         {
-            
+            _fsm.Transitions(EnemyStatesEnum.LightAttack);
         }
 
         private void ActionHeavyAttack()
         {
-            
+            _fsm.Transitions(EnemyStatesEnum.HeavyAttack);
         }
 
-        private void ActionScape()
+        private void ActionDamage()
         {
-            
+            _fsm.Transitions(EnemyStatesEnum.Damage);
         }
 
-        private void ActionLookAround()
-        {
-            
-        }
-
-        private void ActionPatrol()
+        private void ActionDie()
         {
             
         }
 
         private void ActionIdle()
         {
-            
+            _fsm.Transitions(EnemyStatesEnum.Idle);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Game.Enemies.States
             Model = model;
             View = view;
             Fsm = fsm;
+            Controller = controller;
         }
     }
 }

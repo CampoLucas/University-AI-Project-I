@@ -7,20 +7,13 @@ namespace Game.SO
 
     public class WeaponSO : ScriptableObject
     {
-        //[field: SerializeField] public AnimationEventSO HandIdle { get; private set; }
+        [field: SerializeField] public Vector3 DamageBoxSize { get; private set; }
+        [field: SerializeField] public Vector3 DamageBoxOffset { get; private set; }
         [field: SerializeField] public AnimationEventSO LightAttack01 { get; private set; }
-        //[field: SerializeField] public AnimationEventSO LightAttack02 { get; private set; }
         [field: SerializeField] public AnimationEventSO HeavyAttack01 { get; private set; }
 
         [field: SerializeField] public float Damage { get; private set; }
         [field: SerializeField] public float HeavyAttackMultiplier { get; private set; }
-    }
-
-    [System.Serializable]
-    public struct AnimationEvent
-    {
-        [SerializeField] private string name;
-        [SerializeField] private float duration;
     }
 }
 

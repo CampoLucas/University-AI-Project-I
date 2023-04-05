@@ -17,13 +17,20 @@ namespace Game.Player.States
             _inDamage = inDamage;
         }
 
+        public override void Awake()
+        {
+            base.Awake();
+            Model.Damageable.OnTakeDamage += TakeDamageHandler;
+        }
+
         public override void Execute()
         {
             base.Execute();
-            if (Model.TakesDamage())
-            {
-                Fsm.Transitions(_inDamage);
-            }
+            // if (Model.HasTakenDamage())
+            // {
+            //     Debug.Log("Damage Transition");
+            //     Fsm.Transitions(_inDamage);
+            // }
 
             if (Inputs.MoveDir != Vector3.zero)
             {
@@ -44,6 +51,17 @@ namespace Game.Player.States
             
             
             View.UpdateMovementValues(Inputs.MoveAmount);
+        }
+
+        private void TakeDamageHandler()
+        {
+            Fsm.Transitions(_inDamage);
+        }
+
+        public override void Sleep()
+        {
+            base.Sleep();
+            Model.Damageable.OnTakeDamage -= TakeDamageHandler;
         }
     }
 }

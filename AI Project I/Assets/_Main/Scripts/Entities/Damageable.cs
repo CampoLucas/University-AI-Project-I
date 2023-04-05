@@ -11,6 +11,7 @@ namespace Game.Entities
         private float _currentLife;
         private bool _isInvulnerable;
         private bool _hasTakenDamage;
+        public Action OnTakeDamage;
 
         private void InitStats()
         {
@@ -47,8 +48,9 @@ namespace Game.Entities
             {
                 var roundedDamage = Mathf.Round(damage * 4) / 4f;
                 _currentLife -= roundedDamage;
-
+                Debug.Log("Ouch");
                 _hasTakenDamage = true;
+                OnTakeDamage?.Invoke();
                 TurnInvulnerable();
             }
         }

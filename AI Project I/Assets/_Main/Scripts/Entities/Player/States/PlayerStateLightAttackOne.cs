@@ -27,7 +27,7 @@ namespace Game.Player.States
         public override void Execute()
         {
             base.Execute();
-            if (Model.TakesDamage())
+            if (Model.HasTakenDamage())
             {
                 Fsm.Transitions(_inDamage);
             }
