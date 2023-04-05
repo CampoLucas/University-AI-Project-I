@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Game.Entities;
+using UnityEngine;
 
 namespace Game.Enemies
 {
-    public class EnemyView : MonoBehaviour
+    public class EnemyView : EntityView
     {
         
     }

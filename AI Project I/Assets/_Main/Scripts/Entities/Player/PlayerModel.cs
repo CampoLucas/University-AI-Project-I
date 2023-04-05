@@ -1,8 +1,4 @@
-﻿using System;
-using Game.Entities;
-using Game.Interfaces;
-using Game.Items.Weapons;
-using UnityEngine;
+﻿using Game.Entities;
 
 namespace Game.Player
 {

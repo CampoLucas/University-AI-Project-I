@@ -14,6 +14,7 @@ namespace Game.Entities
         private IAttack _lightAttack;
         private IAttack _heavyAttack;
         private Damageable _damageable;
+        private WaitTimer _waitTimer;
 
         protected virtual void Awake()
         {
@@ -22,9 +23,10 @@ namespace Game.Entities
             _lightAttack = GetComponent<LightAttack>();
             _heavyAttack = GetComponent<HeavyAttack>();
             _damageable = GetComponent<Damageable>();
+            _waitTimer = GetComponent<WaitTimer>();
         }
 
-        public void Move(Vector3 dir) => _move?.Move(dir);
+        public virtual void Move(Vector3 dir) => _move?.Move(dir);
         public void Rotate(Vector3 dir) => _rotate?.Rotate(dir);
         public void LightAttack() => _lightAttack.Attack(weapon);
         public void HeavyAttack() => _heavyAttack.Attack(weapon);
@@ -40,5 +42,28 @@ namespace Game.Entities
         // It will be useful when there are different SO that inherit from StatSO
         //public T GetData<T>() where T : StatSO => stats as T;
         public StatSO GetData() => stats;
+        
+        #region Timer Methods
+
+        public float GetCurrentTimer() => _waitTimer ? _waitTimer.CurrentTime : default;
+        public float GetRandomTime() => _waitTimer ? _waitTimer.GetRandomTime() : default;
+
+        public void RunTimer()
+        {
+            if (_waitTimer)
+            {
+                _waitTimer.RunTimer();
+            }
+        }
+
+        public void SetTimer(float time)
+        {
+            if (_waitTimer)
+            {
+                _waitTimer.SetTimer(time);
+            }
+        }
+
+        #endregion
     }
 }

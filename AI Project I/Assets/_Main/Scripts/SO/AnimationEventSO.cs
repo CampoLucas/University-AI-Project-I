@@ -6,7 +6,8 @@ namespace Game.SO
     public class AnimationEventSO : ScriptableObject
     {
         //public string EventName => eventName;
-        public int EventName => Animator.StringToHash(eventName);
+        public int EventHash => Animator.StringToHash(eventName);
+        public string EventName => eventName;
         public float Duration => duration;
         
         [SerializeField] private string eventName;

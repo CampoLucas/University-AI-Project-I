@@ -8,7 +8,6 @@ namespace Game.Player.States
         private readonly T _inIdle;
         private readonly T _inMoving;
         private readonly T _inDamage;
-        private float _timeElapsed;
 
         public PlayerStateHeavyAttackOne(T inIdle, T inMoving, T inDamage)
         {
@@ -21,8 +20,9 @@ namespace Game.Player.States
         {
             base.Awake();
             Model.HeavyAttack();
-            View.PlayTargetAnimation(Model.CurrentWeapon().GetData().HeavyAttack01.EventName);
-            _timeElapsed = 0;
+            View.PlayTargetAnimation(Model.CurrentWeapon().GetData().HeavyAttack01.EventHash);
+            var timer = Model.CurrentWeapon().GetData().HeavyAttack01.Duration;
+            Model.SetTimer(timer);
         }
 
         public override void Execute()
@@ -32,8 +32,12 @@ namespace Game.Player.States
             {
                 Fsm.Transitions(_inDamage);
             }
-            _timeElapsed += Time.deltaTime;
-            if (_timeElapsed >= Model.CurrentWeapon().GetData().HeavyAttack01.Duration)
+
+            if (Model.GetCurrentTimer() > 0)
+            {
+                Model.RunTimer();
+            }
+            else
             {
                 if (Inputs.MoveDir != Vector3.zero)
                 {
@@ -44,6 +48,12 @@ namespace Game.Player.States
                     Fsm.Transitions(_inIdle);
                 }
             }
+        }
+
+        public override void Sleep()
+        {
+            base.Sleep();
+            Model.SetTimer(0);
         }
     }
 }

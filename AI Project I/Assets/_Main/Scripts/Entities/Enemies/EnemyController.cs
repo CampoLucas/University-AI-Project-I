@@ -6,7 +6,7 @@ namespace Game.Enemies
 {
     public class EnemyController : MonoBehaviour
     {
-        [SerializeField] private Transform target;
+        [field: SerializeField] public Transform Target { get; private set; }
         private EnemyModel _model;
 
         private void Awake()
@@ -16,21 +16,14 @@ namespace Game.Enemies
 
         private void Update()
         {
-            if (target && SeePlayer())
-            {
-                _model.FollowTarget(target);
-            }
-            else
-            {
-                
-            }
+            
         }
 
         //private bool 
         
         //private bool TriesToScape() => _model.TriesToScape();
         //private bool CloseEnoughToAttack() => _model.CloseEnoughToAttack(target);
-        private bool SeePlayer() => _model.SeePlayer(target);
+        private bool SeePlayer() => _model.SeePlayer(Target);
         //private bool IsLifeLow() =>
         
         private void ActionFollowTarget()

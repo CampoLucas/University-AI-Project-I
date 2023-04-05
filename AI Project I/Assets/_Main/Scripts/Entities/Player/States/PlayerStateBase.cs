@@ -1,7 +1,4 @@
-﻿using Game.Entities;
-using Game.FSM;
-using Game.InputActions;
-using UnityEngine;
+﻿using Game.FSM;
 
 namespace Game.Player.States
 {

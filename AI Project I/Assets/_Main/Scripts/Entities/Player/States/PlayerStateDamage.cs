@@ -7,7 +7,6 @@ namespace Game.Player.States
         private readonly T _inIdle;
         private readonly T _inMoving;
         private readonly T _inDead;
-        private float _timeElapsed;
 
         public PlayerStateDamage(in T inIdle, in T inMoving)// inDead
         {
@@ -23,15 +22,18 @@ namespace Game.Player.States
                 Fsm.Transitions(_inDead);
             }
             View.PlayTargetAnimation(Model.GetData().HitAnimation.name);
-            _timeElapsed = 0;
+            var timer = Model.GetData().HitAnimation.Duration;
+            Model.SetTimer(timer);
         }
 
         public override void Execute()
         {
             base.Execute();
-            _timeElapsed += Time.deltaTime;
-
-            if (_timeElapsed >= Model.GetData().HitAnimation.Duration)
+            if (Model.GetCurrentTimer() > 0)
+            {
+                Model.RunTimer();
+            }
+            else
             {
                 if (Inputs.MoveDir != Vector3.zero)
                 {
@@ -42,6 +44,12 @@ namespace Game.Player.States
                     Fsm.Transitions(_inIdle);
                 }
             }
+        }
+
+        public override void Sleep()
+        {
+            base.Sleep();
+            Model.SetTimer(0);
         }
     }
 }

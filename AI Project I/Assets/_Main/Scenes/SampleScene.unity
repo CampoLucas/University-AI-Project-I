@@ -941,6 +941,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b713a713a9b54750ba226786fbe882cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1927019600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903455200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ace33d518c54d3d805db45a0d031a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MaxTime>k__BackingField: 0
 --- !u!1001 &298113399026734965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -996,12 +1009,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7161925255229483297, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8985879467679423952, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1927019588}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+--- !u!1 &298113399026734966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2878532175023282192, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+  m_PrefabInstance: {fileID: 298113399026734965}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &298113399026734967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298113399026734966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ace33d518c54d3d805db45a0d031a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MaxTime>k__BackingField: 3
 --- !u!1001 &6211915852113687474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1155,7 +1190,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 8e0858aca56ac5c48a49e3924f0ce774, type: 2}
     - target: {fileID: 6211915852871192572, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
       propertyPath: aTime
-      value: 0.6
+      value: 0.58
       objectReference: {fileID: 0}
     - target: {fileID: 6211915852871192572, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
       propertyPath: dTime
