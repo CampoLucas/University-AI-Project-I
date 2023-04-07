@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using Game.DecisionTree;
 using Game.Enemies.States;
+using Game.Entities;
 using UnityEngine;
 using Game.FSM;
 
 namespace Game.Enemies
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : EntityController
     {
         [field: SerializeField] public Transform Target { get; private set; }
         private EnemyModel _model;
@@ -16,7 +17,7 @@ namespace Game.Enemies
         private List<EnemyStateBase<EnemyStatesEnum>> _states;
         private ITreeNode _root;
 
-        public void InitFsm()
+        protected override void InitFsm()
         {
             _fsm = new FSM<EnemyStatesEnum>();
             _states = new List<EnemyStateBase<EnemyStatesEnum>>();
@@ -26,12 +27,14 @@ namespace Game.Enemies
             var damage = new EnemyStateDamage<EnemyStatesEnum>();
             var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
             var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
+            var dead = new EnemyStateDeath<EnemyStatesEnum>();
             
             _states.Add(idle);
             _states.Add(chase);
             _states.Add(damage);
             _states.Add(lightAttack);
             _states.Add(heavyAttack);
+            _states.Add(dead);
             
             idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
@@ -39,6 +42,7 @@ namespace Game.Enemies
                 { EnemyStatesEnum.LightAttack, lightAttack },
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
+                { EnemyStatesEnum.Die, dead},
             });
             
             chase.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -47,6 +51,7 @@ namespace Game.Enemies
                 { EnemyStatesEnum.LightAttack, lightAttack },
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
+                { EnemyStatesEnum.Die, dead},
             });
             
             lightAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -61,12 +66,14 @@ namespace Game.Enemies
                 { EnemyStatesEnum.Idle, idle },
                 { EnemyStatesEnum.Chase, chase },
                 { EnemyStatesEnum.Damage, damage },
+                { EnemyStatesEnum.Die, dead},
             });
             
             damage.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
                 { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.Die, dead},
             });
 
             foreach (var state in _states)
@@ -89,67 +96,55 @@ namespace Game.Enemies
             var isInAttackRange = new TreeQuestion(IsInAttackingRange, lightAttack, chase);
             var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, idle);
             var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
-            var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isWaitTimeOver);
+            var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, idle);
+            var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
             var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
 
             _root = isAlive;
         }
         
-        private void Awake()
+        protected override void Awake()
         {
             _model = GetComponent<EnemyModel>();
             _view = GetComponent<EnemyView>();
-            InitFsm();
+            base.Awake();
             InitTree();
         }
 
         private void Update()
         {
-            // if (_model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target))
-            // {
-            //     Debug.Log("I see you");
-            //     //_model.SetPlayerInSight(true);
-            //     ActionChase();
-            // }
-            // else
-            // {
-            //     //_model.SetPlayerInSight(false);
-            //     ActionIdle();
-            //     //Debug.Log("I dont you");
-            // }
-            
-            Debug.Log("Update");
             _fsm.OnUpdate();
             _root.Execute();
         }
 
         private bool IsInAttackingRange()
         {
-            Debug.Log("Attack Range " + _model.IsInAttackingRange(Target));
             return _model.IsInAttackingRange(Target);
         }
 
         private bool IsPlayerInSight()
         {
-            Debug.Log("Player In " + _model.IsPlayerInSight());
             return _model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target);
         }
 
         private bool IsWaitTimeOver()
         {
-            Debug.Log("WaitTime " + (_model.GetCurrentTimer() <= 0));
             return _model.GetCurrentTimer() <= 0; //ToDo: Make a Idle WaitTime script
+        }
+
+        private bool IsPlayerAlive()
+        {
+            return _model.IsPlayerAlive();
         }
 
         private bool HasTakenDamage()
         {
-            Debug.Log("Has taken damage " + _model.HasTakenDamage());
             return _model.HasTakenDamage();
         }
 
         private bool IsAlive()
         {
-            Debug.Log("Is Alive " + _model.IsAlive());
+            Debug.Log("Is Alive: " + _model.IsAlive());
             return _model.IsAlive();
         }
 
@@ -175,7 +170,7 @@ namespace Game.Enemies
 
         private void ActionDie()
         {
-            
+            _fsm.Transitions(EnemyStatesEnum.Die);
         }
 
         private void ActionIdle()

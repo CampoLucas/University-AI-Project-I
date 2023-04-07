@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fcc7180e965724d9abc208182d7b73, type: 3}
   m_Name: New Weapon
   m_EditorClassIdentifier: 
+  <DamageBoxSize>k__BackingField: {x: 0, y: 0, z: 0}
+  <DamageBoxOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <LightAttack01>k__BackingField: {fileID: 11400000, guid: 3608ac9c3017c9f4ead688bb653162c4, type: 2}
+  <LightAttackTriggerStarts>k__BackingField: 0.58
+  <LightAttackTriggerEnds>k__BackingField: 0.7
   <HeavyAttack01>k__BackingField: {fileID: 11400000, guid: 5e5e39cd5544d0b4ca486c9859d48a31, type: 2}
+  <HeavyAttackTriggerStarts>k__BackingField: 0.72
+  <HeavyAttackTriggerEnds>k__BackingField: 0.9
   <Damage>k__BackingField: 1
   <HeavyAttackMultiplier>k__BackingField: 3

@@ -8,49 +8,56 @@ namespace Game.Player.States
         private readonly T _inLightAttack;
         private readonly T _inHeavyAttack;
         private readonly T _inDamage;
+        private readonly T _inDead;
 
-        public PlayerStateIdle(in T inMoving, in T inLightAttack, in T inHeavyAttack, in T inDamage)
+        public PlayerStateIdle(in T inMoving, in T inLightAttack, in T inHeavyAttack, in T inDamage, in T inDead)
         {
             _inMoving = inMoving;
             _inLightAttack = inLightAttack;
             _inHeavyAttack = inHeavyAttack;
             _inDamage = inDamage;
+            _inDead = inDead;
         }
 
         public override void Awake()
         {
             base.Awake();
-            Model.Damageable.OnTakeDamage += TakeDamageHandler;
+            //Model.Damageable.OnTakeDamage += TakeDamageHandler;
         }
 
         public override void Execute()
         {
             base.Execute();
-            // if (Model.HasTakenDamage())
-            // {
-            //     Debug.Log("Damage Transition");
-            //     Fsm.Transitions(_inDamage);
-            // }
-
-            if (Inputs.MoveDir != Vector3.zero)
+            if (Model.IsAlive())
             {
-                Fsm.Transitions(_inMoving);
-            }
+                if (Model.HasTakenDamage())
+                {
+                    Debug.Log("Damage Transition");
+                    Fsm.Transitions(_inDamage);
+                }
 
-            if (Inputs.FlagLightAttack)
+                if (Inputs.MoveDir != Vector3.zero)
+                {
+                    Fsm.Transitions(_inMoving);
+                }
+
+                if (Inputs.FlagLightAttack)
+                {
+                    Fsm.Transitions(_inLightAttack);
+                }
+
+                if (Inputs.FlagHeavyAttack)
+                {
+                    Fsm.Transitions(_inHeavyAttack);
+                }
+                
+                View.UpdateMovementValues(Inputs.MoveAmount);
+            }
+            else
             {
-                Fsm.Transitions(_inLightAttack);
+                Fsm.Transitions(_inDead);
             }
-
-            if (Inputs.FlagHeavyAttack)
-            {
-                Fsm.Transitions(_inHeavyAttack);
-            }
-
             
-            
-            
-            View.UpdateMovementValues(Inputs.MoveAmount);
         }
 
         private void TakeDamageHandler()
@@ -61,7 +68,7 @@ namespace Game.Player.States
         public override void Sleep()
         {
             base.Sleep();
-            Model.Damageable.OnTakeDamage -= TakeDamageHandler;
+            //Model.Damageable.OnTakeDamage -= TakeDamageHandler;
         }
     }
 }

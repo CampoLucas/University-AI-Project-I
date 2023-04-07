@@ -1,51 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Entities;
 using Game.Player.States;
 using Game.FSM;
 using UnityEngine;
 
 namespace Game.Player
 {
-    // [System.Serializable]
-    // public struct Transition
-    // {
-    //     [SerializeField] private PlayerStatesEnum key;
-    //     [SerializeField] private PlayerStateBase<PlayerStatesEnum> state;
-    // }
-    //
-    // [System.Serializable]
-    // public struct State
-    // {
-    //     [SerializeField] private string name;
-    //     [SerializeField] private PlayerStatesEnum[] inputs;
-    // }
-    
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : EntityController
     {
         private PlayerModel _model;
         private PlayerView _view;
         private PlayerInputHandler _inputs;
         private FSM<PlayerStatesEnum> _fsm;
         private List<PlayerStateBase<PlayerStatesEnum>> _states;
-        // [SerializeField] private Transition[] tr;
-        // [SerializeField] private State[] st;
 
-        private void InitFSM()
+        protected override void InitFsm()
         {
             _fsm = new FSM<PlayerStatesEnum>();
             _states = new List<PlayerStateBase<PlayerStatesEnum>>();
             
-            var idle = new PlayerStateIdle<PlayerStatesEnum>(PlayerStatesEnum.Moving, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage);
-            var move = new PlayerStateMove<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage);
-            var lightAttack = new PlayerStateLightAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage);
-            var heavyAttack = new PlayerStateHeavyAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage);
-            var damage = new PlayerStateDamage<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving);
+            var idle = new PlayerStateIdle<PlayerStatesEnum>(PlayerStatesEnum.Moving, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
+            var move = new PlayerStateMove<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
+            var lightAttack = new PlayerStateLightAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
+            var heavyAttack = new PlayerStateHeavyAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
+            var damage = new PlayerStateDamage<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Dead);
+            var dead = new PlayerStateDead<PlayerStatesEnum>();
             
             _states.Add(idle);
             _states.Add(move);
             _states.Add(lightAttack);
             _states.Add(heavyAttack);
             _states.Add(damage);
+            _states.Add(dead);
 
             idle.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
             {
@@ -53,6 +40,7 @@ namespace Game.Player
                 { PlayerStatesEnum.LightAttack, lightAttack },
                 { PlayerStatesEnum.HeavyAttack, heavyAttack },
                 { PlayerStatesEnum.Damage, damage },
+                { PlayerStatesEnum.Dead, dead },
             });
             
             move.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
@@ -61,6 +49,7 @@ namespace Game.Player
                 { PlayerStatesEnum.LightAttack, lightAttack },
                 { PlayerStatesEnum.HeavyAttack, heavyAttack },
                 { PlayerStatesEnum.Damage, damage },
+                { PlayerStatesEnum.Dead, dead },
             });
             
             lightAttack.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
@@ -68,6 +57,7 @@ namespace Game.Player
                 { PlayerStatesEnum.Idle, idle },
                 { PlayerStatesEnum.Moving, move },
                 { PlayerStatesEnum.Damage, damage },
+                { PlayerStatesEnum.Dead, dead },
             });
             
             heavyAttack.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
@@ -75,12 +65,14 @@ namespace Game.Player
                 { PlayerStatesEnum.Idle, idle },
                 { PlayerStatesEnum.Moving, move },
                 { PlayerStatesEnum.Damage, damage },
+                { PlayerStatesEnum.Dead, dead },
             });
             
             damage.AddTransition(new Dictionary<PlayerStatesEnum, IState<PlayerStatesEnum>>
             {
                 { PlayerStatesEnum.Idle, idle },
                 { PlayerStatesEnum.Moving, move },
+                { PlayerStatesEnum.Dead, dead },
             });
 
             foreach (var state in _states)
@@ -91,12 +83,12 @@ namespace Game.Player
             _fsm.SetInit(idle);
         }
 
-        private void Awake()
+        protected override void Awake()
         {
             _model = GetComponent<PlayerModel>();
             _view = GetComponent<PlayerView>();
             _inputs = GetComponent<PlayerInputHandler>();
-            InitFSM();
+            base.Awake();
         }
 
         private void Update()

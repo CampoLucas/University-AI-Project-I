@@ -11,6 +11,7 @@ namespace Game.SO
         public float MaxHealth => maxHealth;
         public float InvulnerableCooldown => invulnerableCooldown;
         public AnimationEventSO HitAnimation => hitAnimation;
+        public AnimationEventSO DeathAnimation => deathAnimation;
         
         [Header("Movement")]
         [SerializeField] private float moveSpeed = 5;
@@ -23,6 +24,7 @@ namespace Game.SO
         [SerializeField] private float maxHealth = 100;
         [SerializeField] private float invulnerableCooldown = 0.1f;
         [SerializeField] private AnimationEventSO hitAnimation;
+        [SerializeField] private AnimationEventSO deathAnimation;
 
 
     }

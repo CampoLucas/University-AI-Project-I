@@ -15,6 +15,7 @@ MonoBehaviour:
   moveSpeed: 2
   moveLerpSpeed: 10
   rotSpeed: 10
-  maxHealth: 100
+  maxHealth: 3
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
+  deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}

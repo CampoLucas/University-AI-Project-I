@@ -8,19 +8,42 @@ namespace Game.Entities
 {
     public class HeavyAttack : MonoBehaviour, IAttack
     {
-        public float aTime = 0.18f;
-        public float dTime = 0.4f;
-        public void Attack(Weapon weapon)
+        private EntityModel _entity;
+        private float _timer;
+        private bool _enable;
+        private bool _activated;
+        private bool _deactivated;
+
+        private void Awake()
         {
-            StartCoroutine(AttackCoroutine(weapon));
+            _entity = GetComponent<EntityModel>();
         }
 
-        private IEnumerator AttackCoroutine(Weapon weapon)
+        private void FixedUpdate()
         {
-            yield return new WaitForSeconds(aTime);
-            weapon.EnableTrigger();
-            yield return new WaitForSeconds(dTime);
-            weapon.DisableTrigger();
+            if (_enable)
+            {
+                _timer += Time.fixedDeltaTime;
+
+                if (!_activated && _timer >= _entity.CurrentWeapon().GetData().HeavyAttackTriggerStarts)
+                {
+                    _activated = true;
+                    _entity.CurrentWeapon().EnableTrigger();
+                }
+                if (!_deactivated && _timer >= _entity.CurrentWeapon().GetData().HeavyAttackTriggerEnds)
+                {
+                    _deactivated = false;
+                    _entity.CurrentWeapon().DisableTrigger();
+                }
+            }
+        }
+
+        public void Attack()
+        {
+            _enable = true;
+            _activated = false;
+            _deactivated = false;
+            _timer = 0;
         }
     }
 }

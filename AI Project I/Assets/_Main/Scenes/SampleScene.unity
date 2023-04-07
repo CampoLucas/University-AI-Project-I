@@ -965,6 +965,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxTime>k__BackingField: 0
+--- !u!114 &1927019609 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6211915852871192571, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
+  m_PrefabInstance: {fileID: 6211915852113687474}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903455200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d4b3ebf679f4c7c9d36b6ac1ed13417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &298113399026734965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -976,6 +987,10 @@ PrefabInstance:
       propertyPath: damageLayerMask.m_Bits
       value: 64
       objectReference: {fileID: 0}
+    - target: {fileID: 2676991179575740404, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1927019609}
     - target: {fileID: 2676991179575740404, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: weapon
       value: 
@@ -1447,5 +1462,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5890645952435986559, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a72c5b2da9a10944b868543506d266ca, type: 3}

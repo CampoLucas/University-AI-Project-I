@@ -1,4 +1,6 @@
-﻿namespace Game.Enemies.States
+﻿using UnityEngine;
+
+namespace Game.Enemies.States
 {
     public class EnemyStateIdle<T> : EnemyStateBase<T>
     {
@@ -17,7 +19,7 @@
                 Model.RunTimer();
             }
 
-            View.UpdateMovementValues(Model.GetMoveAmount());
+            View.UpdateMovementValues(0);
         }
 
         public override void Sleep()

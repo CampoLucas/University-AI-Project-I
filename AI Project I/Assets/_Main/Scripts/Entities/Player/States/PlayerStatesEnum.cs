@@ -6,7 +6,7 @@ namespace Game.Player.States
         Moving,
         LightAttack,
         HeavyAttack,
-        Die,
+        Dead,
         Damage,
     }
 }

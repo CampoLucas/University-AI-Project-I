@@ -8,12 +8,14 @@ namespace Game.Player.States
         private readonly T _inIdle;
         private readonly T _inMoving;
         private readonly T _inDamage;
+        private readonly T _inDead;
 
-        public PlayerStateHeavyAttackOne(T inIdle, T inMoving, T inDamage)
+        public PlayerStateHeavyAttackOne(T inIdle, T inMoving, T inDamage, T inDead)
         {
             _inIdle = inIdle;
             _inMoving = inMoving;
             _inDamage = inDamage;
+            _inDead = inDead;
         }
 
         public override void Awake()
@@ -28,26 +30,36 @@ namespace Game.Player.States
         public override void Execute()
         {
             base.Execute();
-            if (Model.HasTakenDamage())
-            {
-                Fsm.Transitions(_inDamage);
-            }
 
-            if (Model.GetCurrentTimer() > 0)
+            if (Model.IsAlive())
             {
-                Model.RunTimer();
-            }
-            else
-            {
-                if (Inputs.MoveDir != Vector3.zero)
+                if (Model.HasTakenDamage())
                 {
-                    Fsm.Transitions(_inMoving);
+                    Fsm.Transitions(_inDamage);
+                }
+                
+                if (Model.GetCurrentTimer() > 0)
+                {
+                    Model.RunTimer();
                 }
                 else
                 {
-                    Fsm.Transitions(_inIdle);
+                    if (Inputs.MoveDir != Vector3.zero)
+                    {
+                        Fsm.Transitions(_inMoving);
+                    }
+                    else
+                    {
+                        Fsm.Transitions(_inIdle);
+                    }
                 }
             }
+            else
+            {
+                Fsm.Transitions(_inDead);
+            }
+
+            
         }
 
         public override void Sleep()

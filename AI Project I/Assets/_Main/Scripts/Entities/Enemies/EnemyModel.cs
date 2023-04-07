@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Game.Entities;
+using Game.Player;
 using Random = UnityEngine.Random;
 
 namespace Game.Enemies
@@ -8,6 +9,7 @@ namespace Game.Enemies
     public class EnemyModel : EntityModel
     {
         [SerializeField] private float attackRange;
+        [SerializeField] private PlayerModel player;
         private FieldOfView _fieldOfView;
         private Vector3 _direction = Vector3.zero;
         private bool _isPlayerInSight;
@@ -41,10 +43,12 @@ namespace Game.Enemies
 
         public bool IsInAttackingRange(Transform target)
         {
-            return Vector3.Distance(transform.position, target.position) < attackRange + Random.Range(-0.2f, 0.2f);
+            return Vector3.Distance(transform.position, target.position) < attackRange;
         }
         public bool IsPlayerInSight() => _isPlayerInSight;
         public void SetPlayerInSight(bool isInSight) => _isPlayerInSight = isInSight;
+
+        public bool IsPlayerAlive() => player && player.IsAlive();
 
         private void OnDrawGizmosSelected()
         {

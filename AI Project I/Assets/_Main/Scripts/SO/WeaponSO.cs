@@ -10,7 +10,11 @@ namespace Game.SO
         [field: SerializeField] public Vector3 DamageBoxSize { get; private set; }
         [field: SerializeField] public Vector3 DamageBoxOffset { get; private set; }
         [field: SerializeField] public AnimationEventSO LightAttack01 { get; private set; }
+        [field: SerializeField] public float LightAttackTriggerStarts { get; private set; }
+        [field: SerializeField] public float LightAttackTriggerEnds { get; private set; }
         [field: SerializeField] public AnimationEventSO HeavyAttack01 { get; private set; }
+        [field: SerializeField] public float HeavyAttackTriggerStarts { get; private set; }
+        [field: SerializeField] public float HeavyAttackTriggerEnds { get; private set; }
 
         [field: SerializeField] public float Damage { get; private set; }
         [field: SerializeField] public float HeavyAttackMultiplier { get; private set; }

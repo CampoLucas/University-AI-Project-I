@@ -29,8 +29,8 @@ namespace Game.Entities
 
         public virtual void Move(Vector3 dir) => _move?.Move(dir);
         public void Rotate(Vector3 dir) => _rotate?.Rotate(dir);
-        public void LightAttack() => _lightAttack.Attack(weapon);
-        public void HeavyAttack() => _heavyAttack.Attack(weapon);
+        public void LightAttack() => _lightAttack.Attack();
+        public void HeavyAttack() => _heavyAttack.Attack();
         /// <summary>
         /// Current life is grater than 0
         /// </summary>

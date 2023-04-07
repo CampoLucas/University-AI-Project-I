@@ -8,10 +8,11 @@ namespace Game.Player.States
         private readonly T _inMoving;
         private readonly T _inDead;
 
-        public PlayerStateDamage(in T inIdle, in T inMoving)// inDead
+        public PlayerStateDamage(in T inIdle, in T inMoving, in T inDead)
         {
             _inIdle = inIdle;
             _inMoving = inMoving;
+            _inDead = inDead;
         }
 
         public override void Awake()
