@@ -2,6 +2,7 @@
 using UnityEngine;
 using Game.Entities;
 using Game.Player;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 namespace Game.Enemies
@@ -11,6 +12,7 @@ namespace Game.Enemies
         [SerializeField] private float attackRange;
         [SerializeField] private PlayerModel player;
         private FieldOfView _fieldOfView;
+        private PathToFollow _path;
         private Vector3 _direction = Vector3.zero;
         private bool _isPlayerInSight;
 
@@ -18,6 +20,22 @@ namespace Game.Enemies
         {
             base.Awake();
             _fieldOfView = GetComponent<FieldOfView>();
+            _path = GetComponent<PathToFollow>();
+        }
+
+        private void Start()
+        {
+            Spawn();
+        }
+
+        private void Update()
+        {
+            if (_path.ReachedWaypoint())
+            {
+                _path.ChangeWaypoint();
+            }
+            FollowTarget(_path.GetNextWaypoint());
+            
         }
 
         public float GetMoveAmount() => Mathf.Clamp01(Mathf.Abs(_direction.x) + Mathf.Abs(_direction.z));
@@ -32,11 +50,23 @@ namespace Game.Enemies
         public bool CheckAngle(Transform target) => _fieldOfView.CheckAngle(target);
         public bool CheckView(Transform target) => _fieldOfView.CheckView(target);
 
-
+        public void Spawn()
+        {
+            transform.position = _path.GetCurrentPoint();
+            transform.rotation = Quaternion.LookRotation(_path.GetWaypointDirection());
+        }
         public void FollowTarget(Transform target)
         {
             var transform1 = transform;
             var dir = (target.position - transform1.position).normalized;
+            Move(transform1.forward);
+            Rotate(dir);
+        }
+
+        public void FollowTarget(Vector3 target)
+        {
+            var transform1 = transform;
+            var dir = (target - transform1.position).normalized;
             Move(transform1.forward);
             Rotate(dir);
         }
@@ -49,6 +79,8 @@ namespace Game.Enemies
         public void SetPlayerInSight(bool isInSight) => _isPlayerInSight = isInSight;
 
         public bool IsPlayerAlive() => player && player.IsAlive();
+        
+        //public bool 
 
         private void OnDrawGizmosSelected()
         {
