@@ -27,7 +27,7 @@ namespace Game.Entities
             _waitTimer = GetComponent<WaitTimer>();
         }
 
-        public virtual void Move(Vector3 dir) => _move?.Move(dir);
+        public virtual void Move(Vector3 dir, float moveAmount) => _move?.Move(dir, moveAmount);
         public void Rotate(Vector3 dir) => _rotate?.Rotate(dir);
         public void LightAttack() => _lightAttack.Attack();
         public void HeavyAttack() => _heavyAttack.Attack();

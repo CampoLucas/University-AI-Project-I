@@ -69,6 +69,7 @@ namespace Game.Sheared
             _enable = true;
             _collidersInBox.Clear();
             _hits = new RaycastHit[2];
+            Debug.Log("Trigger On");
         }
 
         public void DisableCollider()
@@ -79,6 +80,7 @@ namespace Game.Sheared
                 OnCastExit?.Invoke(other);
             }
             _collidersInBox.Clear();
+            Debug.Log("Trigger Off");
         }
 
         private void OnDrawGizmos()

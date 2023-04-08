@@ -8,5 +8,6 @@
         HeavyAttack,
         Die,
         Damage,
+        FollowRoute
     }
 }

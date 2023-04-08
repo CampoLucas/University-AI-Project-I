@@ -20,11 +20,11 @@ namespace Game.Entities
             _entity = GetComponent<EntityModel>();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (_enable)
             {
-                _timer += Time.fixedDeltaTime;
+                _timer += Time.deltaTime;
 
                 if (!_activated && _timer >= _entity.CurrentWeapon().GetData().LightAttackTriggerStarts)
                 {
@@ -35,6 +35,7 @@ namespace Game.Entities
                 {
                     _deactivated = false;
                     _entity.CurrentWeapon().DisableTrigger();
+                    _enable = false;
                 }
             }
         }

@@ -20,15 +20,19 @@ namespace Game.Player
         {
             _input ??= new PlayerInputs();
 
-            _input.Player.Movement.performed += MovementPerformedHandler;
-            _input.Player.Movement.canceled += MovementPerformedHandler;
+            _input.Player.Movement.performed += MovementHandler;
+            _input.Player.Movement.canceled += MovementHandler;
+            _input.Player.LightAttack.performed += LightAttackPerformedHandler;
+            _input.Player.HeavyAttack.performed += HeavyAttackPerformedHandler;
             _input.Enable();
         }
 
         private void OnDisable()
         {
-            _input.Player.Movement.performed -= MovementPerformedHandler;
-            _input.Player.Movement.canceled -= MovementPerformedHandler;
+            _input.Player.Movement.performed -= MovementHandler;
+            _input.Player.Movement.canceled -= MovementHandler;
+            _input.Player.LightAttack.performed -= LightAttackPerformedHandler;
+            _input.Player.HeavyAttack.performed -= HeavyAttackPerformedHandler;
             _input.Disable();
         }
 
@@ -46,21 +50,23 @@ namespace Game.Player
         }
 
         #region InputEventHandler
-        private void MovementPerformedHandler(InputAction.CallbackContext context)
+        private void MovementHandler(InputAction.CallbackContext context)
         {
             MoveDir = new Vector3(context.ReadValue<Vector2>().x, 0, context.ReadValue<Vector2>().y);
         }
-        
-        private void MovementCanceledHandler(InputAction.CallbackContext context)
+        private void LightAttackPerformedHandler(InputAction.CallbackContext context)
         {
-            MoveDir = new Vector3(context.ReadValue<Vector2>().x, 0, context.ReadValue<Vector2>().y);
+            _inputLightAttack = true;
         }
+        private void HeavyAttackPerformedHandler(InputAction.CallbackContext context)
+        {
+            _inputHeavyAttack = true;
+        }
+
         #endregion
 
         private void HandleInput()
         {
-            
-            
             MoveInput();
             AttackInput();
         }
@@ -72,9 +78,6 @@ namespace Game.Player
 
         private void AttackInput()
         {
-            _input.Player.LightAttack.performed += i => _inputLightAttack = true;
-            _input.Player.HeavyAttack.performed += i => _inputHeavyAttack = true;
-
             if (_inputLightAttack)
             {
                 FlagLightAttack = true;

@@ -5,6 +5,7 @@ using Game.Enemies.States;
 using Game.Entities;
 using UnityEngine;
 using Game.FSM;
+using Unity.VisualScripting;
 
 namespace Game.Enemies
 {
@@ -28,6 +29,7 @@ namespace Game.Enemies
             var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
             var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
             var dead = new EnemyStateDeath<EnemyStatesEnum>();
+            var followRoute = new EnemyStateFollowRoute<EnemyStatesEnum>();
             
             _states.Add(idle);
             _states.Add(chase);
@@ -35,6 +37,7 @@ namespace Game.Enemies
             _states.Add(lightAttack);
             _states.Add(heavyAttack);
             _states.Add(dead);
+            _states.Add(followRoute);
             
             idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
@@ -42,7 +45,8 @@ namespace Game.Enemies
                 { EnemyStatesEnum.LightAttack, lightAttack },
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
-                { EnemyStatesEnum.Die, dead},
+                { EnemyStatesEnum.Die, dead },
+                { EnemyStatesEnum.FollowRoute, followRoute },
             });
             
             chase.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -52,6 +56,7 @@ namespace Game.Enemies
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.Die, dead},
+                { EnemyStatesEnum.FollowRoute, followRoute },
             });
             
             lightAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -59,6 +64,7 @@ namespace Game.Enemies
                 { EnemyStatesEnum.Idle, idle },
                 { EnemyStatesEnum.Chase, chase },
                 { EnemyStatesEnum.Damage, damage },
+                { EnemyStatesEnum.FollowRoute, followRoute },
             });
             
             heavyAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -67,12 +73,24 @@ namespace Game.Enemies
                 { EnemyStatesEnum.Chase, chase },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.Die, dead},
+                { EnemyStatesEnum.FollowRoute, followRoute },
             });
             
             damage.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
                 { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.Die, dead},
+                { EnemyStatesEnum.FollowRoute, followRoute },
+            });
+            
+            followRoute.AddTransition(new FlexibleDictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            {
+                { EnemyStatesEnum.Idle, idle },
+                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.LightAttack, lightAttack },
+                { EnemyStatesEnum.HeavyAttack, heavyAttack },
+                { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.Die, dead},
             });
 
@@ -92,11 +110,13 @@ namespace Game.Enemies
             var lightAttack = new TreeAction(ActionLightAttack);
             var heavyAttack = new TreeAction(ActionHeavyAttack);
             var die = new TreeAction(ActionDie);
+            var followRoute = new TreeAction(ActionFollowRoute);
 
             var isInAttackRange = new TreeQuestion(IsInAttackingRange, lightAttack, chase);
-            var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, idle);
+            var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
+            var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, hasARoute);
             var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
-            var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, idle);
+            var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, hasARoute);
             var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
             var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
 
@@ -120,6 +140,11 @@ namespace Game.Enemies
         private bool IsInAttackingRange()
         {
             return _model.IsInAttackingRange(Target);
+        }
+
+        private bool HasARoute()
+        {
+            return _model.HasARoute();
         }
 
         private bool IsPlayerInSight()
@@ -176,6 +201,11 @@ namespace Game.Enemies
         private void ActionIdle()
         {
             _fsm.Transitions(EnemyStatesEnum.Idle);
+        }
+
+        private void ActionFollowRoute()
+        {
+            _fsm.Transitions(EnemyStatesEnum.FollowRoute);
         }
     }
 }

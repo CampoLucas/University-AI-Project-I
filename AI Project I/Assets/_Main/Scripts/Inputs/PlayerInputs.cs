@@ -138,7 +138,7 @@ namespace Game.InputActions
                 {
                     ""name"": ""modifier"",
                     ""id"": ""8ce1fcc9-0ff6-4de6-9550-c63387085567"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",

@@ -15,7 +15,7 @@ MonoBehaviour:
   <IsCircular>k__BackingField: 0
   <IsReversed>k__BackingField: 0
   <Threshold>k__BackingField: 0.5
-  <WorldOffset>k__BackingField: {x: 1.5, y: 0, z: 4.06}
+  <WorldOffset>k__BackingField: {x: 3.58, y: 0, z: 3.84}
   <Waypoints>k__BackingField:
   - {x: 0, y: 0, z: 0}
   - {x: 4.48, y: 0, z: -2.8}

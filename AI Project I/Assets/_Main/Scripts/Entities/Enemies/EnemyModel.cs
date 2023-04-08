@@ -28,22 +28,12 @@ namespace Game.Enemies
             Spawn();
         }
 
-        private void Update()
-        {
-            if (_path.ReachedWaypoint())
-            {
-                _path.ChangeWaypoint();
-            }
-            FollowTarget(_path.GetNextWaypoint());
-            
-        }
-
         public float GetMoveAmount() => Mathf.Clamp01(Mathf.Abs(_direction.x) + Mathf.Abs(_direction.z));
 
-        public override void Move(Vector3 dir)
+        public override void Move(Vector3 dir, float moveAmount)
         {
             _direction = dir;
-            base.Move(_direction);
+            base.Move(_direction, moveAmount);
         }
 
         public bool CheckRange(Transform target) => _fieldOfView.CheckRange(target);
@@ -55,19 +45,25 @@ namespace Game.Enemies
             transform.position = _path.GetCurrentPoint();
             transform.rotation = Quaternion.LookRotation(_path.GetWaypointDirection());
         }
-        public void FollowTarget(Transform target)
+
+        public Vector3 GetWaypointDirection() => _path.GetWaypointDirection();
+        public Vector3 GetNextWaypoint() => _path.GetNextWaypoint();
+        public bool HasARoute() => _path;
+        public bool ReachedWaypoint() => _path.ReachedWaypoint();
+        public void ChangeWaypoint() => _path.ChangeWaypoint();
+        public void FollowTarget(Transform target, float moveAmount)
         {
             var transform1 = transform;
             var dir = (target.position - transform1.position).normalized;
-            Move(transform1.forward);
+            Move(transform1.forward, moveAmount);
             Rotate(dir);
         }
 
-        public void FollowTarget(Vector3 target)
+        public void FollowTarget(Vector3 target, float moveAmount)
         {
             var transform1 = transform;
             var dir = (target - transform1.position).normalized;
-            Move(transform1.forward);
+            Move(transform1.forward, moveAmount);
             Rotate(dir);
         }
 

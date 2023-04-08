@@ -11,6 +11,7 @@ namespace Game.Entities
         private Rigidbody _rb;
         private Vector3 _normalVector;
         private Vector3 _cachedProjectedVelocity;
+        private float _speed;
 
         private void Awake()
         {
@@ -18,9 +19,18 @@ namespace Game.Entities
             _rb = GetComponent<Rigidbody>();
         }
 
-        public void Move(Vector3 dir)
+        public void Move(Vector3 dir, float moveAmount)
         {
-            var targetVelocity = dir * _data.MoveSpeed;
+            if (moveAmount > 0.5f)
+            {
+                _speed = _data.MoveSpeed;
+            }
+            else
+            {
+                _speed = _data.WalkSpeed;
+            }
+            
+            var targetVelocity = dir * _speed;
             _cachedProjectedVelocity = Vector3.ProjectOnPlane(targetVelocity, _normalVector);
             
             _rb.velocity = Vector3.Lerp(_rb.velocity, _cachedProjectedVelocity, _data.MoveLerpSpeed);

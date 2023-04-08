@@ -80,42 +80,95 @@ namespace Game.Entities
             _index = GetNextIndex();
         }
 
+        // private void OnDrawGizmos()
+        // {
+        //     // Draw the path in the editor
+        //     if (path != null)
+        //     {
+        //         
+        //         for (int i = 0; i < path.Waypoints.Count; i++)
+        //         {
+        //             if (path.Waypoints[i] == path.Waypoints[_index])
+        //             {
+        //                 Gizmos.color = Color.magenta;
+        //             }
+        //             else if (path.Waypoints[i] == path.Waypoints[GetNextIndex()])
+        //             {
+        //                 Gizmos.color = Color.red;
+        //             }
+        //             else if (path.Waypoints[i] == path.Waypoints[0])
+        //             {
+        //                 Gizmos.color = Color.green;
+        //             }
+        //             else
+        //             {
+        //                 Gizmos.color = Color.yellow;
+        //             }
+        //             Gizmos.DrawSphere(path.Waypoints[i] + path.WorldOffset, 0.2f);
+        //             Gizmos.DrawWireSphere(path.Waypoints[i] + path.WorldOffset, path.Threshold);
+        //             Gizmos.color = Color.yellow;
+        //             if (i > 0)
+        //             {
+        //                 Gizmos.DrawLine(path.Waypoints[i - 1] + path.WorldOffset, path.Waypoints[i] + path.WorldOffset);
+        //             }
+        //         }
+        //         if (path.IsCircular && path.Waypoints.Count > 1)
+        //         {
+        //             Gizmos.DrawLine(path.Waypoints[path.Waypoints.Count - 1] + path.WorldOffset, path.Waypoints[0] + path.WorldOffset);
+        //         }
+        //     }
+        // }
+        
         private void OnDrawGizmos()
         {
-            // Draw the path in the editor
-            if (path != null)
+            if (path == null) return;
+
+            for (int i = 0; i < path.Waypoints.Count; i++)
             {
-                
-                for (int i = 0; i < path.Waypoints.Count; i++)
+                var waypoint = path.Waypoints[i];
+                var waypointOffset = waypoint + path.WorldOffset;
+                if (waypointOffset.y != 0)
                 {
-                    if (path.Waypoints[i] == path.Waypoints[_index])
+                    if (waypointOffset.y > 0)
                     {
-                        Gizmos.color = Color.magenta;
-                    }
-                    else if (path.Waypoints[i] == path.Waypoints[GetNextIndex()])
-                    {
-                        Gizmos.color = Color.red;
-                    }
-                    else if (path.Waypoints[i] == path.Waypoints[0])
-                    {
-                        Gizmos.color = Color.green;
+                        Gizmos.color = new Color(0, 0, 1, 0.5f);
                     }
                     else
                     {
-                        Gizmos.color = Color.yellow;
+                        Gizmos.color = new Color(1, 0.5f, 0, 0.5f);
                     }
-                    Gizmos.DrawSphere(path.Waypoints[i] + path.WorldOffset, 0.2f);
-                    Gizmos.DrawWireSphere(path.Waypoints[i] + path.WorldOffset, path.Threshold);
-                    Gizmos.color = Color.yellow;
-                    if (i > 0)
-                    {
-                        Gizmos.DrawLine(path.Waypoints[i - 1] + path.WorldOffset, path.Waypoints[i] + path.WorldOffset);
-                    }
+                    Gizmos.DrawLine(new Vector3(waypointOffset.x, 0, waypointOffset.z), waypointOffset);
                 }
-                if (path.IsCircular && path.Waypoints.Count > 1)
+                
+                if (waypoint == path.Waypoints[_index])
                 {
-                    Gizmos.DrawLine(path.Waypoints[path.Waypoints.Count - 1] + path.WorldOffset, path.Waypoints[0] + path.WorldOffset);
+                    Gizmos.color = Color.magenta;
                 }
+                else if (waypoint == path.Waypoints[GetNextIndex()])
+                {
+                    Gizmos.color = Color.red;
+                }
+                else if (waypoint == path.Waypoints[0])
+                {
+                    Gizmos.color = Color.green;
+                }
+                else
+                {
+                    Gizmos.color = Color.yellow;
+                }
+
+                Gizmos.DrawSphere(waypointOffset, 0.2f);
+                Gizmos.DrawWireSphere(waypointOffset, path.Threshold);
+
+                if (i > 0)
+                {
+                    Gizmos.DrawLine(path.Waypoints[i - 1] + path.WorldOffset, waypointOffset);
+                }
+            }
+
+            if (path.IsCircular && path.Waypoints.Count > 1)
+            {
+                Gizmos.DrawLine(path.Waypoints[path.Waypoints.Count - 1] + path.WorldOffset, path.Waypoints[0] + path.WorldOffset);
             }
         }
     }

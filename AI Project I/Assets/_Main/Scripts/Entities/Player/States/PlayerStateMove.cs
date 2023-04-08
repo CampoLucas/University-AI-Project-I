@@ -50,7 +50,7 @@ namespace Game.Player.States
                     Fsm.Transitions(_inHeavyAttack);
                 }
             
-                Model.Move(Inputs.MoveDir);
+                Model.Move(Inputs.MoveDir, Inputs.MoveAmount);
                 Model.Rotate(Inputs.MoveDir);
                 View.UpdateMovementValues(Inputs.MoveAmount);
             }
@@ -69,7 +69,7 @@ namespace Game.Player.States
         {
             base.Sleep();
             //Model.Damageable.OnTakeDamage -= TakeDamageHandler;
-            Model.Move(Vector3.zero);
+            Model.Move(Vector3.zero, Inputs.MoveAmount);
         }
     }
 }

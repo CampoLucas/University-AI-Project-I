@@ -4,6 +4,6 @@ namespace Game.Interfaces
 {
     public interface IMovement
     {
-        void Move(Vector3 dir);
+        void Move(Vector3 dir, float moveAmount);
     }
 }

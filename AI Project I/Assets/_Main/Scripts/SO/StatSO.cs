@@ -6,6 +6,7 @@ namespace Game.SO
     public class StatSO : ScriptableObject
     {
         public float MoveSpeed => moveSpeed;
+        public float WalkSpeed => walkSpeed;
         public float MoveLerpSpeed => moveLerpSpeed;
         public float RotSpeed => rotSpeed;
         public float MaxHealth => maxHealth;
@@ -15,6 +16,7 @@ namespace Game.SO
         
         [Header("Movement")]
         [SerializeField] private float moveSpeed = 5;
+        [SerializeField] private float walkSpeed = 3;
         [SerializeField] private float moveLerpSpeed = 10;
 
         [Header("Rotation")] 
