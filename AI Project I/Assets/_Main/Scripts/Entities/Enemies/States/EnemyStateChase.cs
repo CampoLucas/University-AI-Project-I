@@ -7,9 +7,12 @@ namespace Game.Enemies.States
         public override void Execute()
         {
             base.Execute();
-            
-            Model.FollowTarget(Controller.Target, Model.GetMoveAmount());
-            View.UpdateMovementValues(Model.GetMoveAmount());
+
+            if (Model.IsAlive())
+            {
+                Model.FollowTarget(Controller.Target, Model.GetMoveAmount());
+                View.UpdateMovementValues(Model.GetMoveAmount());
+            }
         }
 
         public override void Sleep()
