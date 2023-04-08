@@ -15,6 +15,7 @@ namespace Game.Enemies
         private PathToFollow _path;
         private Vector3 _direction = Vector3.zero;
         private bool _isPlayerInSight;
+        private bool _followTarget; //ToDo: Si resive daño o ve al player que se haga verdadero, si es verdadero y el player no esta en el lineofsight por x cantidad de tiempo que se haga falso;
 
         protected override void Awake()
         {
@@ -75,7 +76,7 @@ namespace Game.Enemies
         public void SetPlayerInSight(bool isInSight) => _isPlayerInSight = isInSight;
 
         public bool IsPlayerAlive() => player && player.IsAlive();
-        
+
         //public bool 
 
         private void OnDrawGizmosSelected()
