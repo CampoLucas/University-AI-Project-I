@@ -9,7 +9,7 @@ namespace Game.Entities
 {
     public class LightAttack : MonoBehaviour, IAttack
     {
-        private EntityModel _entity;
+        protected EntityModel Entity;
         private float _timer;
         private bool _enable;
         private bool _activated;
@@ -17,7 +17,7 @@ namespace Game.Entities
 
         private void Awake()
         {
-            _entity = GetComponent<EntityModel>();
+            Entity = GetComponent<EntityModel>();
         }
 
         private void Update()
@@ -26,19 +26,22 @@ namespace Game.Entities
             {
                 _timer += Time.deltaTime;
 
-                if (!_activated && _timer >= _entity.CurrentWeapon().GetData().LightAttackTriggerStarts)
+                if (!_activated && _timer >= GetStartTime())
                 {
                     _activated = true;
-                    _entity.CurrentWeapon().EnableTrigger();
+                    Entity.CurrentWeapon().EnableTrigger();
                 }
-                if (!_deactivated && _timer >= _entity.CurrentWeapon().GetData().LightAttackTriggerEnds)
+                if (!_deactivated && _timer >= GetEndTime())
                 {
                     _deactivated = false;
-                    _entity.CurrentWeapon().DisableTrigger();
+                    Entity.CurrentWeapon().DisableTrigger();
                     _enable = false;
                 }
             }
         }
+
+        protected virtual float GetStartTime() => Entity.CurrentWeapon().GetData().LightAttackTriggerStarts;
+        protected virtual float GetEndTime() => Entity.CurrentWeapon().GetData().LightAttackTriggerEnds;
 
         public void Attack()
         {
@@ -46,6 +49,12 @@ namespace Game.Entities
             _activated = false;
             _deactivated = false;
             _timer = 0;
+        }
+
+        public void CancelAttack()
+        {
+            _enable = false;
+            Entity.CurrentWeapon().DisableTrigger();
         }
     }
 }

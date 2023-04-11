@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Entities
 {
-    public class Movement : MonoBehaviour, IMovement
+    public class Movement : IMovement
     {
         private StatSO _data;
         private Rigidbody _rb;
@@ -13,10 +13,10 @@ namespace Game.Entities
         private Vector3 _cachedProjectedVelocity;
         private float _speed;
 
-        private void Awake()
+        public Movement(StatSO data, Rigidbody rb)
         {
-            _data = GetComponent<EntityModel>().GetData();
-            _rb = GetComponent<Rigidbody>();
+            _data = data;
+            _rb = rb;
         }
 
         public void Move(Vector3 dir, float moveAmount)
@@ -34,6 +34,12 @@ namespace Game.Entities
             _cachedProjectedVelocity = Vector3.ProjectOnPlane(targetVelocity, _normalVector);
             
             _rb.velocity = Vector3.Lerp(_rb.velocity, _cachedProjectedVelocity, _data.MoveLerpSpeed);
+        }
+
+        public void Destroy()
+        {
+            _data = null;
+            _rb = null;
         }
     }
 }

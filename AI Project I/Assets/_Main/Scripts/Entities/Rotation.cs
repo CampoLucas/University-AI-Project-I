@@ -5,16 +5,19 @@ using Game.SO;
 
 namespace Game.Entities
 {
-    public class Rotation : MonoBehaviour, IRotation
+    public class Rotation : IRotation
     {
         private StatSO _data;
+        private Transform _transform;
+
+        public Rotation(Transform transform, StatSO data)
+        {
+            _data = data;
+            _transform = transform;
+        }
+
         private Quaternion _targetRotation = Quaternion.identity;
         private Vector3 _lastTargetDir;
-
-        private void Awake()
-        {
-            _data = GetComponent<EntityModel>().GetData();
-        }
 
         public void Rotate(Vector3 dir)
         {
@@ -22,15 +25,21 @@ namespace Game.Entities
 
             if (_lastTargetDir == Vector3.zero)
             {
-                _lastTargetDir = transform.forward;
+                _lastTargetDir = _transform.forward;
             }
 
             var rs = _data.RotSpeed; // rs == rotation speed
 
             var tr = Quaternion.LookRotation(_lastTargetDir); // tr == target rotation
-            _targetRotation = Quaternion.Slerp(transform.rotation, tr, rs * Time.deltaTime);
+            _targetRotation = Quaternion.Slerp(_transform.rotation, tr, rs * Time.deltaTime);
 
-            transform.rotation = _targetRotation;
+            _transform.rotation = _targetRotation;
+        }
+
+        public void Destroy()
+        {
+            _data = null;
+            _transform = null;
         }
     }
 }

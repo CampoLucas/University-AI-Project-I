@@ -2,7 +2,7 @@
 
 namespace Game.Interfaces
 {
-    public interface IMovement
+    public interface IMovement : IOnDestroy
     {
         void Move(Vector3 dir, float moveAmount);
     }

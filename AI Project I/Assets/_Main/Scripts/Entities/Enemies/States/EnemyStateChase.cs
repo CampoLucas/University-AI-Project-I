@@ -10,8 +10,13 @@ namespace Game.Enemies.States
 
             if (Model.IsAlive())
             {
+                Tree.Execute();
                 Model.FollowTarget(Controller.Target, Model.GetMoveAmount());
                 View.UpdateMovementValues(Model.GetMoveAmount());
+            }
+            else
+            {
+                Tree.Execute();
             }
         }
 

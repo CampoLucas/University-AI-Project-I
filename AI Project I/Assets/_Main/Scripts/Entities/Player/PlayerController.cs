@@ -24,7 +24,7 @@ namespace Game.Player
             var move = new PlayerStateMove<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
             var lightAttack = new PlayerStateLightAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
             var heavyAttack = new PlayerStateHeavyAttackOne<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
-            var damage = new PlayerStateDamage<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Dead);
+            var damage = new PlayerStateDamage<PlayerStatesEnum>(PlayerStatesEnum.Idle, PlayerStatesEnum.Moving, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
             var dead = new PlayerStateDead<PlayerStatesEnum>();
             
             _states.Add(idle);
@@ -83,12 +83,11 @@ namespace Game.Player
             _fsm.SetInit(idle);
         }
 
-        protected override void Awake()
+        private void Awake()
         {
             _model = GetComponent<PlayerModel>();
             _view = GetComponent<PlayerView>();
             _inputs = GetComponent<PlayerInputHandler>();
-            base.Awake();
         }
 
         private void Update()

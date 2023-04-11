@@ -2,6 +2,7 @@
 using UnityEngine;
 using Game.Interfaces;
 using Game.Items.Weapons;
+using Game.Sheared;
 using Game.SO;
 
 namespace Game.Entities
@@ -19,22 +20,21 @@ namespace Game.Entities
 
         protected virtual void Awake()
         {
-            _move = GetComponent<IMovement>();
-            _rotate = GetComponent<IRotation>();
+            var rb = GetComponent<Rigidbody>();
+            _move = new Movement(stats, rb);
+            _rotate = new Rotation(transform, stats);
             _lightAttack = GetComponent<LightAttack>();
             _heavyAttack = GetComponent<HeavyAttack>();
             Damageable = GetComponent<Damageable>();
-            _waitTimer = GetComponent<WaitTimer>();
+            _waitTimer = new WaitTimer();
         }
 
         public virtual void Move(Vector3 dir, float moveAmount) => _move?.Move(dir, moveAmount);
         public void Rotate(Vector3 dir) => _rotate?.Rotate(dir);
         public void LightAttack() => _lightAttack.Attack();
+        public void CancelLightAttack() => _lightAttack.CancelAttack();
         public void HeavyAttack() => _heavyAttack.Attack();
-        /// <summary>
-        /// Current life is grater than 0
-        /// </summary>
-        /// <returns></returns>
+        public void CancelHeavyAttack() => _heavyAttack.CancelAttack();
         public bool IsAlive() => Damageable.IsAlive();
         public bool IsInvulnerable() => Damageable.IsInvulnerable();
         public bool HasTakenDamage() => Damageable.HasTakenDamage();
@@ -46,25 +46,19 @@ namespace Game.Entities
         
         #region Timer Methods
 
-        public float GetCurrentTimer() => _waitTimer ? _waitTimer.CurrentTime : default;
-        public float GetRandomTime() => _waitTimer ? _waitTimer.GetRandomTime() : default;
-
-        public void RunTimer()
-        {
-            if (_waitTimer)
-            {
-                _waitTimer.RunTimer();
-            }
-        }
-
-        public void SetTimer(float time)
-        {
-            if (_waitTimer)
-            {
-                _waitTimer.SetTimer(time);
-            }
-        }
-
+        public bool GetTimerComplete() => _waitTimer?.TimerComplete() ?? default;
+        public float GetRandomTime(float maxTime) => _waitTimer?.GetRandomTime(maxTime) ?? default;
+        public void RunTimer() => _waitTimer?.RunTimer();
+        public void SetTimer(float time) => _waitTimer?.SetTimer(time);
+        
         #endregion
+
+        private void OnDestroy()
+        {
+            _move.Destroy();
+            _move = null;
+            _rotate.Destroy();
+            _rotate = null;
+        }
     }
 }

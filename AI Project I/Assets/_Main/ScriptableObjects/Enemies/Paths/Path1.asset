@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63f2f9fda5a429696023441ca4f1362, type: 3}
   m_Name: Path1
   m_EditorClassIdentifier: 
-  <IsCircular>k__BackingField: 0
+  <IsCircular>k__BackingField: 1
   <IsReversed>k__BackingField: 0
   <Threshold>k__BackingField: 0.5
-  <WorldOffset>k__BackingField: {x: 3.58, y: 0, z: 3.84}
+  <WorldOffset>k__BackingField: {x: 4.23, y: 0, z: -0.98}
   <Waypoints>k__BackingField:
-  - {x: 0, y: 0, z: 0}
-  - {x: 4.48, y: 0, z: -2.8}
-  - {x: 5.55, y: 0, z: 3.43}
-  - {x: -2.49, y: 0, z: 4.92}
+  - {x: -0.45, y: 0, z: -6.98}
+  - {x: 5.22, y: 0, z: -1.83}
+  - {x: 2.94, y: 0, z: 3.43}
+  - {x: -2.14, y: 0, z: 4.92}
   - {x: -3.94, y: 0, z: 2.85}
   - {x: -2.49, y: 0, z: 3.89}
-  - {x: 4.07, y: 0, z: 2.8}
-  - {x: 2.74, y: 0, z: -0.75}
+  - {x: -2.72, y: 0, z: -2.93}
+  - {x: -3.53, y: 0, z: -5.56}

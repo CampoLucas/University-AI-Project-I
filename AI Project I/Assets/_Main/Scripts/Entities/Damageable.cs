@@ -7,11 +7,12 @@ namespace Game.Entities
 {
     public class Damageable : MonoBehaviour
     {
+        public Action OnTakeDamage;
+        public Action OnDie;
         private StatSO _data;
         private float _currentLife;
         private bool _isInvulnerable;
         private bool _hasTakenDamage;
-        public Action OnTakeDamage;
 
         private void InitStats()
         {
@@ -53,6 +54,12 @@ namespace Game.Entities
                 OnTakeDamage?.Invoke();
                 TurnInvulnerable();
             }
+
+            if (!IsAlive())
+            {
+                OnDie?.Invoke();
+                Die();
+            }
         }
 
         private void TurnInvulnerable()
@@ -69,7 +76,7 @@ namespace Game.Entities
         
         public void Die()
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject, 3f);
         } 
     }
 }

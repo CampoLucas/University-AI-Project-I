@@ -2,7 +2,7 @@
 
 namespace Game.Interfaces
 {
-    public interface IRotation
+    public interface IRotation : IOnDestroy
     {
         void Rotate(Vector3 dir);
     }

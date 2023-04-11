@@ -14,7 +14,7 @@
         public override void Execute()
         {
             base.Execute();
-            if (Model.GetCurrentTimer() > 0)
+            if (Model.GetTimerComplete())
             {
                 Model.RunTimer();
             }
@@ -24,6 +24,7 @@
         {
             base.Sleep();
             Model.SetTimer(0);
+            Model.CancelHeavyAttack();
         }
     }
 }

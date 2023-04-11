@@ -96,7 +96,7 @@ namespace Game.Enemies
 
             foreach (var state in _states)
             {
-                state.Init(_model, _view, this, _fsm);
+                state.Init(_model, _view, this, _root);
             }
             _states = null;
             _fsm.SetInit(idle);
@@ -115,7 +115,7 @@ namespace Game.Enemies
             var isInAttackRange = new TreeQuestion(IsInAttackingRange, lightAttack, chase);
             var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
             var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, hasARoute);
-            var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
+            // var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
             var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, hasARoute);
             var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
             var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
@@ -123,23 +123,22 @@ namespace Game.Enemies
             _root = isAlive;
         }
         
-        protected override void Awake()
+        private void Awake()
         {
             _model = GetComponent<EnemyModel>();
             _view = GetComponent<EnemyView>();
-            base.Awake();
             InitTree();
         }
 
         private void Update()
         {
             _fsm.OnUpdate();
-            _root.Execute();
+            //_root.Execute();
         }
 
         private bool IsInAttackingRange()
         {
-            return _model.IsInAttackingRange(Target);
+            return _model.TargetInRange(Target);
         }
 
         private bool HasARoute()
@@ -152,10 +151,10 @@ namespace Game.Enemies
             return _model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target);
         }
 
-        private bool IsWaitTimeOver()
-        {
-            return _model.GetCurrentTimer() <= 0; //ToDo: Make a Idle WaitTime script
-        }
+        // private bool IsWaitTimeOver()
+        // {
+        //     return _model.GetTimerComplete(); //ToDo: Make a Idle WaitTime script
+        // }
 
         private bool IsPlayerAlive()
         {

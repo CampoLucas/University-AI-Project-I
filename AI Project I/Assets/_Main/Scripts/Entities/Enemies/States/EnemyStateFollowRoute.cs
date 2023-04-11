@@ -7,14 +7,22 @@ namespace Game.Enemies.States
         public override void Execute()
         {
             base.Execute();
-            
-            
-            if (Model.ReachedWaypoint())
+
+
+            if (Model.IsAlive())
             {
-                Model.ChangeWaypoint();
+                Tree.Execute();
+                if (Model.ReachedWaypoint())
+                {
+                    Model.ChangeWaypoint();
+                }
+                Model.FollowTarget(Model.GetNextWaypoint(), 0.5f);
+                View.UpdateMovementValues(0.5f);
             }
-            Model.FollowTarget(Model.GetNextWaypoint(), 0.5f);
-            View.UpdateMovementValues(0.5f);
+            else
+            {
+                Tree.Execute();
+            }
         }
 
         public override void Sleep()

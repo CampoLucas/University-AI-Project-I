@@ -14,9 +14,25 @@
         public override void Execute()
         {
             base.Execute();
-            if (Model.GetCurrentTimer() > 0)
+            if (Model.IsAlive())
             {
-                Model.RunTimer();
+                if (Model.HasTakenDamage())
+                {
+                    Tree.Execute();
+                }
+            
+                if (Model.GetTimerComplete())
+                {
+                    Model.RunTimer();
+                }
+                else
+                {
+                    Tree.Execute();
+                }
+            }
+            else
+            {
+                Tree.Execute();
             }
         }
 
@@ -24,6 +40,7 @@
         {
             base.Sleep();
             Model.SetTimer(0);
+            Model.CancelLightAttack();
         }
     }
 }

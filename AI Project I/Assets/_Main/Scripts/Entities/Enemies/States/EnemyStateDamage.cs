@@ -4,10 +4,13 @@ namespace Game.Enemies.States
 {
     public class EnemyStateDamage<T> : EnemyStateBase<T>
     {
-        private float _timeElapsed;
         public override void Awake()
         {
             base.Awake();
+            if (!Model.IsAlive())
+            {
+                Tree.Execute();
+            }
             View.PlayTargetAnimation(Model.GetData().HitAnimation.EventHash);
             var timer = Model.GetData().HitAnimation.Duration;
             Model.SetTimer(timer);
@@ -16,9 +19,13 @@ namespace Game.Enemies.States
         public override void Execute()
         {
             base.Execute();
-            if (Model.GetCurrentTimer() > 0)
+            if (Model.GetTimerComplete())
             {
                 Model.RunTimer();
+            }
+            else
+            {
+                Tree.Execute();
             }
         }
 

@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 8985879467679423952}
   - component: {fileID: 2676991179575740404}
   - component: {fileID: 5450059233993777539}
-  - component: {fileID: 2878532175023282197}
-  - component: {fileID: 2878532175023282198}
   - component: {fileID: 2878532175023282205}
   - component: {fileID: 2878532175023282206}
   - component: {fileID: 6875458475346691989}
@@ -85,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f68cdee563244388fa32e58c1bf84a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  <Target>k__BackingField: {fileID: 0}
 --- !u!114 &2676991179575740404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +99,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: a95412400e84e98419c145d7e56ae397, type: 2}
   weapon: {fileID: 0}
   attackRange: 0
+  player: {fileID: 0}
 --- !u!114 &5450059233993777539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,30 +110,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9e460c9e401465bafec8ca5277f37f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2878532175023282197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2878532175023282192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c79b55b762f24217b7c126e4c6c6d0aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2878532175023282198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2878532175023282192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 541206b404b34b5ba31fd26ec4fdbce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2878532175023282205
@@ -149,8 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a3dc845f98a9db499b718a31f3b5213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aTime: 0.18
-  dTime: 0.4
 --- !u!114 &2878532175023282206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,8 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616db278050c4b3da6fdd56f7da0142e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aTime: 0.18
-  dTime: 0.4
 --- !u!114 &6875458475346691989
 MonoBehaviour:
   m_ObjectHideFlags: 0

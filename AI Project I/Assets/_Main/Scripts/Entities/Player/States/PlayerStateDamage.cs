@@ -6,22 +6,20 @@ namespace Game.Player.States
     {
         private readonly T _inIdle;
         private readonly T _inMoving;
-        private readonly T _inDead;
 
-        public PlayerStateDamage(in T inIdle, in T inMoving, in T inDead)
+        public PlayerStateDamage(in T inIdle, in T inMoving, in T inDamage, in T inDead): base(inDamage, inDead)
         {
             _inIdle = inIdle;
             _inMoving = inMoving;
-            _inDead = inDead;
         }
 
         public override void Awake()
         {
             base.Awake();
-            if (!Model.IsAlive())
-            {
-                Fsm.Transitions(_inDead);
-            }
+            // if (!Model.IsAlive())
+            // {
+            //     Fsm.Transitions(_inDead);
+            // }
             View.PlayTargetAnimation(Model.GetData().HitAnimation.name);
             var timer = Model.GetData().HitAnimation.Duration;
             Model.SetTimer(timer);
@@ -30,7 +28,7 @@ namespace Game.Player.States
         public override void Execute()
         {
             base.Execute();
-            if (Model.GetCurrentTimer() > 0)
+            if (Model.GetTimerComplete())
             {
                 Model.RunTimer();
             }

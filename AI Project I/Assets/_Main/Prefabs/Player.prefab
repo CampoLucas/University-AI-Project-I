@@ -13,8 +13,6 @@ GameObject:
   - component: {fileID: 6211915852871192571}
   - component: {fileID: 6211915852871192570}
   - component: {fileID: 6211915852871192565}
-  - component: {fileID: 6211915852871192564}
-  - component: {fileID: 6211915852871192567}
   - component: {fileID: 6211915852871192574}
   - component: {fileID: 6211915852871192569}
   - component: {fileID: 6211915852871192572}
@@ -66,6 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4b3ebf679f4c7c9d36b6ac1ed13417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 0}
   weapon: {fileID: 3818628218081517280}
 --- !u!114 &6211915852871192570
 MonoBehaviour:
@@ -91,33 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ce614070c84cc6bd2eab4641b22729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6211915852871192564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6211915852871192561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c79b55b762f24217b7c126e4c6c6d0aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  lerpSpeed: 10
---- !u!114 &6211915852871192567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6211915852871192561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 541206b404b34b5ba31fd26ec4fdbce9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
 --- !u!54 &6211915852871192574
 Rigidbody:
   m_ObjectHideFlags: 0

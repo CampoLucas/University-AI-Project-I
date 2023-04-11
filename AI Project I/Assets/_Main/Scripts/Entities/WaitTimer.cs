@@ -4,14 +4,15 @@ using Random = UnityEngine.Random;
 
 namespace Game.Entities
 {
-    public class WaitTimer : MonoBehaviour
+    [System.Serializable]
+    public class WaitTimer
     {
-        [field: SerializeField] public float MaxTime { get; private set; }
-        public float CurrentTime { get; private set; }
+        private float _currentTime;
 
-        public void RunTimer() => CurrentTime -= Time.deltaTime;
-        public void SetTimer(float time) => CurrentTime = time;
-        public float GetRandomTime() => Random.Range(0, MaxTime);
+        public bool TimerComplete() => _currentTime > 0;
+        public void RunTimer() => _currentTime -= Time.deltaTime;
+        public void SetTimer(float time) => _currentTime = time;
+        public float GetRandomTime(float maxTime) => Random.Range(0, maxTime);
 
     }
 }

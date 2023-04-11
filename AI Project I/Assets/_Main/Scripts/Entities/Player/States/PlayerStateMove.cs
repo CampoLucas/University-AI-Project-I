@@ -10,7 +10,7 @@ namespace Game.Player.States
         private readonly T _inDamage;
         private readonly T _inDead;
         
-        public PlayerStateMove(in T inIdle, in T inLightAttack, in T inHeavyAttack, in T inDamage, in T inDead)
+        public PlayerStateMove(in T inIdle, in T inLightAttack, in T inHeavyAttack, in T inDamage, in T inDead): base(inDamage, inDead)
         {
             _inIdle = inIdle;
             _inLightAttack = inLightAttack;
@@ -19,56 +19,82 @@ namespace Game.Player.States
             _inDead = inDead;
         }
 
-        // public override void Awake()
-        // {
-        //     base.Awake();
-        //     Model.Damageable.OnTakeDamage += TakeDamageHandler;
-        // }
+        public override void Awake()
+        {
+            base.Awake();
+            Model.Damageable.OnTakeDamage += TakeDamageHandler;
+            Model.Damageable.OnDie += OnDieHandler;
+        }
 
         public override void Execute()
         {
             base.Execute();
-            if (Model.IsAlive())
-            {
-                if (Model.HasTakenDamage())
-                {
-                    Fsm.Transitions(_inDamage);
-                }
-            
-                if (Inputs.MoveDir == Vector3.zero)
-                {
-                    Fsm.Transitions(_inIdle);
-                }
+            // if (Model.IsAlive())
+            // {
+            //     if (Model.HasTakenDamage())
+            //     {
+            //         Fsm.Transitions(_inDamage);
+            //     }
+            //
+            //     if (Inputs.MoveDir == Vector3.zero)
+            //     {
+            //         Fsm.Transitions(_inIdle);
+            //     }
+            //
+            //     if (Inputs.FlagLightAttack)
+            //     {
+            //         Fsm.Transitions(_inLightAttack);
+            //     }
+            //
+            //     if (Inputs.FlagHeavyAttack)
+            //     {
+            //         Fsm.Transitions(_inHeavyAttack);
+            //     }
+            //
+            //     Model.Move(Inputs.MoveDir, Inputs.MoveAmount);
+            //     Model.Rotate(Inputs.MoveDir);
+            //     View.UpdateMovementValues(Inputs.MoveAmount);
+            // }
+            // else
+            // {
+            //     Fsm.Transitions(_inDead);
+            // }
 
-                if (Inputs.FlagLightAttack)
-                {
-                    Fsm.Transitions(_inLightAttack);
-                }
-            
-                if (Inputs.FlagHeavyAttack)
-                {
-                    Fsm.Transitions(_inHeavyAttack);
-                }
-            
-                Model.Move(Inputs.MoveDir, Inputs.MoveAmount);
-                Model.Rotate(Inputs.MoveDir);
-                View.UpdateMovementValues(Inputs.MoveAmount);
-            }
-            else
+            if (Inputs.MoveDir == Vector3.zero)
             {
-                Fsm.Transitions(_inDead);
+                Fsm.Transitions(_inIdle);
             }
+
+            if (Inputs.FlagLightAttack)
+            {
+                Fsm.Transitions(_inLightAttack);
+            }
+            
+            if (Inputs.FlagHeavyAttack)
+            {
+                Fsm.Transitions(_inHeavyAttack);
+            }
+            
+            Model.Move(Inputs.MoveDir, Inputs.MoveAmount);
+            Model.Rotate(Inputs.MoveDir);
+            View.UpdateMovementValues(Inputs.MoveAmount);
         }
         
-        // private void TakeDamageHandler()
-        // {
-        //     Fsm.Transitions(_inDamage);
-        // }
+        private void TakeDamageHandler()
+        {
+            Fsm.Transitions(_inDamage);
+        }
+
+        private void OnDieHandler()
+        {
+            Fsm.Transitions(_inDead);
+        }
         
         public override void Sleep()
         {
             base.Sleep();
-            //Model.Damageable.OnTakeDamage -= TakeDamageHandler;
+            Model.Damageable.OnTakeDamage -= TakeDamageHandler;
+            // Model.Damageable.OnDie -= OnDieHandler;
             Model.Move(Vector3.zero, Inputs.MoveAmount);
         }
     }

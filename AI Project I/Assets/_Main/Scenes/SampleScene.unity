@@ -952,19 +952,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b713a713a9b54750ba226786fbe882cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1927019600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 903455200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ace33d518c54d3d805db45a0d031a53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MaxTime>k__BackingField: 0
 --- !u!114 &1927019609 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6211915852871192571, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
@@ -997,7 +984,7 @@ PrefabInstance:
       objectReference: {fileID: 1395591420}
     - target: {fileID: 2676991179575740404, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: attackRange
-      value: 1.1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282192, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_Name
@@ -1063,26 +1050,15 @@ PrefabInstance:
       propertyPath: <Target>k__BackingField
       value: 
       objectReference: {fileID: 1927019588}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2878532175023282197, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+    - {fileID: 2878532175023282198, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
 --- !u!1 &298113399026734966 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2878532175023282192, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
   m_PrefabInstance: {fileID: 298113399026734965}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &298113399026734967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 298113399026734966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ace33d518c54d3d805db45a0d031a53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MaxTime>k__BackingField: 3
 --- !u!114 &298113399026734968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1481,4 +1457,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5890645952435986559, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
+    - {fileID: 6211915852871192567, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
+    - {fileID: 6211915852871192564, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a72c5b2da9a10944b868543506d266ca, type: 3}

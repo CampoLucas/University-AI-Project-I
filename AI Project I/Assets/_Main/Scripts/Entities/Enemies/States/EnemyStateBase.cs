@@ -1,4 +1,5 @@
-﻿using Game.FSM;
+﻿using Game.DecisionTree;
+using Game.FSM;
 
 namespace Game.Enemies.States
 {
@@ -8,14 +9,14 @@ namespace Game.Enemies.States
         protected EnemyModel Model;
         protected EnemyView View;
         protected EnemyController Controller;
-        protected FSM<T> Fsm;
+        protected ITreeNode Tree;
 
-        public void Init(EnemyModel model, EnemyView view, EnemyController controller, FSM<T> fsm)
+        public void Init(EnemyModel model, EnemyView view, EnemyController controller, ITreeNode tree)
         {
             Model = model;
             View = view;
-            Fsm = fsm;
             Controller = controller;
+            Tree = tree;
         }
     }
 }

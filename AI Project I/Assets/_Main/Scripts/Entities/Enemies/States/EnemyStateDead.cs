@@ -1,4 +1,6 @@
-﻿namespace Game.Enemies.States
+﻿using UnityEngine;
+
+namespace Game.Enemies.States
 {
     public class EnemyStateDeath<T> : EnemyStateBase<T>
     {
@@ -7,6 +9,7 @@
         {
             base.Awake();
             View.PlayTargetAnimation(Model.GetData().DeathAnimation.name);
+            Debug.Log("dead");
         }
     }
 }

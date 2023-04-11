@@ -6,5 +6,6 @@ namespace Game.Interfaces
     public interface IAttack
     {
         void Attack();
+        void CancelAttack();
     }
 }
