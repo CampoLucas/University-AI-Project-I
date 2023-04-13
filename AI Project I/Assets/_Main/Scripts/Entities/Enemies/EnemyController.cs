@@ -5,6 +5,7 @@ using Game.Enemies.States;
 using Game.Entities;
 using UnityEngine;
 using Game.FSM;
+using Game.Sheared;
 using Unity.VisualScripting;
 
 namespace Game.Enemies
@@ -65,6 +66,7 @@ namespace Game.Enemies
                 { EnemyStatesEnum.Chase, chase },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.FollowRoute, followRoute },
+                { EnemyStatesEnum.Die, dead},
             });
             
             heavyAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -112,7 +114,9 @@ namespace Game.Enemies
             var die = new TreeAction(ActionDie);
             var followRoute = new TreeAction(ActionFollowRoute);
 
-            var isInAttackRange = new TreeQuestion(IsInAttackingRange, lightAttack, chase);
+            var isHeavyAttack = new TreeQuestion(IsHeavyAttack, heavyAttack, lightAttack);
+            var willAttack = new TreeQuestion(WillAttack, isHeavyAttack, idle);
+            var isInAttackRange = new TreeQuestion(IsInAttackingRange, willAttack, chase);
             var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
             var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, hasARoute);
             // var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
@@ -148,13 +152,26 @@ namespace Game.Enemies
 
         private bool IsPlayerInSight()
         {
-            return _model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target);
+            return _model.IsAlive() && _model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target);
         }
 
-        // private bool IsWaitTimeOver()
-        // {
-        //     return _model.GetTimerComplete(); //ToDo: Make a Idle WaitTime script
-        // }
+        private bool WillAttack()
+        {
+            return MyRandoms.Roulette(new Dictionary<bool, float>
+            {
+                { true, 10f },
+                { false, 0.5f },
+            });
+        }
+
+        private bool IsHeavyAttack()
+        {
+            return MyRandoms.Roulette(new Dictionary<bool, float>
+            {
+                { true, 1.5f },
+                { false, 10f },
+            });
+        }
 
         private bool IsPlayerAlive()
         {
@@ -168,7 +185,6 @@ namespace Game.Enemies
 
         private bool IsAlive()
         {
-            Debug.Log("Is Alive: " + _model.IsAlive());
             return _model.IsAlive();
         }
 
@@ -205,6 +221,22 @@ namespace Game.Enemies
         private void ActionFollowRoute()
         {
             _fsm.Transitions(EnemyStatesEnum.FollowRoute);
+        }
+
+        private void OnDestroy()
+        {
+            Target = null;
+            _model = null;
+            _view = null;
+            _fsm.Dispose();
+            Logging.LogDestroy("FSM Disposed");
+            _fsm = null;
+            Logging.LogDestroy("FSM Nullified");
+            _states = null;
+            _root.Dispose();
+            Logging.LogDestroy("TreeRoot Disposed");
+            _root = null;
+            Logging.LogDestroy("TreeRoot Nullified");
         }
     }
 }

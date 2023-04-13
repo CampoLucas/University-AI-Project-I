@@ -8,23 +8,16 @@ namespace Game.Enemies.States
         {
             base.Execute();
 
-            if (Model.IsAlive())
-            {
-                Tree.Execute();
-                Model.FollowTarget(Controller.Target, Model.GetMoveAmount());
-                View.UpdateMovementValues(Model.GetMoveAmount());
-            }
-            else
-            {
-                Tree.Execute();
-            }
+            Tree.Execute();
+            Model.FollowTarget(Controller.Target, Model.GetMoveAmount());
+            View.UpdateMovementValues(Model.GetMoveAmount());
         }
 
         public override void Sleep()
         {
             base.Sleep();
             Model.Move(Vector3.zero, Model.GetMoveAmount());
-            //View.UpdateMovementValues(Model.GetMoveAmount());
+            View.UpdateMovementValues(Model.GetMoveAmount());
         }
     }
 }

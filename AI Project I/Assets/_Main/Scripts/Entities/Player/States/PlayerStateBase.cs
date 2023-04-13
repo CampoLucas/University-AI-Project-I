@@ -50,5 +50,14 @@ namespace Game.Player.States
 
         private void OnDamageHandler() => Fsm.Transitions(_inDamage);
         private void OnDeadHandler() => Fsm.Transitions(_inDead);
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            Model = null;
+            View = null;
+            Inputs = null;
+            Fsm = null;
+        }
     }
 }

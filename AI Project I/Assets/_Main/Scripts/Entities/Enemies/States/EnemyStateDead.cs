@@ -9,7 +9,6 @@ namespace Game.Enemies.States
         {
             base.Awake();
             View.PlayTargetAnimation(Model.GetData().DeathAnimation.name);
-            Debug.Log("dead");
         }
     }
 }

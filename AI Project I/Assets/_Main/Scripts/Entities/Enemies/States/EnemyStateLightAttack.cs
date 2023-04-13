@@ -14,21 +14,9 @@
         public override void Execute()
         {
             base.Execute();
-            if (Model.IsAlive())
+            if (Model.GetTimerComplete())
             {
-                if (Model.HasTakenDamage())
-                {
-                    Tree.Execute();
-                }
-            
-                if (Model.GetTimerComplete())
-                {
-                    Model.RunTimer();
-                }
-                else
-                {
-                    Tree.Execute();
-                }
+                Model.RunTimer();
             }
             else
             {

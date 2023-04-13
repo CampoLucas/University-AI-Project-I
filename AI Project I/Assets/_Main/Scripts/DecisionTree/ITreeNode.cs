@@ -1,6 +1,8 @@
-﻿namespace Game.DecisionTree
+﻿using System;
+
+namespace Game.DecisionTree
 {
-    public interface ITreeNode
+    public interface ITreeNode : IDisposable
     {
         void Execute();
     }

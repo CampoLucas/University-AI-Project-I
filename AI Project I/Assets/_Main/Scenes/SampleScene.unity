@@ -974,6 +974,10 @@ PrefabInstance:
       propertyPath: damageLayerMask.m_Bits
       value: 64
       objectReference: {fileID: 0}
+    - target: {fileID: 640203148922214164, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2676991179575740404, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: player
       value: 
@@ -989,6 +993,10 @@ PrefabInstance:
     - target: {fileID: 2878532175023282192, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878532175023282192, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2878532175023282199, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
       propertyPath: m_RootOrder
@@ -1459,4 +1467,5 @@ PrefabInstance:
     - {fileID: 5890645952435986559, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
     - {fileID: 6211915852871192567, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
     - {fileID: 6211915852871192564, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
+    - {fileID: 6211915853289369646, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a72c5b2da9a10944b868543506d266ca, type: 3}

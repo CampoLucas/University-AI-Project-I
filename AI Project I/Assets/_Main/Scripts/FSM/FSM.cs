@@ -1,6 +1,8 @@
+using System;
+
 namespace Game.FSM
 {
-    public class FSM<T>
+    public class FSM<T> : IDisposable
     {
         private IState<T> _current;
         
@@ -30,6 +32,14 @@ namespace Game.FSM
             _current.Sleep();
             _current = newState;
             _current.Awake();
+        }
+
+        public void Dispose()
+        {
+            _current.Dispose();
+            Logging.LogDestroy("State Disposed");
+            _current = null;
+            Logging.LogDestroy("State Nullified");
         }
     }
 }

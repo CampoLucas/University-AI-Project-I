@@ -9,12 +9,21 @@ namespace Game.DecisionTree
         public TreeAction(Action action)
         {
             _action = action;
+            
         }
 
         public void Execute()
         {
             if (_action != null)
+            {
                 _action();
+            }
+        }
+        
+        public void Dispose()
+        {
+            _action = null;
+            Logging.LogDestroy("Action Nullified");
         }
     }
 }

@@ -7,10 +7,6 @@ namespace Game.Enemies.States
         public override void Awake()
         {
             base.Awake();
-            if (!Model.IsAlive())
-            {
-                Tree.Execute();
-            }
             View.PlayTargetAnimation(Model.GetData().HitAnimation.EventHash);
             var timer = Model.GetData().HitAnimation.Duration;
             Model.SetTimer(timer);

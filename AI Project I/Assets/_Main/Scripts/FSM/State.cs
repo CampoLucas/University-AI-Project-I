@@ -23,10 +23,16 @@ namespace Game.FSM
         }
 
         public IState<T> GetTransition(T input) => _transitions.ContainsKey(input) ? _transitions[input] : null;
-        public void AddTransition(T input, IState<T> state) => _transitions[input] = state;
 
-        public void AddTransition(Dictionary<T, IState<T>> transitions) => _transitions =
-            _transitions.Union(transitions).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        public void AddTransition(T input, IState<T> state)
+        {
+            _transitions[input] = state;
+        }
+
+        public void AddTransition(Dictionary<T, IState<T>> transitions)
+        {
+            _transitions = _transitions.Union(transitions).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        }
         
         public void RemoveTransition(IState<T> state)
         {
@@ -42,6 +48,12 @@ namespace Game.FSM
         {
             if (_transitions.ContainsKey(input))
                 _transitions.Remove(input);
+        }
+
+        public virtual void Dispose()
+        {
+            _transitions = null;
+            Logging.LogDestroy("Transition Dictionary Nulled");
         }
     }
 }

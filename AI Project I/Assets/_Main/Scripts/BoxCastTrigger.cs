@@ -18,11 +18,6 @@ namespace Game.Sheared
         private List<Collider> _cachedNewColliders;
         private bool _enable;
 
-        private void Start()
-        {
-            OnCastEnter += (Collider other) => Debug.Log("Enter GameObject: " + other.gameObject.name);
-        }
-
         private void Update()
         {
             if (_enable)

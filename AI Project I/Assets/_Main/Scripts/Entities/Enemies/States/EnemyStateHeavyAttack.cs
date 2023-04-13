@@ -18,6 +18,10 @@
             {
                 Model.RunTimer();
             }
+            else
+            {
+                Tree.Execute();
+            }
         }
 
         public override void Sleep()

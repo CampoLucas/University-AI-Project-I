@@ -79,45 +79,6 @@ namespace Game.Entities
         {
             _index = GetNextIndex();
         }
-
-        // private void OnDrawGizmos()
-        // {
-        //     // Draw the path in the editor
-        //     if (path != null)
-        //     {
-        //         
-        //         for (int i = 0; i < path.Waypoints.Count; i++)
-        //         {
-        //             if (path.Waypoints[i] == path.Waypoints[_index])
-        //             {
-        //                 Gizmos.color = Color.magenta;
-        //             }
-        //             else if (path.Waypoints[i] == path.Waypoints[GetNextIndex()])
-        //             {
-        //                 Gizmos.color = Color.red;
-        //             }
-        //             else if (path.Waypoints[i] == path.Waypoints[0])
-        //             {
-        //                 Gizmos.color = Color.green;
-        //             }
-        //             else
-        //             {
-        //                 Gizmos.color = Color.yellow;
-        //             }
-        //             Gizmos.DrawSphere(path.Waypoints[i] + path.WorldOffset, 0.2f);
-        //             Gizmos.DrawWireSphere(path.Waypoints[i] + path.WorldOffset, path.Threshold);
-        //             Gizmos.color = Color.yellow;
-        //             if (i > 0)
-        //             {
-        //                 Gizmos.DrawLine(path.Waypoints[i - 1] + path.WorldOffset, path.Waypoints[i] + path.WorldOffset);
-        //             }
-        //         }
-        //         if (path.IsCircular && path.Waypoints.Count > 1)
-        //         {
-        //             Gizmos.DrawLine(path.Waypoints[path.Waypoints.Count - 1] + path.WorldOffset, path.Waypoints[0] + path.WorldOffset);
-        //         }
-        //     }
-        // }
         
         private void OnDrawGizmos()
         {

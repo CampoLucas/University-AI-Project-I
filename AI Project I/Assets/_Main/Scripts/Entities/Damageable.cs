@@ -28,12 +28,6 @@ namespace Game.Entities
             InitStats();
         }
 
-        private void Update()
-        {
-            if (HasTakenDamage())
-                print("ouch");
-        }
-
         private void LateUpdate()
         {
             _hasTakenDamage = false;
@@ -49,7 +43,6 @@ namespace Game.Entities
             {
                 var roundedDamage = Mathf.Round(damage * 4) / 4f;
                 _currentLife -= roundedDamage;
-                Debug.Log("Ouch");
                 _hasTakenDamage = true;
                 OnTakeDamage?.Invoke();
                 TurnInvulnerable();

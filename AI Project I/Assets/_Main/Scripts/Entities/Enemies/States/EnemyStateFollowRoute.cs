@@ -8,21 +8,13 @@ namespace Game.Enemies.States
         {
             base.Execute();
 
-
-            if (Model.IsAlive())
+            Tree.Execute();
+            if (Model.ReachedWaypoint())
             {
-                Tree.Execute();
-                if (Model.ReachedWaypoint())
-                {
-                    Model.ChangeWaypoint();
-                }
-                Model.FollowTarget(Model.GetNextWaypoint(), 0.5f);
-                View.UpdateMovementValues(0.5f);
+                Model.ChangeWaypoint();
             }
-            else
-            {
-                Tree.Execute();
-            }
+            Model.FollowTarget(Model.GetNextWaypoint(), 0.5f);
+            View.UpdateMovementValues(0.5f);
         }
 
         public override void Sleep()

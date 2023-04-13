@@ -1,6 +1,8 @@
+using System;
+
 namespace Game.FSM
 {
-    public interface IState<T>
+    public interface IState<T> : IDisposable
     {
         void Awake();
         void Execute();

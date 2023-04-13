@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5716b5e59a224993b6f41b62600be028, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 4.5
   walkSpeed: 2
   moveLerpSpeed: 10
   rotSpeed: 10
-  maxHealth: 3
+  maxHealth: 100
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
   deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}

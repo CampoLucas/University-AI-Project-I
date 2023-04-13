@@ -7,17 +7,14 @@ namespace Game.Enemies.States
         public override void Awake()
         {
             base.Awake();
-            var timer = Model.GetRandomTime(3);
+            var timer = Model.GetRandomTime(1);
             Model.SetTimer(timer);
         }
 
         public override void Execute()
         {
             base.Execute();
-            if (Model.HasTakenDamage())
-            {
-                Tree.Execute();
-            }
+            
             
             if (Model.GetTimerComplete())
             {
