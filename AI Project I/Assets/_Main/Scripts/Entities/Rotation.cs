@@ -36,7 +36,7 @@ namespace Game.Entities
             _transform.rotation = _targetRotation;
         }
 
-        public void Destroy()
+        public void Dispose()
         {
             _data = null;
             _transform = null;

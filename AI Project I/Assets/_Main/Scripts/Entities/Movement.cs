@@ -36,7 +36,7 @@ namespace Game.Entities
             _rb.velocity = Vector3.Lerp(_rb.velocity, _cachedProjectedVelocity, _data.MoveLerpSpeed);
         }
 
-        public void Destroy()
+        public void Dispose()
         {
             _data = null;
             _rb = null;

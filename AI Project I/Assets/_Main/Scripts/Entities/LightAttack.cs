@@ -56,5 +56,15 @@ namespace Game.Entities
             _enable = false;
             Entity.CurrentWeapon().DisableTrigger();
         }
+
+        private void OnDestroy()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            Entity = null;
+        }
     }
 }

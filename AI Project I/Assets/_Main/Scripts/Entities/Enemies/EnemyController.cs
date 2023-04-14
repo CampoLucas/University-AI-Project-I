@@ -25,7 +25,7 @@ namespace Game.Enemies
             _states = new List<EnemyStateBase<EnemyStatesEnum>>();
 
             var idle = new EnemyStateIdle<EnemyStatesEnum>();
-            var chase = new EnemyStateChase<EnemyStatesEnum>();
+            var chase = new EnemyStateSeek<EnemyStatesEnum>();
             var damage = new EnemyStateDamage<EnemyStatesEnum>();
             var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
             var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
@@ -42,7 +42,7 @@ namespace Game.Enemies
             
             idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
-                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.ChaseSeek, chase },
                 { EnemyStatesEnum.LightAttack, lightAttack },
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
@@ -63,7 +63,7 @@ namespace Game.Enemies
             lightAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.ChaseSeek, chase },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.FollowRoute, followRoute },
                 { EnemyStatesEnum.Die, dead},
@@ -72,7 +72,7 @@ namespace Game.Enemies
             heavyAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.ChaseSeek, chase },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.Die, dead},
                 { EnemyStatesEnum.FollowRoute, followRoute },
@@ -81,7 +81,7 @@ namespace Game.Enemies
             damage.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.ChaseSeek, chase },
                 { EnemyStatesEnum.Die, dead},
                 { EnemyStatesEnum.FollowRoute, followRoute },
             });
@@ -89,7 +89,7 @@ namespace Game.Enemies
             followRoute.AddTransition(new FlexibleDictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.Chase, chase },
+                { EnemyStatesEnum.ChaseSeek, chase },
                 { EnemyStatesEnum.LightAttack, lightAttack },
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
@@ -190,7 +190,7 @@ namespace Game.Enemies
 
         private void ActionChase()
         {
-            _fsm.Transitions(EnemyStatesEnum.Chase);
+            _fsm.Transitions(EnemyStatesEnum.ChaseSeek);
         }
 
         private void ActionLightAttack()

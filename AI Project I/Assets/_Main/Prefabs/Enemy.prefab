@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 5450059233993777539}
   - component: {fileID: 2878532175023282205}
   - component: {fileID: 2878532175023282206}
-  - component: {fileID: 6875458475346691989}
   - component: {fileID: 56466937}
   m_Layer: 7
   m_Name: Enemy
@@ -100,6 +99,13 @@ MonoBehaviour:
   weapon: {fileID: 0}
   attackRange: 0
   player: {fileID: 0}
+  pursuitTime: 0.5
+  obsAngle: 90
+  obsRadius: 5
+  maxObs: 5
+  obsMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &5450059233993777539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,23 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616db278050c4b3da6fdd56f7da0142e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6875458475346691989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2878532175023282192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc3135e3ae1476d82650bfd996e712b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 5
-  angle: 120
-  mask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &56466937
 MonoBehaviour:
   m_ObjectHideFlags: 0

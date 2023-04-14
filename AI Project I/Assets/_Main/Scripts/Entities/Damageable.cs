@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections;
+using Game.Interfaces;
 using Game.SO;
 using UnityEngine;
 
 namespace Game.Entities
 {
-    public class Damageable : MonoBehaviour
+    public class Damageable : MonoBehaviour, IDamageable
     {
-        public Action OnTakeDamage;
-        public Action OnDie;
+        public Action OnTakeDamage { get; set; }
+        public Action OnDie { get; set; }
         private StatSO _data;
         private float _currentLife;
         private bool _isInvulnerable;
@@ -70,6 +71,18 @@ namespace Game.Entities
         public void Die()
         {
             Destroy(gameObject, 3f);
-        } 
+        }
+        
+        private void OnDestroy()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            OnTakeDamage -= OnTakeDamage;
+            OnDie -= OnDie;
+            _data = null;
+        }
     }
 }

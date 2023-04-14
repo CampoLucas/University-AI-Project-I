@@ -2,14 +2,14 @@
 
 namespace Game.Enemies.States
 {
-    public class EnemyStateChase<T> : EnemyStateBase<T>
+    public class EnemyStateSeek<T> : EnemyStateBase<T>
     {
         public override void Execute()
         {
             base.Execute();
 
             Tree.Execute();
-            Model.FollowTarget(Controller.Target, Model.GetMoveAmount());
+            Model.FollowTarget(Model.GetSeek(), Model.GetMoveAmount());
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
 

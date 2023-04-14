@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Game.Interfaces
 {
-    public interface IRotation : IOnDestroy
+    public interface IRotation : IDisposable
     {
         void Rotate(Vector3 dir);
     }

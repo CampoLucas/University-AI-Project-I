@@ -9,14 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5716b5e59a224993b6f41b62600be028, type: 3}
-  m_Name: Enemy
+  m_Script: {fileID: 11500000, guid: 8b1c9fe052d94f8bb74a51af2a67cb8a, type: 3}
+  m_Name: EnemyStats
   m_EditorClassIdentifier: 
   moveSpeed: 3
   walkSpeed: 2
   moveLerpSpeed: 10
-  rotSpeed: 10
+  rotSpeed: 3
   maxHealth: 3
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
   deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}
+  attackRange: 1.5
+  fovRange: 8
+  fovAngle: 120
+  fovMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obsRange: 1
+  obsAngle: 180
+  maxObs: 5
+  obsMultiplier: 30
+  obsMask:
+    serializedVersion: 2
+    m_Bits: 256
+  pursuitTime: 0.5
