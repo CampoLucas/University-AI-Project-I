@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2878532175023282205}
   - component: {fileID: 2878532175023282206}
   - component: {fileID: 56466937}
+  - component: {fileID: 298113399026734968}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -66,7 +67,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
@@ -95,17 +96,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceb21de111db4aefb1655760ca0fba75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: a95412400e84e98419c145d7e56ae397, type: 2}
-  weapon: {fileID: 0}
-  attackRange: 0
+  stats: {fileID: 11400000, guid: a0266c3916141964b95f06451acf23b8, type: 2}
+  weapon: {fileID: 298113400796027390}
   player: {fileID: 0}
-  pursuitTime: 0.5
-  obsAngle: 90
-  obsRadius: 5
-  maxObs: 5
-  obsMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &5450059233993777539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,6 +147,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b713a713a9b54750ba226786fbe882cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &298113399026734968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2878532175023282192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98697a34a389ba4a90826dfa26ba784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path: {fileID: 11400000, guid: de00d250b21bf8341b79ba18361a5d46, type: 2}
 --- !u!1001 &298113400268742842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,7 +169,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1090548957, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
       propertyPath: damageLayerMask.m_Bits
-      value: 2147483647
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 2114879826204767294, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
       propertyPath: m_Layer
@@ -243,6 +249,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
+--- !u!114 &298113400796027390 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 553023812, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
+  m_PrefabInstance: {fileID: 298113400268742842}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44e86a55755a436685d1c6a659e6cb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &298113400298629701
 PrefabInstance:
   m_ObjectHideFlags: 0

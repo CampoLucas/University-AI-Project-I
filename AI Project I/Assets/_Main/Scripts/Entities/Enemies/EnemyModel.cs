@@ -1,13 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Game.Entities;
 using Game.Entities.Steering;
 using Game.Interfaces;
 using Game.Player;
 using Game.SO;
-using Unity.VisualScripting;
 using UnityEditor;
-using Random = UnityEngine.Random;
 
 namespace Game.Enemies
 {
@@ -18,22 +15,18 @@ namespace Game.Enemies
         private FieldOfView _fieldOfView;
         private PathToFollow _path;
         private InRange _range;
-        private Vector3 _direction = Vector3.zero;
-        private bool _wasFollowing; //ToDo: Si resive daño o ve al player que se haga verdadero, si es verdadero y el player no esta en el lineofsight por x cantidad de tiempo que se haga falso;
         private ISteering _seek;
         private ISteering _pursuit;
-        private ISteering _evade;
-        private ISteering _flee;
         private ISteering _obsAvoidance;
+        private Vector3 _direction = Vector3.zero;
+        private bool _isFollowing;
 
         private void InitSteering()
         {
             var transform1 = transform;
             var transform2 = player.transform;
             _seek = new Seek(transform1, transform2);
-            _flee = new Flee(transform1, transform2);
             _pursuit = new Pursuit(transform1, player, _data.PursuitTime);
-            _evade = new Evade(transform1, player, _data.PursuitTime);
             _obsAvoidance = new ObstacleAvoidance(transform1, _data.ObsAngle, _data.ObsRange, _data.MaxObs, _data.ObsMask);
         }
         protected override void Awake()
@@ -46,10 +39,6 @@ namespace Game.Enemies
             InitSteering();
         }
 
-        private void Start()
-        {
-            Spawn();
-        }
 
         public float GetMoveAmount() => Mathf.Clamp01(Mathf.Abs(_direction.x) + Mathf.Abs(_direction.z));
 
@@ -59,9 +48,9 @@ namespace Game.Enemies
             base.Move(_direction, moveAmount);
         }
 
-        public bool CheckRange(Transform target) => _fieldOfView.CheckRange(target);
-        public bool CheckAngle(Transform target) => _fieldOfView.CheckAngle(target);
-        public bool CheckView(Transform target) => _fieldOfView.CheckView(target);
+        private bool CheckRange(Transform target) => _fieldOfView.CheckRange(target);
+        private bool CheckAngle(Transform target) => _fieldOfView.CheckAngle(target);
+        private bool CheckView(Transform target) => _fieldOfView.CheckView(target);
 
         public void Spawn()
         {
@@ -73,15 +62,11 @@ namespace Game.Enemies
             
         }
 
-        #region Waypoint
-
         public Vector3 GetWaypointDirection() => _path.GetWaypointDirection();
         public Vector3 GetNextWaypoint() => _path.GetNextWaypoint();
         public bool HasARoute() => _path;
         public bool ReachedWaypoint() => _path.ReachedWaypoint();
         public void ChangeWaypoint() => _path.ChangeWaypoint();
-
-        #endregion
         
         public void FollowTarget(Transform target, float moveAmount)
         {
@@ -109,16 +94,11 @@ namespace Game.Enemies
 
         public ISteering GetSeek() => _seek;
         public ISteering GetPursuit() => _pursuit;
-        public ISteering GetFlee() => _flee;
-        public ISteering GetEvade() => _evade;
-
-        
-
-        #region Desition Tree Questions
-
+        public bool IsTargetInSight(Transform target) => CheckRange(target) && CheckAngle(target) && CheckView(target);
+        public bool IsFollowing() => _isFollowing;
+        public void SetFollowing(bool isFollowing) => _isFollowing = isFollowing;
         public bool TargetInRange(Transform target) => _range.GetBool(target, _data.AttackRange);
         public bool IsPlayerAlive() => player && player.IsAlive();
-        #endregion
 
 
         protected override void OnDestroy()
