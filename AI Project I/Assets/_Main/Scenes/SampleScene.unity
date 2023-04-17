@@ -2055,8 +2055,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pendulum
       objectReference: {fileID: 0}
+    - target: {fileID: 2339867246576006236, guid: a14353e1b052da9429797b6450ac7cee, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a14353e1b052da9429797b6450ac7cee, type: 3}
+--- !u!1 &2339867248260321971 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2339867247364195542, guid: a14353e1b052da9429797b6450ac7cee, type: 3}
+  m_PrefabInstance: {fileID: 2339867248260321970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2339867248260321972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339867248260321971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693a52b5beef9fc489cd24c57438e0b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
 --- !u!1001 &6211915852113687474
 PrefabInstance:
   m_ObjectHideFlags: 0

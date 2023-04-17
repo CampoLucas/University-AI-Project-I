@@ -25,6 +25,10 @@ public class BulletScript : MonoBehaviour
         {
             transform.position += transform.forward * speed * Time.deltaTime;
         }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void Activate()
@@ -39,17 +43,11 @@ public class BulletScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("hit");
-        if (!other.gameObject.CompareTag("Untagged"))
+        Damageable player = other.GetComponent<Damageable>();
+        if (player != null)
         {
-            Damageable player = other.GetComponent<Damageable>();
-            Debug.Log("Rompe Bala");
-            if (player != null)
-            {
-                player.TakeDamage(damage);
-            }
+            player.TakeDamage(damage);
             Destroy(this);
-            
         }
     }
 }

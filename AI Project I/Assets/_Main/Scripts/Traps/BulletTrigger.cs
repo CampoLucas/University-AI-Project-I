@@ -22,12 +22,7 @@ public class BulletTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Piso la trampa");
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Dispara Bala");
             spawner.transform.LookAt(other.transform);
-            Instantiate(bullet, spawner.transform.localPosition, spawner.transform.rotation);
-        }
+            Instantiate(bullet, spawner.transform.localPosition, spawner.transform.localRotation);
     }
 }
