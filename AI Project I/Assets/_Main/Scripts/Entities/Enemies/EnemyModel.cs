@@ -9,7 +9,7 @@ namespace Game.Enemies
 {
     public class EnemyModel : EntityModel
     {
-        [SerializeField] private PlayerModel player;
+        //[SerializeField] private PlayerModel player;
         private EnemySO _data;
         private FieldOfView _fieldOfView;
         private PathToFollow _path;
@@ -94,13 +94,12 @@ namespace Game.Enemies
         public bool IsFollowing() => _isFollowing;
         public void SetFollowing(bool isFollowing) => _isFollowing = isFollowing;
         public bool TargetInRange(Transform target) => _range.GetBool(target, _data.AttackRange);
-        public bool IsPlayerAlive() => player && player.IsAlive();
+        public bool IsPlayerAlive(PlayerModel player) => player && player.IsAlive();
 
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            player = null;
             _fieldOfView.Dispose();
             _fieldOfView = null;
             _data = null;

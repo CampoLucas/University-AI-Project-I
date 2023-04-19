@@ -1586,10 +1586,6 @@ PrefabInstance:
       propertyPath: <Player>k__BackingField
       value: 
       objectReference: {fileID: 1927019609}
-    - target: {fileID: 8985879467679423952, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
-      propertyPath: <Target>k__BackingField
-      value: 
-      objectReference: {fileID: 1927019588}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4263ff5a6ff10ef45ab9fc83d34143b0, type: 3}
 --- !u!1001 &6211915852113687474

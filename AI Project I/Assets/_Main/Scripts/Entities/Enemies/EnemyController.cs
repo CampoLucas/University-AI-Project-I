@@ -228,7 +228,7 @@ namespace Game.Enemies
 
         private bool IsPlayerAlive()
         {
-            return _model.IsPlayerAlive();
+            return _model.IsPlayerAlive(Player);
         }
 
         private bool HasTakenDamage()

@@ -10,6 +10,7 @@ namespace Game.Enemies.States
             View.PlayTargetAnimation(Model.GetData().HitAnimation.EventHash);
             var timer = Model.GetData().HitAnimation.Duration;
             Model.SetTimer(timer);
+            Model.SetFollowing(true);
         }
 
         public override void Execute()
