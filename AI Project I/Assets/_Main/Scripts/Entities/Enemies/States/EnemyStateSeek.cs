@@ -15,7 +15,7 @@ namespace Game.Enemies.States
             base.Execute();
 
             Tree.Execute();
-            Model.FollowTarget(Model.GetSeek(), Model.GetMoveAmount());
+            Model.FollowTarget(Controller.GetSeek(), Controller.GetObsAvoid(), Model.GetMoveAmount());
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
 

@@ -6,18 +6,35 @@ using Game.Entities;
 using UnityEngine;
 using Game.FSM;
 using Game.Sheared;
+using Game.Entities.Steering;
+using Game.Interfaces;
+using Game.Player;
+using Game.SO;
 using Unity.VisualScripting;
 
 namespace Game.Enemies
 {
     public class EnemyController : EntityController
     {
-        [field: SerializeField] public Transform Target { get; private set; }
+        [field: SerializeField] public PlayerModel Player { get; private set; }
+        private EnemySO _data;
         private EnemyModel _model;
         private EnemyView _view;
         private FSM<EnemyStatesEnum> _fsm;
         private List<EnemyStateBase<EnemyStatesEnum>> _states;
         private ITreeNode _root;
+        private ISteering _seek;
+        private ISteering _pursuit;
+        private ISteering _obsAvoidance;
+        
+        private void InitSteering()
+        {
+            var transform1 = transform;
+            var transform2 = Player.transform;
+            _seek = new Seek(transform1, transform2);
+            _pursuit = new Pursuit(transform1, Player, _data.PursuitTime);
+            _obsAvoidance = new ObstacleAvoidance(transform1, _data.ObsAngle, _data.ObsRange, _data.MaxObs, _data.ObsMask);
+        }
 
         protected override void InitFsm()
         {
@@ -150,11 +167,12 @@ namespace Game.Enemies
         {
             _model = GetComponent<EnemyModel>();
             _view = GetComponent<EnemyView>();
-            
+            _data = _model.GetData<EnemySO>();
         }
 
         protected override void Start()
         {
+            InitSteering();
             InitTree();
             base.Start();
             _model.Spawn();
@@ -166,9 +184,13 @@ namespace Game.Enemies
             //_root.Execute();
         }
 
+        public ISteering GetSeek() => _seek;
+        public ISteering GetPursuit() => _pursuit;
+        public ISteering GetObsAvoid() => _obsAvoidance;
+
         private bool IsInAttackingRange()
         {
-            return _model.TargetInRange(Target);
+            return _model.TargetInRange(Player.transform);
         }
 
         private bool HasARoute()
@@ -178,12 +200,12 @@ namespace Game.Enemies
 
         private bool IsPlayerInSight()
         {
-            return _model.IsTargetInSight(Target);
+            return _model.IsTargetInSight(Player.transform);
         }
 
         private bool IsPlayerOutOfSight()
         {
-            return !_model.IsTargetInSight(Target) && _model.IsFollowing();
+            return !_model.IsTargetInSight(Player.transform) && _model.IsFollowing();
         }
 
         private bool WillAttack()
@@ -261,18 +283,20 @@ namespace Game.Enemies
 
         private void OnDestroy()
         {
-            Target = null;
+            _fsm.Dispose();
+            _root.Dispose();
+            _seek.Dispose();
+            _pursuit.Dispose();
+            _obsAvoidance.Dispose();
+            Player = null;
             _model = null;
             _view = null;
-            _fsm.Dispose();
-            Logging.LogDestroy("FSM Disposed");
             _fsm = null;
-            Logging.LogDestroy("FSM Nullified");
             _states = null;
-            _root.Dispose();
-            Logging.LogDestroy("TreeRoot Disposed");
             _root = null;
-            Logging.LogDestroy("TreeRoot Nullified");
+            _seek = null;
+            _pursuit = null;
+            _obsAvoidance = null;
         }
     }
 }

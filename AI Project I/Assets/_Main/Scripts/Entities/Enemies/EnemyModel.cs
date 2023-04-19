@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Game.Entities;
-using Game.Entities.Steering;
 using Game.Interfaces;
 using Game.Player;
 using Game.SO;
@@ -15,20 +14,10 @@ namespace Game.Enemies
         private FieldOfView _fieldOfView;
         private PathToFollow _path;
         private InRange _range;
-        private ISteering _seek;
-        private ISteering _pursuit;
-        private ISteering _obsAvoidance;
         private Vector3 _direction = Vector3.zero;
         private bool _isFollowing;
 
-        private void InitSteering()
-        {
-            var transform1 = transform;
-            var transform2 = player.transform;
-            _seek = new Seek(transform1, transform2);
-            _pursuit = new Pursuit(transform1, player, _data.PursuitTime);
-            _obsAvoidance = new ObstacleAvoidance(transform1, _data.ObsAngle, _data.ObsRange, _data.MaxObs, _data.ObsMask);
-        }
+        
         protected override void Awake()
         {
             base.Awake();
@@ -36,7 +25,7 @@ namespace Game.Enemies
             _fieldOfView = new FieldOfView(_data, transform);
             _path = GetComponent<PathToFollow>();
             _range = new InRange(transform);
-            InitSteering();
+            
         }
 
 
@@ -71,29 +60,36 @@ namespace Game.Enemies
         public void FollowTarget(Transform target, float moveAmount)
         {
             var transform1 = transform;
-            var dir = (target.position - transform1.position).normalized;
+            var dir = target.position - transform1.position;
             Move(transform1.forward, moveAmount);
             Rotate(dir);
         }
 
-        public void FollowTarget(Vector3 target, float moveAmount)
+        public void FollowTarget(Vector3 target, ISteering obsAvoidance, float moveAmount)
         {
             var transform1 = transform;
-            var dir = (target - transform1.position).normalized;
+            var dir = (target - transform1.position) + obsAvoidance.GetDir() * _data.ObsMultiplier;
+            dir.y = 0;
             Move(transform1.forward, moveAmount);
             Rotate(dir);
         }
         
-        public void FollowTarget(ISteering steering, float moveAmount)
+        public void FollowTarget(Vector3 target, float moveAmount)
         {
-            var dir = (steering.GetDir() + _obsAvoidance.GetDir() * _data.ObsMultiplier).normalized;
+            var transform1 = transform;
+            var dir = target - transform1.position;
+            Move(transform1.forward, moveAmount);
+            Rotate(dir);
+        }
+        
+        public void FollowTarget(ISteering steering, ISteering obsAvoidance, float moveAmount)
+        {
+            var dir = steering.GetDir() + obsAvoidance.GetDir() * _data.ObsMultiplier;
             dir.y = 0;
             Move(transform.forward, moveAmount);
             Rotate(dir);
         }
-
-        public ISteering GetSeek() => _seek;
-        public ISteering GetPursuit() => _pursuit;
+        
         public bool IsTargetInSight(Transform target) => CheckRange(target) && CheckAngle(target) && CheckView(target);
         public bool IsFollowing() => _isFollowing;
         public void SetFollowing(bool isFollowing) => _isFollowing = isFollowing;

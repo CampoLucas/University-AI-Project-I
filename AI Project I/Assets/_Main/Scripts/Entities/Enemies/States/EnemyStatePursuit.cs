@@ -23,7 +23,7 @@ namespace Game.Enemies.States
                 Model.SetFollowing(false);
             }
             Tree.Execute();
-            Model.FollowTarget(Model.GetPursuit(), Model.GetMoveAmount());
+            Model.FollowTarget(Controller.GetPursuit(), Controller.GetObsAvoid(), Model.GetMoveAmount());
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
 

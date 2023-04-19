@@ -13,7 +13,7 @@ namespace Game.Enemies.States
             {
                 Model.ChangeWaypoint();
             }
-            Model.FollowTarget(Model.GetNextWaypoint(), 0.5f);
+            Model.FollowTarget(Model.GetNextWaypoint(), Controller.GetObsAvoid(), 0.5f);
             View.UpdateMovementValues(0.5f);
         }
 

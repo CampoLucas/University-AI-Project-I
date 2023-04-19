@@ -21,15 +21,15 @@ MonoBehaviour:
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
   deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}
   attackRange: 1.5
-  fovRange: 5
+  fovRange: 9
   fovAngle: 120
   fovMask:
     serializedVersion: 2
     m_Bits: 8
-  obsRange: 1
+  obsRange: 1.89
   obsAngle: 180
   maxObs: 5
-  obsMultiplier: 30
+  obsMultiplier: 2
   obsMask:
     serializedVersion: 2
     m_Bits: 256
