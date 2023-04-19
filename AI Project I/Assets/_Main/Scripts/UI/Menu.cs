@@ -22,17 +22,4 @@ public class Menu : BaseComponent
     {
         gameObject.SetActive(true);
     }
-
-    // private IEnumerator Fade(float targetNumber, float fadeDuration)
-    // {
-    //     var initNumber = canvasGroup.alpha;
-    //     var elapsedTime = 0f;
-    //
-    //     while (elapsedTime < fadeDuration)
-    //     {
-    //         elapsedTime += Time.deltaTime;
-    //         canvasGroup.alpha = Mathf.Lerp(initNumber, targetNumber, elapsedTime / fadeDuration);
-    //         yield return null;
-    //     }
-    // }
 }

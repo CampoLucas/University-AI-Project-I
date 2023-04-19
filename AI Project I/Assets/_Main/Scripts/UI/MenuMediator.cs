@@ -9,28 +9,28 @@ using UnityEngine.SceneManagement;
 public class MenuMediator : MonoBehaviour, IMediator
 {
     [SerializeField] private MainMenu mainMenu;
-    [SerializeField] private OptionsMenu optionsMenu;
+    [SerializeField] private CreditsMenu creditsMenu;
 
-    private void Start()
+    private void Awake()
     {
         mainMenu.SetMediator(this);
-        optionsMenu.SetMediator(this);
-        optionsMenu.Hide();
+        creditsMenu.SetMediator(this);
+        creditsMenu.Hide();
     }
 
     private void Play() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
-    private void Options()
+    private void Credits()
     {
         mainMenu.Hide();
-        optionsMenu.Show();
+        creditsMenu.Show();
     }
 
     private void Quit() => Application.Quit();
 
     private void Back()
     {
-        optionsMenu.Hide();
+        creditsMenu.Hide();
         mainMenu.Show();
     }
 
@@ -42,7 +42,7 @@ public class MenuMediator : MonoBehaviour, IMediator
                 Play();
                 return;
             case "OPTIONS":
-                Options();
+                Credits();
                 return;
             case "QUIT":
                 Quit();

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Class that notifies a mediator when a button is pressed, has specific variables for the Options Menu
 /// </summary>
-public class OptionsMenu : Menu
+public class CreditsMenu : Menu
 {
     [SerializeField] private Button backButton;
     private void Start()
