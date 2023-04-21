@@ -9,12 +9,12 @@ public class WreckingBallScript : MonoBehaviour
     [SerializeField] private float damage;
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Damageable player = collision.body.GetComponent<Damageable>();
+        Damageable player = other.GetComponent<Damageable>();
         if (player != null)
-            {
-                player.TakeDamage(damage);
-            }
+        {
+            player.TakeDamage(damage);
         }
+    }
 }

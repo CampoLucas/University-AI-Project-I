@@ -47,7 +47,7 @@ public class BulletScript : MonoBehaviour
         if (player != null)
         {
             player.TakeDamage(damage);
-            Destroy(this);
+            this.gameObject.SetActive(false);
         }
     }
 }

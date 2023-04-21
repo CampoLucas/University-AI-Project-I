@@ -22,7 +22,7 @@ public class BulletTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-            spawner.transform.LookAt(other.transform);
+//            spawner.transform.LookAt(other.transform);
             Instantiate(bullet, spawner.transform.localPosition, spawner.transform.localRotation);
     }
 }
