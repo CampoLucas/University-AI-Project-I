@@ -4,12 +4,26 @@ namespace Game.Enemies.States
 {
     public class EnemyStatePursuit<T> : EnemyStateBase<T>
     {
+        public override void Awake()
+        {
+            base.Awake();
+            Model.SetTimer(Random.Range(2f, 6f));
+        }
+
+
         public override void Execute()
         {
             base.Execute();
-
+            if (Model.GetTimerComplete())
+            {
+                Model.RunTimer();
+            }
+            else
+            {
+                Model.SetFollowing(false);
+            }
             Tree.Execute();
-            Model.FollowTarget(Controller.Target, Model.GetMoveAmount());
+            Model.FollowTarget(Controller.GetPursuit(), Controller.GetObsAvoid(), Model.GetMoveAmount());
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
 

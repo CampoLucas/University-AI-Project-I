@@ -32,6 +32,11 @@ namespace Game.Enemies.States
         public override void Sleep()
         {
             base.Sleep();
+            UnsubscribeAll();
+        }
+
+        public void UnsubscribeAll()
+        {
             if (Model.Damageable != null)
             {
                 Model.Damageable.OnTakeDamage -= OnDamageHandler;
@@ -45,6 +50,7 @@ namespace Game.Enemies.States
         public override void Dispose()
         {
             base.Dispose();
+            UnsubscribeAll();
             Model = null;
             View = null;
             Controller = null;

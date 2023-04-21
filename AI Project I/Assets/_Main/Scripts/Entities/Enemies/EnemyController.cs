@@ -6,18 +6,35 @@ using Game.Entities;
 using UnityEngine;
 using Game.FSM;
 using Game.Sheared;
+using Game.Entities.Steering;
+using Game.Interfaces;
+using Game.Player;
+using Game.SO;
 using Unity.VisualScripting;
 
 namespace Game.Enemies
 {
     public class EnemyController : EntityController
     {
-        [field: SerializeField] public Transform Target { get; private set; }
+        [field: SerializeField] public PlayerModel Player { get; private set; }
+        private EnemySO _data;
         private EnemyModel _model;
         private EnemyView _view;
         private FSM<EnemyStatesEnum> _fsm;
         private List<EnemyStateBase<EnemyStatesEnum>> _states;
         private ITreeNode _root;
+        private ISteering _seek;
+        private ISteering _pursuit;
+        private ISteering _obsAvoidance;
+        
+        private void InitSteering()
+        {
+            var transform1 = transform;
+            var transform2 = Player.transform;
+            _seek = new Seek(transform1, transform2);
+            _pursuit = new Pursuit(transform1, Player, _data.PursuitTime);
+            _obsAvoidance = new ObstacleAvoidance(transform1, _data.ObsAngle, _data.ObsRange, _data.MaxObs, _data.ObsMask);
+        }
 
         protected override void InitFsm()
         {
@@ -25,7 +42,8 @@ namespace Game.Enemies
             _states = new List<EnemyStateBase<EnemyStatesEnum>>();
 
             var idle = new EnemyStateIdle<EnemyStatesEnum>();
-            var chase = new EnemyStateSeek<EnemyStatesEnum>();
+            var seek = new EnemyStateSeek<EnemyStatesEnum>();
+            var pursuit = new EnemyStatePursuit<EnemyStatesEnum>();
             var damage = new EnemyStateDamage<EnemyStatesEnum>();
             var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
             var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
@@ -33,7 +51,8 @@ namespace Game.Enemies
             var followRoute = new EnemyStateFollowRoute<EnemyStatesEnum>();
             
             _states.Add(idle);
-            _states.Add(chase);
+            _states.Add(seek);
+            _states.Add(pursuit);
             _states.Add(damage);
             _states.Add(lightAttack);
             _states.Add(heavyAttack);
@@ -42,7 +61,8 @@ namespace Game.Enemies
             
             idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
-                { EnemyStatesEnum.ChaseSeek, chase },
+                { EnemyStatesEnum.Seek, seek },
+                { EnemyStatesEnum.Pursuit, pursuit },
                 { EnemyStatesEnum.LightAttack, lightAttack },
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
@@ -50,9 +70,21 @@ namespace Game.Enemies
                 { EnemyStatesEnum.FollowRoute, followRoute },
             });
             
-            chase.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            seek.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
+                { EnemyStatesEnum.Pursuit, pursuit },
+                { EnemyStatesEnum.LightAttack, lightAttack },
+                { EnemyStatesEnum.HeavyAttack, heavyAttack },
+                { EnemyStatesEnum.Damage, damage },
+                { EnemyStatesEnum.Die, dead},
+                { EnemyStatesEnum.FollowRoute, followRoute },
+            });
+            
+            pursuit.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            {
+                { EnemyStatesEnum.Idle, idle },
+                { EnemyStatesEnum.Seek, seek },
                 { EnemyStatesEnum.LightAttack, lightAttack },
                 { EnemyStatesEnum.HeavyAttack, heavyAttack },
                 { EnemyStatesEnum.Damage, damage },
@@ -63,7 +95,8 @@ namespace Game.Enemies
             lightAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.ChaseSeek, chase },
+                { EnemyStatesEnum.Pursuit, pursuit },
+                { EnemyStatesEnum.Seek, seek },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.FollowRoute, followRoute },
                 { EnemyStatesEnum.Die, dead},
@@ -72,7 +105,8 @@ namespace Game.Enemies
             heavyAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.ChaseSeek, chase },
+                { EnemyStatesEnum.Pursuit, pursuit },
+                { EnemyStatesEnum.Seek, seek },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.Die, dead},
                 { EnemyStatesEnum.FollowRoute, followRoute },
@@ -81,7 +115,8 @@ namespace Game.Enemies
             damage.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.ChaseSeek, chase },
+                { EnemyStatesEnum.Pursuit, pursuit },
+                { EnemyStatesEnum.Seek, seek },
                 { EnemyStatesEnum.Die, dead},
                 { EnemyStatesEnum.FollowRoute, followRoute },
             });
@@ -89,9 +124,8 @@ namespace Game.Enemies
             followRoute.AddTransition(new FlexibleDictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
-                { EnemyStatesEnum.ChaseSeek, chase },
-                { EnemyStatesEnum.LightAttack, lightAttack },
-                { EnemyStatesEnum.HeavyAttack, heavyAttack },
+                { EnemyStatesEnum.Pursuit, pursuit },
+                { EnemyStatesEnum.Seek, seek },
                 { EnemyStatesEnum.Damage, damage },
                 { EnemyStatesEnum.Die, dead},
             });
@@ -107,7 +141,8 @@ namespace Game.Enemies
         public void InitTree()
         {
             var idle = new TreeAction(ActionIdle);
-            var chase = new TreeAction(ActionChase);
+            var chase = new TreeAction(ActionSeek);
+            var pursuit = new TreeAction(ActionPursuit);
             var damage = new TreeAction(ActionDamage);
             var lightAttack = new TreeAction(ActionLightAttack);
             var heavyAttack = new TreeAction(ActionHeavyAttack);
@@ -118,7 +153,8 @@ namespace Game.Enemies
             var willAttack = new TreeQuestion(WillAttack, isHeavyAttack, idle);
             var isInAttackRange = new TreeQuestion(IsInAttackingRange, willAttack, chase);
             var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
-            var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, hasARoute);
+            var isPlayerOutOfSight = new TreeQuestion(IsPlayerOutOfSight, pursuit, hasARoute);
+            var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, isPlayerOutOfSight);
             // var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
             var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, hasARoute);
             var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
@@ -131,7 +167,15 @@ namespace Game.Enemies
         {
             _model = GetComponent<EnemyModel>();
             _view = GetComponent<EnemyView>();
+            _data = _model.GetData<EnemySO>();
+        }
+
+        protected override void Start()
+        {
+            InitSteering();
             InitTree();
+            base.Start();
+            _model.Spawn();
         }
 
         private void Update()
@@ -140,9 +184,13 @@ namespace Game.Enemies
             //_root.Execute();
         }
 
+        public ISteering GetSeek() => _seek;
+        public ISteering GetPursuit() => _pursuit;
+        public ISteering GetObsAvoid() => _obsAvoidance;
+
         private bool IsInAttackingRange()
         {
-            return _model.TargetInRange(Target);
+            return _model.TargetInRange(Player.transform);
         }
 
         private bool HasARoute()
@@ -152,7 +200,12 @@ namespace Game.Enemies
 
         private bool IsPlayerInSight()
         {
-            return _model.IsAlive() && _model.CheckRange(Target) && _model.CheckAngle(Target) && _model.CheckView(Target);
+            return _model.IsTargetInSight(Player.transform);
+        }
+
+        private bool IsPlayerOutOfSight()
+        {
+            return !_model.IsTargetInSight(Player.transform) && _model.IsFollowing();
         }
 
         private bool WillAttack()
@@ -175,7 +228,7 @@ namespace Game.Enemies
 
         private bool IsPlayerAlive()
         {
-            return _model.IsPlayerAlive();
+            return _model.IsPlayerAlive(Player);
         }
 
         private bool HasTakenDamage()
@@ -188,9 +241,14 @@ namespace Game.Enemies
             return _model.IsAlive();
         }
 
-        private void ActionChase()
+        private void ActionSeek()
         {
-            _fsm.Transitions(EnemyStatesEnum.ChaseSeek);
+            _fsm.Transitions(EnemyStatesEnum.Seek);
+        }
+
+        private void ActionPursuit()
+        {
+            _fsm.Transitions(EnemyStatesEnum.Pursuit);
         }
 
         private void ActionLightAttack()
@@ -225,18 +283,20 @@ namespace Game.Enemies
 
         private void OnDestroy()
         {
-            Target = null;
+            _fsm.Dispose();
+            _root.Dispose();
+            _seek.Dispose();
+            _pursuit.Dispose();
+            _obsAvoidance.Dispose();
+            Player = null;
             _model = null;
             _view = null;
-            _fsm.Dispose();
-            Logging.LogDestroy("FSM Disposed");
             _fsm = null;
-            Logging.LogDestroy("FSM Nullified");
             _states = null;
-            _root.Dispose();
-            Logging.LogDestroy("TreeRoot Disposed");
             _root = null;
-            Logging.LogDestroy("TreeRoot Nullified");
+            _seek = null;
+            _pursuit = null;
+            _obsAvoidance = null;
         }
     }
 }

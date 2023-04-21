@@ -18,7 +18,7 @@ MonoBehaviour:
   <LightAttackTriggerStarts>k__BackingField: 0.6
   <LightAttackTriggerEnds>k__BackingField: 0.7
   <HeavyAttack01>k__BackingField: {fileID: 11400000, guid: 5e5e39cd5544d0b4ca486c9859d48a31, type: 2}
-  <HeavyAttackTriggerStarts>k__BackingField: 0.78
+  <HeavyAttackTriggerStarts>k__BackingField: 0.75
   <HeavyAttackTriggerEnds>k__BackingField: 0.85
   <Damage>k__BackingField: 1
   <HeavyAttackMultiplier>k__BackingField: 3

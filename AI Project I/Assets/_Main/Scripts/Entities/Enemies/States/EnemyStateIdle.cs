@@ -7,7 +7,7 @@ namespace Game.Enemies.States
         public override void Awake()
         {
             base.Awake();
-            var timer = Model.GetRandomTime(1);
+            var timer = Model.GetRandomTime(0.5f);
             Model.SetTimer(timer);
         }
 
