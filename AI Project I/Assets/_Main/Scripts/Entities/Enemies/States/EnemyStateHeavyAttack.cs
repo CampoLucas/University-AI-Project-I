@@ -14,21 +14,14 @@
         public override void Execute()
         {
             base.Execute();
-     if (Model.GetTimerComplete())
-                 {
-                     Model.RunTimer();
-                 }
-                 else
-                 {
-                     Tree.Execute();
-                 }       if (Model.GetTimerComplete())
+            if (Model.GetTimerComplete())
             {
                 Model.RunTimer();
             }
             else
             {
                 Tree.Execute();
-            }
+            }       
         }
 
         public override void Sleep()

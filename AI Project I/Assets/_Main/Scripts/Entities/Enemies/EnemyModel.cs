@@ -3,7 +3,9 @@ using Game.Entities;
 using Game.Interfaces;
 using Game.Player;
 using Game.SO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace Game.Enemies
 {
@@ -111,6 +113,7 @@ namespace Game.Enemies
             Gizmos.DrawWireSphere(transform.position, GetData<EnemySO>().AttackRange);
         }
 
+        #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             var transform1 = transform;
@@ -158,6 +161,8 @@ namespace Game.Enemies
             Handles.DrawWireArc(position, Vector3.up, obsLeftRayDirection, GetData<EnemySO>().ObsAngle, GetData<EnemySO>().ObsRange);
 
             #endregion
+
         }
+        #endif
     }
 }
