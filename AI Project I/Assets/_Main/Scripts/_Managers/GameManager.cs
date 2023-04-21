@@ -8,6 +8,7 @@ namespace Game.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        public bool IsGameOver { get; private set; }
         [SerializeField] private GameOverScreen gameOverPrefab;
         [SerializeField] private GameOverScreen gameWonPrefab;
         private GameOverScreen _gameOverScreen;
@@ -55,14 +56,23 @@ namespace Game.Managers
 
         public void GameOver()
         {
-            _gameOverScreen.gameObject.SetActive(true);
-            _gameOverScreen.Init();
+            if (!IsGameOver)
+            {
+                _gameOverScreen.gameObject.SetActive(true);
+                _gameOverScreen.Init();
+                IsGameOver = true;
+            }
+            
         }
         
         public void GameWon()
         {
-            _gameWonScreen.gameObject.SetActive(true);
-            _gameWonScreen.Init();
+            if (!IsGameOver)
+            {
+                _gameWonScreen.gameObject.SetActive(true);
+                _gameWonScreen.Init();
+                IsGameOver = true;
+            }
         }
     }
 }

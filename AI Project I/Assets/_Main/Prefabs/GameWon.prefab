@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5638976680166271766, guid: 279cdb1c8251bee488aa135ff9ed9b52, type: 3}
+      propertyPath: delayTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5638976680166271766, guid: 279cdb1c8251bee488aa135ff9ed9b52, type: 3}
+      propertyPath: fadeDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5692701641396522730, guid: 279cdb1c8251bee488aa135ff9ed9b52, type: 3}
       propertyPath: m_Name
       value: GameWon
