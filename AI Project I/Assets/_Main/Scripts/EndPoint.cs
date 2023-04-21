@@ -11,7 +11,7 @@ namespace Game
     {
         private void OnTriggerEnter(Collider other)
         {
-            var player = GetComponent<PlayerModel>();
+            var player = other.GetComponent<PlayerModel>();
             if (player && GameManager.Instance != null)
             {
                 GameManager.Instance.GameWon();
