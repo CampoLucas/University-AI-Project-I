@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98697a34a389ba4a90826dfa26ba784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 11400000, guid: de00d250b21bf8341b79ba18361a5d46, type: 2}
+  <Path>k__BackingField: {fileID: 0}
 --- !u!1001 &298113400268742842
 PrefabInstance:
   m_ObjectHideFlags: 0

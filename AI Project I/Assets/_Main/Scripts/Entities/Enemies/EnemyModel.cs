@@ -53,7 +53,7 @@ namespace Game.Enemies
 
         public Vector3 GetWaypointDirection() => _path.GetWaypointDirection();
         public Vector3 GetNextWaypoint() => _path.GetNextWaypoint();
-        public bool HasARoute() => _path;
+        public bool HasARoute() => _path.Path;
         public bool ReachedWaypoint() => _path.ReachedWaypoint();
         public void ChangeWaypoint() => _path.ChangeWaypoint();
         
@@ -68,7 +68,7 @@ namespace Game.Enemies
         public void FollowTarget(Vector3 target, ISteering obsAvoidance, float moveAmount)
         {
             var transform1 = transform;
-            var dir = (target - transform1.position) + obsAvoidance.GetDir() * _data.ObsMultiplier;
+            var dir = (target - transform1.position).normalized + obsAvoidance.GetDir() * _data.ObsMultiplier;
             dir.y = 0;
             Move(transform1.forward, moveAmount);
             Rotate(dir);

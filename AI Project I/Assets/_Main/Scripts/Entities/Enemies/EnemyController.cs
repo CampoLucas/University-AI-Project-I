@@ -175,7 +175,8 @@ namespace Game.Enemies
             InitSteering();
             InitTree();
             base.Start();
-            _model.Spawn();
+            
+            //_model.Spawn();
         }
 
         private void Update()

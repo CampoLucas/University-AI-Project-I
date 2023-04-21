@@ -15,7 +15,7 @@ MonoBehaviour:
   moveSpeed: 3
   walkSpeed: 2
   moveLerpSpeed: 10
-  rotSpeed: 3
+  rotSpeed: 2
   maxHealth: 3
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
@@ -26,11 +26,11 @@ MonoBehaviour:
   fovMask:
     serializedVersion: 2
     m_Bits: 8
-  obsRange: 1.89
+  obsRange: 1
   obsAngle: 180
   maxObs: 5
   obsMultiplier: 2
   obsMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   pursuitTime: 0.5
