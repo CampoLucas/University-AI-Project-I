@@ -138,7 +138,7 @@ namespace Game.Enemies
             _fsm.SetInit(idle);
         }
 
-        public void InitTree()
+        private void InitTree()
         {
             var idle = new TreeAction(ActionIdle);
             var chase = new TreeAction(ActionSeek);
@@ -155,7 +155,6 @@ namespace Game.Enemies
             var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
             var isPlayerOutOfSight = new TreeQuestion(IsPlayerOutOfSight, pursuit, hasARoute);
             var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, isPlayerOutOfSight);
-            // var isWaitTimeOver = new TreeQuestion(IsWaitTimeOver, die, isPlayerInSight);
             var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, hasARoute);
             var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
             var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
@@ -182,6 +181,8 @@ namespace Game.Enemies
         private void Update()
         {
             _fsm.OnUpdate();
+            // It executes the tree on the fsm because I find it more responsive and easier to work with.
+            // this way I can control when the transition happens in case I need to wait for a animation to finish.
             //_root.Execute();
         }
 

@@ -20,6 +20,10 @@ namespace Game.Entities.Steering
             _obs = new Collider[maxObs];
         }
 
+        /// <summary>
+        /// A method that calculates a direction to evade an obstacle.
+        /// </summary>
+        /// <returns></returns>
         public Vector3 GetDir()
         {
             var obsCount = Physics.OverlapSphereNonAlloc(_origin.position, _radius, _obs, _mask);

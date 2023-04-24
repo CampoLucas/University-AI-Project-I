@@ -1,14 +1,13 @@
-﻿using System;
-using Game.Interfaces;
+﻿using Game.Interfaces;
 using Game.SO;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace Game.Enemies
 {
+    /// <summary>
+    /// This class is used to detect if a target is within the enemy's field of view.
+    /// </summary>
     public class FieldOfView : IFieldOfView
     {
         private EnemySO _data;
@@ -44,6 +43,9 @@ namespace Game.Enemies
             return !Physics.Raycast(position, dirToTarget, out var hit, distanceToTarget, _data.FovMask);
         }
 
+        /// <summary>
+        /// Method used to nullify the references.
+        /// </summary>
         public void Dispose()
         {
             _data = null;

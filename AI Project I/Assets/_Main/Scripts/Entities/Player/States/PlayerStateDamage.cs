@@ -16,10 +16,6 @@ namespace Game.Player.States
         public override void Awake()
         {
             base.Awake();
-            // if (!Model.IsAlive())
-            // {
-            //     Fsm.Transitions(_inDead);
-            // }
             View.PlayTargetAnimation(Model.GetData().HitAnimation.name);
             var timer = Model.GetData().HitAnimation.Duration;
             Model.SetTimer(timer);

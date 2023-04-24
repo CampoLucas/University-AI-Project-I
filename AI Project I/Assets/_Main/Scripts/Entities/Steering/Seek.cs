@@ -14,6 +14,9 @@ namespace Game.Entities.Steering
             _origin = origin;
         }
 
+        /// <summary>
+        /// A method that returns the direction to the target.
+        /// </summary>
         public virtual Vector3 GetDir()
         {
             return (_target.position - _origin.position).normalized;

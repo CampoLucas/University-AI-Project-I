@@ -11,7 +11,6 @@ namespace Game.Enemies
 {
     public class EnemyModel : EntityModel
     {
-        //[SerializeField] private PlayerModel player;
         private EnemySO _data;
         private FieldOfView _fieldOfView;
         private PathToFollow _path;

@@ -2,6 +2,9 @@
 
 namespace Game.DecisionTree
 {
+    /// <summary>
+    /// This class represents a question node in a decision tree and holds a question, as well as two nodes for the true and false cases of the question.
+    /// </summary>
     public class TreeQuestion : ITreeNode
     {
         private Func<bool> _question;

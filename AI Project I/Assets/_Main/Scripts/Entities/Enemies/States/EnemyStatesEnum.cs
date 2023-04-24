@@ -10,7 +10,5 @@
         Die,
         Damage,
         FollowRoute,
-        Dodge,
-        Scape,
     }
 }

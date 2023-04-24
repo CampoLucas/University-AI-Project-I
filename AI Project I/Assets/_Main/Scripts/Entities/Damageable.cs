@@ -14,6 +14,7 @@ namespace Game.Entities
         private float _currentLife;
         private bool _isInvulnerable;
         private bool _hasTakenDamage;
+        private Collider _collider;
 
         private void InitStats()
         {
@@ -22,6 +23,7 @@ namespace Game.Entities
         private void Awake()
         {
             _data = GetComponent<EntityModel>().GetData();
+            _collider = GetComponent<Collider>();
         }
 
         private void Start()
@@ -70,6 +72,7 @@ namespace Game.Entities
         
         public void Die()
         {
+            _collider.enabled = false;
             Destroy(gameObject, 3f);
         }
         
@@ -83,6 +86,7 @@ namespace Game.Entities
             OnTakeDamage -= OnTakeDamage;
             OnDie -= OnDie;
             _data = null;
+            _collider = null;
         }
     }
 }

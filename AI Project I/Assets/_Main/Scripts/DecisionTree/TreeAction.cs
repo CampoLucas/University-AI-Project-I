@@ -2,6 +2,9 @@
 
 namespace Game.DecisionTree
 {
+    /// <summary>
+    /// This class represents a node in a decision tree that performs a specific action when executed.
+    /// </summary>
     public class TreeAction : ITreeNode
     {
         private Action _action;
