@@ -14,15 +14,16 @@ using Unity.VisualScripting;
 
 namespace Game.Enemies
 {
-    public class EnemyController : EntityController
+    public class EnemyController : EntityController<EnemyStatesEnum>
     {
         [field: SerializeField] public PlayerModel Player { get; private set; }
+
         private EnemySO _data;
-        private EnemyModel _model;
-        private EnemyView _view;
-        private FSM<EnemyStatesEnum> _fsm;
+
         private List<EnemyStateBase<EnemyStatesEnum>> _states;
+
         private ITreeNode _root;
+
         private ISteering _seek;
         private ISteering _pursuit;
         private ISteering _obsAvoidance;
@@ -36,9 +37,9 @@ namespace Game.Enemies
             _obsAvoidance = new ObstacleAvoidance(transform1, _data.ObsAngle, _data.ObsRange, _data.MaxObs, _data.ObsMask);
         }
 
-        protected override void InitFsm()
+        protected override void InitFSM()
         {
-            _fsm = new FSM<EnemyStatesEnum>();
+            base.InitFSM();
             _states = new List<EnemyStateBase<EnemyStatesEnum>>();
 
             var idle = new EnemyStateIdle<EnemyStatesEnum>();
@@ -132,10 +133,10 @@ namespace Game.Enemies
 
             foreach (var state in _states)
             {
-                state.Init(_model, _view, this, _root);
+                state.Init(GetModel<EnemyModel>(), GetView<EnemyView>(), this, _root);
             }
             _states = null;
-            _fsm.SetInit(idle);
+            Fsm.SetInit(idle);
         }
 
         private void InitTree()
@@ -162,11 +163,10 @@ namespace Game.Enemies
             _root = isAlive;
         }
         
-        private void Awake()
+        protected override void Awake()
         {
-            _model = GetComponent<EnemyModel>();
-            _view = GetComponent<EnemyView>();
-            _data = _model.GetData<EnemySO>();
+            base.Awake();
+            _data = GetModel().GetData<EnemySO>();
         }
 
         protected override void Start()
@@ -178,38 +178,39 @@ namespace Game.Enemies
             //_model.Spawn();
         }
 
-        private void Update()
-        {
-            _fsm.OnUpdate();
-            // It executes the tree on the fsm because I find it more responsive and easier to work with.
-            // this way I can control when the transition happens in case I need to wait for a animation to finish.
-            //_root.Execute();
-        }
-
         public ISteering GetSeek() => _seek;
         public ISteering GetPursuit() => _pursuit;
         public ISteering GetObsAvoid() => _obsAvoidance;
 
         private bool IsInAttackingRange()
         {
-            return _model.TargetInRange(Player.transform);
+            if (GetModel())
+                return GetModel<EnemyModel>().TargetInRange(Player.transform);
+            return false;
         }
 
         private bool HasARoute()
         {
-            return _model.HasARoute();
+            if (GetModel())
+                return GetModel<EnemyModel>().HasARoute();
+            return false;
         }
 
         private bool IsPlayerInSight()
         {
-            return _model.IsTargetInSight(Player.transform);
+            if (GetModel())
+                return GetModel<EnemyModel>().IsTargetInSight(Player.transform);
+            return false;
         }
 
         private bool IsPlayerOutOfSight()
         {
-            return !_model.IsTargetInSight(Player.transform) && _model.IsFollowing();
+            if (GetModel())
+                return !GetModel<EnemyModel>().IsTargetInSight(Player.transform) && GetModel<EnemyModel>().IsFollowing();
+            return false;
         }
 
+        // ToDo: Usar ruleta con algo que de mas de 2 opciones
         private bool WillAttack()
         {
             return MyRandoms.Roulette(new Dictionary<bool, float>
@@ -230,70 +231,82 @@ namespace Game.Enemies
 
         private bool IsPlayerAlive()
         {
-            return _model.IsPlayerAlive(Player);
+            if (GetModel())
+                return GetModel<EnemyModel>().IsPlayerAlive(Player);
+            return false;
         }
 
         private bool HasTakenDamage()
         {
-            return _model.HasTakenDamage();
+            if (GetModel())
+                return GetModel<EnemyModel>().HasTakenDamage();
+            return false;
         }
 
         private bool IsAlive()
         {
-            return _model.IsAlive();
+            if (GetModel())
+                return GetModel<EnemyModel>().IsAlive();
+            return false;
         }
 
         private void ActionSeek()
         {
-            _fsm.Transitions(EnemyStatesEnum.Seek);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.Seek);
         }
 
         private void ActionPursuit()
         {
-            _fsm.Transitions(EnemyStatesEnum.Pursuit);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.Pursuit);
         }
 
         private void ActionLightAttack()
         {
-            _fsm.Transitions(EnemyStatesEnum.LightAttack);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.LightAttack);
         }
 
         private void ActionHeavyAttack()
         {
-            _fsm.Transitions(EnemyStatesEnum.HeavyAttack);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.HeavyAttack);
         }
 
         private void ActionDamage()
         {
-            _fsm.Transitions(EnemyStatesEnum.Damage);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.Damage);
         }
 
         private void ActionDie()
         {
-            _fsm.Transitions(EnemyStatesEnum.Die);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.Die);
         }
 
         private void ActionIdle()
         {
-            _fsm.Transitions(EnemyStatesEnum.Idle);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.Idle);
         }
 
         private void ActionFollowRoute()
         {
-            _fsm.Transitions(EnemyStatesEnum.FollowRoute);
+            if (Fsm == null) return;
+            Fsm.Transitions(EnemyStatesEnum.FollowRoute);
         }
 
         private void OnDestroy()
         {
-            _fsm.Dispose();
+            Fsm.Dispose();
             _root.Dispose();
             _seek.Dispose();
             _pursuit.Dispose();
             _obsAvoidance.Dispose();
             Player = null;
-            _model = null;
-            _view = null;
-            _fsm = null;
+            Fsm = null;
             _states = null;
             _root = null;
             _seek = null;

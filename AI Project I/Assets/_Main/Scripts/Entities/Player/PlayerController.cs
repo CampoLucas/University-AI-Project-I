@@ -7,17 +7,14 @@ using UnityEngine;
 
 namespace Game.Player
 {
-    public class PlayerController : EntityController
+    public class PlayerController : EntityController<PlayerStatesEnum>
     {
-        private PlayerModel _model;
-        private PlayerView _view;
         private PlayerInputHandler _inputs;
-        private FSM<PlayerStatesEnum> _fsm;
         private List<PlayerStateBase<PlayerStatesEnum>> _states;
 
-        protected override void InitFsm()
+        protected override void InitFSM()
         {
-            _fsm = new FSM<PlayerStatesEnum>();
+            base.InitFSM();
             _states = new List<PlayerStateBase<PlayerStatesEnum>>();
             
             var idle = new PlayerStateIdle<PlayerStatesEnum>(PlayerStatesEnum.Moving, PlayerStatesEnum.LightAttack, PlayerStatesEnum.HeavyAttack, PlayerStatesEnum.Damage, PlayerStatesEnum.Dead);
@@ -77,30 +74,27 @@ namespace Game.Player
 
             foreach (var state in _states)
             {
-                state.Init(_model, _view, _inputs, _fsm);
+                state.Init(GetModel<PlayerModel>(), GetView<PlayerView>(), _inputs, Fsm);
             }
             _states = null;
-            _fsm.SetInit(idle);
+            Fsm.SetInit(idle);
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            _model = GetComponent<PlayerModel>();
-            _view = GetComponent<PlayerView>();
+            base.Awake();
             _inputs = GetComponent<PlayerInputHandler>();
         }
 
         private void Update()
         {
-            _fsm.OnUpdate();
+            Fsm.OnUpdate();
         }
 
         private void OnDestroy()
         {
-            _model = null;
-            _view = null;
             _inputs = null;
-            _fsm = null;
+            Fsm = null;
             _states = null;
         }
     }
