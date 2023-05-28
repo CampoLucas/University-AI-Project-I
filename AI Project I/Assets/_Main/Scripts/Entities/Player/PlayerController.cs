@@ -86,15 +86,10 @@ namespace Game.Player
             _inputs = GetComponent<PlayerInputHandler>();
         }
 
-        private void Update()
+        protected override void OnDestroy()
         {
-            Fsm.OnUpdate();
-        }
-
-        private void OnDestroy()
-        {
+            base.OnDestroy();
             _inputs = null;
-            Fsm = null;
             _states = null;
         }
     }

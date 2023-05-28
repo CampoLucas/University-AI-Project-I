@@ -8,6 +8,7 @@ namespace Game.Enemies.States
         {
             base.Awake();
             Model.SetTimer(Random.Range(2f, 6f));
+            Model.SetMovement(Model.GetRunningMovement());
         }
 
 
@@ -23,14 +24,14 @@ namespace Game.Enemies.States
                 Model.SetFollowing(false);
             }
             Tree.Execute();
-            Model.FollowTarget(Controller.GetPursuit(), Controller.GetObsAvoid(), Model.GetMoveAmount());
+            Model.FollowTarget(Controller.GetPursuit(), Controller.GetObsAvoid());
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
 
         public override void Sleep()
         {
             base.Sleep();
-            Model.Move(Vector3.zero, Model.GetMoveAmount());
+            Model.Move(Vector3.zero);
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
     }

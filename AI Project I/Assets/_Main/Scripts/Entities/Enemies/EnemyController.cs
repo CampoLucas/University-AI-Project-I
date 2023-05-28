@@ -298,15 +298,14 @@ namespace Game.Enemies
             Fsm.Transitions(EnemyStatesEnum.FollowRoute);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
-            Fsm.Dispose();
+            base.OnDestroy();
             _root.Dispose();
             _seek.Dispose();
             _pursuit.Dispose();
             _obsAvoidance.Dispose();
             Player = null;
-            Fsm = null;
             _states = null;
             _root = null;
             _seek = null;

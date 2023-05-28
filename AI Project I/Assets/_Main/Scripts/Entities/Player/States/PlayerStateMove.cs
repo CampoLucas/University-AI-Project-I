@@ -24,41 +24,13 @@ namespace Game.Player.States
             base.Awake();
             Model.Damageable.OnTakeDamage += TakeDamageHandler;
             Model.Damageable.OnDie += OnDieHandler;
+            Model.SetMovement(Model.GetRunningMovement());
         }
 
         public override void Execute()
         {
             base.Execute();
-            // if (Model.IsAlive())
-            // {
-            //     if (Model.HasTakenDamage())
-            //     {
-            //         Fsm.Transitions(_inDamage);
-            //     }
-            //
-            //     if (Inputs.MoveDir == Vector3.zero)
-            //     {
-            //         Fsm.Transitions(_inIdle);
-            //     }
-            //
-            //     if (Inputs.FlagLightAttack)
-            //     {
-            //         Fsm.Transitions(_inLightAttack);
-            //     }
-            //
-            //     if (Inputs.FlagHeavyAttack)
-            //     {
-            //         Fsm.Transitions(_inHeavyAttack);
-            //     }
-            //
-            //     Model.Move(Inputs.MoveDir, Inputs.MoveAmount);
-            //     Model.Rotate(Inputs.MoveDir);
-            //     View.UpdateMovementValues(Inputs.MoveAmount);
-            // }
-            // else
-            // {
-            //     Fsm.Transitions(_inDead);
-            // }
+            
 
             if (Inputs.MoveDir == Vector3.zero)
             {
@@ -75,7 +47,7 @@ namespace Game.Player.States
                 Fsm.Transitions(_inHeavyAttack);
             }
             
-            Model.Move(Inputs.MoveDir, Inputs.MoveAmount);
+            Model.Move(Inputs.MoveDir);
             Model.Rotate(Inputs.MoveDir);
             View.UpdateMovementValues(Inputs.MoveAmount);
         }
@@ -95,7 +67,7 @@ namespace Game.Player.States
             base.Sleep();
             Model.Damageable.OnTakeDamage -= TakeDamageHandler;
             // Model.Damageable.OnDie -= OnDieHandler;
-            Model.Move(Vector3.zero, Inputs.MoveAmount);
+            Model.Move(Vector3.zero);
         }
     }
 }

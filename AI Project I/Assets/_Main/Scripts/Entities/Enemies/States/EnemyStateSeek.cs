@@ -8,6 +8,7 @@ namespace Game.Enemies.States
         {
             base.Awake();
             Model.SetFollowing(true);
+            Model.SetMovement(Model.GetRunningMovement());
         }
 
         public override void Execute()
@@ -15,14 +16,14 @@ namespace Game.Enemies.States
             base.Execute();
 
             Tree.Execute();
-            Model.FollowTarget(Controller.GetSeek(), Controller.GetObsAvoid(), Model.GetMoveAmount());
+            Model.FollowTarget(Controller.GetSeek(), Controller.GetObsAvoid());
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
 
         public override void Sleep()
         {
             base.Sleep();
-            Model.Move(Vector3.zero, Model.GetMoveAmount());
+            Model.Move(Vector3.zero);
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
     }

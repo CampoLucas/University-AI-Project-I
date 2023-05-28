@@ -32,10 +32,10 @@ namespace Game.Enemies
 
         public float GetMoveAmount() => Mathf.Clamp01(Mathf.Abs(_direction.x) + Mathf.Abs(_direction.z));
 
-        public override void Move(Vector3 dir, float moveAmount)
+        public override void Move(Vector3 dir)
         {
             _direction = dir;
-            base.Move(_direction, moveAmount);
+            base.Move(_direction);
         }
 
         private bool CheckRange(Transform target) => _fieldOfView.CheckRange(target);
@@ -58,36 +58,36 @@ namespace Game.Enemies
         public bool ReachedWaypoint() => _path.ReachedWaypoint();
         public void ChangeWaypoint() => _path.ChangeWaypoint();
         
-        public void FollowTarget(Transform target, float moveAmount)
+        public void FollowTarget(Transform target)
         {
             var transform1 = transform;
             var dir = target.position - transform1.position;
-            Move(transform1.forward, moveAmount);
+            Move(transform1.forward);
             Rotate(dir);
         }
 
-        public void FollowTarget(Vector3 target, ISteering obsAvoidance, float moveAmount)
+        public void FollowTarget(Vector3 target, ISteering obsAvoidance)
         {
             var transform1 = transform;
             var dir = (target - transform1.position).normalized + obsAvoidance.GetDir() * _data.ObsMultiplier;
             dir.y = 0;
-            Move(transform1.forward, moveAmount);
+            Move(transform1.forward);
             Rotate(dir);
         }
         
-        public void FollowTarget(Vector3 target, float moveAmount)
+        public void FollowTarget(Vector3 target)
         {
             var transform1 = transform;
             var dir = target - transform1.position;
-            Move(transform1.forward, moveAmount);
+            Move(transform1.forward);
             Rotate(dir);
         }
         
-        public void FollowTarget(ISteering steering, ISteering obsAvoidance, float moveAmount)
+        public void FollowTarget(ISteering steering, ISteering obsAvoidance)
         {
             var dir = steering.GetDir() + obsAvoidance.GetDir() * _data.ObsMultiplier;
             dir.y = 0;
-            Move(transform.forward, moveAmount);
+            Move(transform.forward);
             Rotate(dir);
         }
         
