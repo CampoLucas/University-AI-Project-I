@@ -12,10 +12,13 @@ namespace Game.Pathfinding
         public Transform MyTransform { get; private set; }
         public string Name => gameObject.name;
         public List<Node> Neightbours => neightbours;
+        public bool Walkable => walkable;
+        public bool IsTrap => isTrap;
 
         [SerializeField] private bool walkable;
         [SerializeField] private bool isTrap;
         [SerializeField] private List<Node> neightbours;
+        private LayerMask _mask;
 
         public void Init(bool _walkable, bool _isTrap, string name)
         {
@@ -23,17 +26,20 @@ namespace Game.Pathfinding
             isTrap = _isTrap;
             MyTransform = transform;
             gameObject.name = name;
+            _mask = gameObject.layer;
         }
 
         public void GetNeightbours(float maxDistnace = 2.2f)
         {
-            for (int x = -1; x < 1; x++)
+            for (int x = -1; x <= 1; x++)
             {
-                for (int y = -1; y < 1; y++)
+                for (int y = -1; y <= 1; y++)
                 {
-                    for (int z = -1; z < 1; z++)
+                    for (int z = -1; z <= 1; z++)
                     {
-
+                        if (x == z || x == -z) continue;
+                        var dir = new Vector3(x, y, z);
+                        GetNeightbours(dir, maxDistnace);
                     }
                 }
             }
@@ -47,7 +53,7 @@ namespace Game.Pathfinding
         private void GetNeightbours(Vector3 dir, float maxDistnace = 2.2f)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, dir, out hit, maxDistnace, gameObject.layer))
+            if (Physics.Raycast(transform.position, dir, out hit, maxDistnace))
             {
                 var node = hit.collider.GetComponent<Node>();
                 if (node != null && node != this)
@@ -59,6 +65,7 @@ namespace Game.Pathfinding
         private void OnDrawGizmosSelected()
         {
             if (!UnityEditor.Selection.gameObjects.Contains(transform.gameObject)) { return; }
+            
             var sRadius = 0.2f;
             var color = new Color(0, 0, 1, 0.5f);
             if (!walkable)
