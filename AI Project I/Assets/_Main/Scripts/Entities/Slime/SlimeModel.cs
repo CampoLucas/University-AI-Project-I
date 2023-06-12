@@ -2,62 +2,84 @@
 using Game.Entities.Flocking;
 using Game.Interfaces;
 using Game.SO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Entities.Slime
 {
-    public class SlimeModel : MonoBehaviour, IBoid
+    public class SlimeModel : EntityModel, IBoid
     {
-        private Rigidbody _rb;
+        [Range(1, 25)] 
+        [SerializeField] private float boidRadius = 5;
+
+        private EnemySO _data;
         private SlimeFlockingManager _slimeFlocking;
+        private PathToFollow _path;
+        
+        private bool _isPathNull;
 
         public Vector3 Position => transform.position;
         public Vector3 Front => transform.forward;
-        public float Radius => radius;
-        
-        //Test nor final
-        [SerializeField] private float moveSpeed = 1;
-        [SerializeField] private float rotSpeed = 1;
-        [SerializeField] private float moveLerpSpeed = 10;
-        [SerializeField] private float radius;
+        public float Radius => boidRadius;
 
-        public bool hasToMove;
-        private bool _isFlockingNull;
-        
-        private void Awake()
+        protected override void Awake()
         {
-            _rb = GetComponent<Rigidbody>();
+            base.Awake();
+            _data = GetData<EnemySO>();
             _slimeFlocking = GetComponent<SlimeFlockingManager>();
+            _path = GetComponent<PathToFollow>();
         }
-        
+
         private void Start()
         {
-            _isFlockingNull = _slimeFlocking == null;
+            _isPathNull = _path == null;
         }
 
-
-        public void Move(Vector3 dir)
+        public void FollowTarget(Vector3 target, ISteering avoidance, float moveAmount = 0)
         {
-            var targetVelocity = dir * moveSpeed;
-            _rb.velocity = Vector3.Lerp(_rb.velocity, targetVelocity, moveLerpSpeed);
-        }
-
-        public void LookDir(Vector3 dir)
-        {
+            var dir = (target - transform.position).normalized + avoidance.GetDir() * _data.ObsMultiplier;
             dir.y = 0;
-            transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
-        }
-
-        public Vector3 GetFlockingDir()
-        {
-            return _isFlockingNull ? Vector3.zero : _slimeFlocking.GetDir();
-        }
-
-        public void Dispose()
-        {
-            
+            Move(transform.forward, moveAmount);
+            Rotate(dir);
         }
         
+        public void FollowTarget(Vector3 target, ISteering avoidance, FlockingManager flocking, float moveAmount = 0)
+        {
+            var steering = ((avoidance.GetDir() * _data.ObsMultiplier) + flocking.GetDir()) / 2;
+            var dir = (target - transform.position).normalized + steering.normalized;
+            dir.y = 0;
+            Move(transform.forward, moveAmount);
+            Rotate(dir);
+        }
+
+
+        #region Path
+
+        public Vector3 GetNextWaypoint()
+        {
+            return _isPathNull ? Vector3.zero : _path.GetNextWaypoint();
+        }
+
+        public bool HasARoute()
+        {
+            return _isPathNull ? false : _path.Path;
+        }
+
+        public bool ReachedWaypoint()
+        {
+            return !_isPathNull && _path.ReachedWaypoint();
+        }
+
+        public void ChangeWaypoint()
+        {
+            if (_isPathNull) return;
+                
+            _path.ChangeWaypoint();
+        }
+
+        #endregion
+
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;

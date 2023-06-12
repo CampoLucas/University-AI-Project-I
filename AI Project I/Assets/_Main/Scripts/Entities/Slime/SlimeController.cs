@@ -12,48 +12,47 @@ using UnityEngine;
 
 namespace Game.Entities.Slime
 {
-    public class SlimeController : MonoBehaviour
+    public class SlimeController : EntityController<SlimeStatesEnum>
     {
         [SerializeField] private EnemySO data;
-
-        private FSM<SlimeStatesEnum> _fsm;
+        
         private ITreeNode _root;
         
-        private SlimeModel _model;
         private ISteering _obsAvoidance;
+        private FlockingManager _flocking;
 
-        private void Awake()
+        private bool _isFlockingNull;
+
+
+        protected override void Awake()
         {
-            _model = GetComponent<SlimeModel>();
+            base.Awake();
+            _flocking = GetComponent<FlockingManager>();
         }
 
-        private void Start()
+        protected override void Start()
         {
             InitSteering();
             InitTree();
-            InitFSM();
-            
-        }
+            base.Start();
 
-        private void Update()
-        {
-            _fsm?.OnUpdate();
-            _root?.Execute();
+            _isFlockingNull = _flocking == null;
         }
-
+        
         private void InitSteering()
         {
             _obsAvoidance = new ObstacleAvoidance(transform, data.ObsAngle, data.ObsRange, data.MaxObs,data.ObsMask);
         }
 
-        private void InitFSM()
+        protected override void InitFSM()
         {
-            _fsm = new FSM<SlimeStatesEnum>();
-            
+            base.InitFSM();
+
             var states = new List<SlimeStateBase<SlimeStatesEnum>>();
 
             var idle = new SlimeStateIdle<SlimeStatesEnum>();
             var move = new SlimeStateMove<SlimeStatesEnum>();
+            var die = new SlimeStatesDead<SlimeStatesEnum>();
             
             states.Add(idle);
             states.Add(move);
@@ -61,26 +60,28 @@ namespace Game.Entities.Slime
             idle.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
             {
                 { SlimeStatesEnum.Move, move },
+                { SlimeStatesEnum.Die, die },
             });
             
             move.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
             {
                 { SlimeStatesEnum.Idle, idle },
+                { SlimeStatesEnum.Die, die },
             });
 
             foreach (var state in states)
             {
-                state.Init(_model, this,_fsm);
+                state.Init(GetModel<SlimeModel>(), this,Fsm, _root);
             }
             
-            _fsm.SetInit(idle);
+            Fsm.SetInit(idle);
         }
 
         private void InitTree()
         {
-            var idle = new TreeAction(() => _fsm.Transitions(SlimeStatesEnum.Idle));
-            var move = new TreeAction(() => _fsm.Transitions(SlimeStatesEnum.Move));
-            var death = new TreeAction(() => _fsm.Transitions(SlimeStatesEnum.Die));
+            var idle = new TreeAction(ActionIdle);
+            var move = new TreeAction(ActionMove);
+            var death = new TreeAction(ActionDead);
 
             var hasToMove = new TreeQuestion(HasToMove, move, idle);
             var isAlive = new TreeQuestion(IsAlive, hasToMove, death);
@@ -88,19 +89,56 @@ namespace Game.Entities.Slime
             _root = isAlive;
         }
 
+        #region TreeActions
+
+        private void ActionIdle()
+        {
+            if(Fsm == null) return;
+            Fsm.Transitions(SlimeStatesEnum.Idle);
+        }
+
+        private void ActionMove()
+        {
+            if(Fsm == null) return;
+            Fsm.Transitions(SlimeStatesEnum.Move);
+        }
+
+        private void ActionDead()
+        {
+            if(Fsm == null) return;
+            Fsm.Transitions(SlimeStatesEnum.Die);
+        }
+
+        #endregion
+
+        #region TreeQuestions
+
         private bool HasToMove()
         {
-            return _model.hasToMove;
+            return GetModel() && GetModel<SlimeModel>().HasARoute();
         }
 
         private bool IsAlive()
         {
-            return true;
+            return GetModel() && GetModel<SlimeModel>().IsAlive();
         }
 
-        public ISteering GetObsAvoid()
+        #endregion
+
+        #region Components
+
+        public ISteering GetAvoidance()
         {
             return _obsAvoidance;
         }
+
+        public FlockingManager GetFlocking()
+        {
+            return _isFlockingNull ? default : _flocking;
+        }
+
+        #endregion
+        
+
     }
 }
