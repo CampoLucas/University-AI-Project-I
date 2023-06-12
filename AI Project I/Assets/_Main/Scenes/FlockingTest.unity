@@ -175,7 +175,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &20970087
 BoxCollider:
@@ -253,17 +253,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &20970091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &20970092
 MonoBehaviour:
@@ -379,7 +379,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &428268795
 BoxCollider:
@@ -457,17 +457,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &428268799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &428268800
 MonoBehaviour:
@@ -561,7 +561,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 481668195}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: -1.09, y: 8.601068, z: -14.331069}
+  m_LocalPosition: {x: -1.09, y: 8.601068, z: -11.721068}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -865,7 +865,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &663153863
 BoxCollider:
@@ -893,17 +893,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &663153865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -919,7 +919,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &663153866
 MonoBehaviour:
@@ -1080,7 +1080,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &856850569
 BoxCollider:
@@ -1158,17 +1158,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &856850573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1184,7 +1184,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &856850574
 MonoBehaviour:
@@ -1374,7 +1374,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: -1.09, y: 8.601068, z: -14.331069}
+  m_LocalPosition: {x: -1.09, y: 8.601068, z: -11.721068}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1555,7 +1555,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &1043823105
 BoxCollider:
@@ -1633,17 +1633,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &1043823109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1659,7 +1659,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &1043823110
 MonoBehaviour:
@@ -2291,7 +2291,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &1565164581
 BoxCollider:
@@ -2369,17 +2369,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &1565164585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2395,7 +2395,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &1565164586
 MonoBehaviour:
@@ -2657,7 +2657,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &1737815735
 BoxCollider:
@@ -2735,17 +2735,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &1737815739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2761,7 +2761,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &1737815740
 MonoBehaviour:
@@ -2828,7 +2828,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &1861620959
 BoxCollider:
@@ -2906,17 +2906,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &1861620963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2932,7 +2932,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &1861620964
 MonoBehaviour:
@@ -3004,7 +3004,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &1956983702
 BoxCollider:
@@ -3082,17 +3082,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBoids: 15
-  whatIsBoids:
+  whatIsBoid:
     serializedVersion: 2
     m_Bits: 512
-  pMultiplier: 5
-  pRange: 8.29
+  pRange: 5
   pMax: 10
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 192
-  aMultiplier: 1
-  cMultiplier: 1
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 1.5
 --- !u!114 &1956983706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3108,7 +3108,7 @@ MonoBehaviour:
   moveSpeed: 1
   rotSpeed: 1
   moveLerpSpeed: 10
-  radius: 5
+  radius: 10
   hasToMove: 1
 --- !u!114 &1956983707
 MonoBehaviour:
@@ -3205,7 +3205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6211915852871192566, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.26
+      value: -4.65
       objectReference: {fileID: 0}
     - target: {fileID: 6211915852871192566, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
       propertyPath: m_LocalRotation.w

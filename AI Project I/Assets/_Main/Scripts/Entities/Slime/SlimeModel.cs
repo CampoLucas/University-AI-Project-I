@@ -12,7 +12,7 @@ namespace Game.Entities.Slime
         private SlimeFlockingManager _slimeFlocking;
 
         public Vector3 Position => transform.position;
-        public Vector3 Front => transform.position;
+        public Vector3 Front => transform.forward;
         public float Radius => radius;
         
         //Test nor final
@@ -61,7 +61,7 @@ namespace Game.Entities.Slime
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, Radius);
+            Gizmos.DrawWireSphere(Position, Radius);
         }
     }
 }

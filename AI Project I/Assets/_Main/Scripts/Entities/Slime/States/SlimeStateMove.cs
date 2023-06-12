@@ -8,9 +8,10 @@ namespace Game.Entities.Slime.States
         {
             base.Execute();
 
-            var dir = Model.GetFlockingDir().normalized;
+            var dir = Model.GetFlockingDir();
             
-            Model.Move(dir);
+            Model.LookDir(dir);
+            Model.Move(Model.Front);
         }
     }
 }
