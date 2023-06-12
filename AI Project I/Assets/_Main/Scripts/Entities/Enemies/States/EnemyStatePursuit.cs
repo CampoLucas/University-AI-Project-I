@@ -1,13 +1,23 @@
-﻿using UnityEngine;
+﻿using Game.Interfaces;
+using UnityEngine;
 
 namespace Game.Enemies.States
 {
     public class EnemyStatePursuit<T> : EnemyStateBase<T>
     {
+        protected ISteering Steering;
+        protected ISteering ObsAvoidance;
+
+        public EnemyStatePursuit(ISteering steering, ISteering obsAvoidance)
+        {
+            Steering = steering;
+            ObsAvoidance = obsAvoidance;
+        }
+
         public override void Awake()
         {
             base.Awake();
-            Model.SetTimer(Random.Range(2f, 6f));
+            Model.SetFollowing(true);
             Model.SetMovement(Model.GetRunningMovement());
         }
 
@@ -15,16 +25,9 @@ namespace Game.Enemies.States
         public override void Execute()
         {
             base.Execute();
-            if (Model.GetTimerComplete())
-            {
-                Model.RunTimer();
-            }
-            else
-            {
-                Model.SetFollowing(false);
-            }
+            
             Tree.Execute();
-            Model.FollowTarget(Controller.GetPursuit(), Controller.GetObsAvoid());
+            Follow();
             View.UpdateMovementValues(Model.GetMoveAmount());
         }
 
@@ -33,6 +36,18 @@ namespace Game.Enemies.States
             base.Sleep();
             Model.Move(Vector3.zero);
             View.UpdateMovementValues(Model.GetMoveAmount());
+        }
+
+        protected virtual void Follow()
+        {
+            Model.FollowTarget(Steering, ObsAvoidance);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            Steering = null;
+            ObsAvoidance = null;
         }
     }
 }

@@ -31,12 +31,6 @@ namespace Game.Pathfinding
             {
                 nodeGrid.EmptyGrid();
             }
-            if (GUILayout.Button("Create Nodes and Get Neightbourds"))
-            {
-                nodeGrid.EmptyGrid();
-                nodeGrid.CreateGrid();
-                nodeGrid.SearchNeightbourds();
-            }
             if (GUILayout.Button("Get Neightbourds"))
             {
                 nodeGrid.SearchNeightbourds();

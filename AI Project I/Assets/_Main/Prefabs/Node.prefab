@@ -48,6 +48,9 @@ MonoBehaviour:
   walkable: 0
   isTrap: 0
   neightbours: []
+  mask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!135 &-4730693640992528324
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -43,8 +43,8 @@ namespace Game.Enemies
             _states = new List<EnemyStateBase<EnemyStatesEnum>>();
 
             var idle = new EnemyStateIdle<EnemyStatesEnum>();
-            var seek = new EnemyStateSeek<EnemyStatesEnum>();
-            var pursuit = new EnemyStatePursuit<EnemyStatesEnum>();
+            var seek = new EnemyStateSeek<EnemyStatesEnum>(_seek, _obsAvoidance);
+            var pursuit = new EnemyStatePursuit<EnemyStatesEnum>(_pursuit, _obsAvoidance);
             var damage = new EnemyStateDamage<EnemyStatesEnum>();
             var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
             var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
@@ -152,9 +152,9 @@ namespace Game.Enemies
 
             var isHeavyAttack = new TreeQuestion(IsHeavyAttack, heavyAttack, lightAttack);
             var willAttack = new TreeQuestion(WillAttack, isHeavyAttack, idle);
-            var isInAttackRange = new TreeQuestion(IsInAttackingRange, willAttack, chase);
+            var isInAttackRange = new TreeQuestion(IsInAttackingRange, willAttack, pursuit);
             var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
-            var isPlayerOutOfSight = new TreeQuestion(IsPlayerOutOfSight, pursuit, hasARoute);
+            var isPlayerOutOfSight = new TreeQuestion(IsPlayerOutOfSight, chase, hasARoute);
             var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, isPlayerOutOfSight);
             var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, hasARoute);
             var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);

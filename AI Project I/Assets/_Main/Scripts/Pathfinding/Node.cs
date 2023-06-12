@@ -11,14 +11,14 @@ namespace Game.Pathfinding
     {
         public Transform MyTransform { get; private set; }
         public string Name => gameObject.name;
-        public List<Node> Neightbours => neightbours;
+        public List<Node> Neightbourds => neightbours;
         public bool Walkable => walkable;
         public bool IsTrap => isTrap;
 
         [SerializeField] private bool walkable;
         [SerializeField] private bool isTrap;
         [SerializeField] private List<Node> neightbours;
-        private LayerMask _mask;
+        [SerializeField] private LayerMask mask;
 
         public void Init(bool _walkable, bool _isTrap, string name)
         {
@@ -26,7 +26,7 @@ namespace Game.Pathfinding
             isTrap = _isTrap;
             MyTransform = transform;
             gameObject.name = name;
-            _mask = gameObject.layer;
+            mask = gameObject.layer;
         }
 
         public void GetNeightbours(float maxDistnace = 2.2f)

@@ -67,6 +67,7 @@ namespace Game.Pathfinding
                         var position = GetWorldPosition(x, y, z);
                         if (Condition(position, out var walkable, out var hasTrap))
                         {
+                            if (!walkable) continue;
                             var n = Instantiate(prefab, position, Quaternion.identity, transform);
                             n.transform.localScale = Vector3.one * NodeDiameter;
                             n.Init(walkable, hasTrap, $"{x}, {y}, {z}");
@@ -89,8 +90,12 @@ namespace Game.Pathfinding
 
         public Node GetClosestNode(Vector3 position)
         {
+            float multiplierTrap = 2f;
+            float multiplierUnwalkable = 8f;
+
             Node closestNode = null;
             var closestDistance = Mathf.Infinity;
+
             var posOffset = position;
             posOffset.y += 0.05f;
 
@@ -98,6 +103,11 @@ namespace Game.Pathfinding
             {
                 //var distance = Vector3.Distance(node.transform.position, position);
                 var distance = (node.transform.position - position).sqrMagnitude;
+                if (node.IsTrap)
+                    distance += multiplierTrap;
+                if (!node.Walkable)
+                    distance += multiplierUnwalkable;
+
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
@@ -113,7 +123,7 @@ namespace Game.Pathfinding
             foreach (var node in nodes)
             {
                 node.RemoveNeightbours();
-                node.GetNeightbours(NodeDiameter);
+                node.GetNeightbours(NodeDiameter * 2);
             }
         }
 
@@ -148,7 +158,7 @@ namespace Game.Pathfinding
         }
 
 #if UNITY_EDITOR
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(transform.position, gridWorldSize);
@@ -180,7 +190,7 @@ namespace Game.Pathfinding
             {
                 foreach (var node in nodes)
                 {
-                    if (node.Neightbours != null)
+                    if (node.Neightbourds != null)
                     {
                         var color = new Color(0, 0, 1, 0.5f);
                         if (!node.Walkable)
@@ -188,12 +198,12 @@ namespace Game.Pathfinding
                         else if (node.IsTrap)
                             color = new Color(1, 0, 0, 0.5f);
                         Gizmos.color = color;
-                        Gizmos.DrawSphere(node.MyTransform.position, nodeRadius/2);
-                        UnityEditor.Handles.Label(node.MyTransform.position, node.Name);
-                        foreach (var neightbour in node.Neightbours)
+                        Gizmos.DrawSphere(node.transform.position, nodeRadius/2);
+                        UnityEditor.Handles.Label(node.transform.position, node.Name);
+                        foreach (var neightbour in node.Neightbourds)
                         {
                             Gizmos.color = new Color(0.5f, 0, 0.5f, 1);
-                            Gizmos.DrawLine(node.MyTransform.position, neightbour.MyTransform.position);
+                            Gizmos.DrawLine(node.transform.position, neightbour.transform.position);
                         }
                     }
                 }

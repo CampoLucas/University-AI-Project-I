@@ -3,6 +3,7 @@ using Game.Entities;
 using Game.Interfaces;
 using Game.Player;
 using Game.SO;
+using Game.Pathfinding;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -17,6 +18,8 @@ namespace Game.Enemies
         private InRange _range;
         private Vector3 _direction = Vector3.zero;
         private bool _isFollowing;
+        private FollowTarget _followTarget;
+        private Pathfinder _pathfinder;
 
         
         protected override void Awake()
@@ -26,7 +29,8 @@ namespace Game.Enemies
             _fieldOfView = new FieldOfView(_data, transform);
             _path = GetComponent<PathToFollow>();
             _range = new InRange(transform);
-            
+            _followTarget = new FollowTarget(transform, this, _data);
+            _pathfinder = GetComponent<Pathfinder>();
         }
 
 
@@ -58,39 +62,51 @@ namespace Game.Enemies
         public bool ReachedWaypoint() => _path.ReachedWaypoint();
         public void ChangeWaypoint() => _path.ChangeWaypoint();
         
-        public void FollowTarget(Transform target)
+        public void FollowTarget(Transform target, ISteering obsAvoidance)
         {
-            var transform1 = transform;
-            var dir = target.position - transform1.position;
-            Move(transform1.forward);
-            Rotate(dir);
+            _followTarget.Follow(target, obsAvoidance);
         }
 
         public void FollowTarget(Vector3 target, ISteering obsAvoidance)
         {
-            var transform1 = transform;
-            var dir = (target - transform1.position).normalized + obsAvoidance.GetDir() * _data.ObsMultiplier;
-            dir.y = 0;
-            Move(transform1.forward);
-            Rotate(dir);
-        }
-        
-        public void FollowTarget(Vector3 target)
-        {
-            var transform1 = transform;
-            var dir = target - transform1.position;
-            Move(transform1.forward);
-            Rotate(dir);
+            _followTarget.Follow(target, obsAvoidance);
         }
         
         public void FollowTarget(ISteering steering, ISteering obsAvoidance)
         {
-            var dir = steering.GetDir() + obsAvoidance.GetDir() * _data.ObsMultiplier;
-            dir.y = 0;
-            Move(transform.forward);
-            Rotate(dir);
+            _followTarget.Follow(steering, obsAvoidance);
         }
-        
+
+        public void FollowTarget(IPathfinder pathfinder, ISteering steering, ISteering obsAvoindance)
+        {
+            _followTarget.Follow(pathfinder, steering, obsAvoindance);
+        }
+
+        public void SetNodes(Vector3 origin, Vector3 target)
+        {
+            _pathfinder.SetNodes(origin, target);
+        }
+
+        public void CalculatePath()
+        {
+            _pathfinder.Run();
+        }
+
+        public bool IsTargetInRange()
+        {
+            return _pathfinder.IsTargetInRange();
+        }
+
+        public IPathfinder GetPathfinder()
+        {
+            return _pathfinder;
+        }
+
+        public void SetTarget(Transform target)
+        {
+            _pathfinder.SetTarget(target);
+        }
+
         public bool IsTargetInSight(Transform target) => CheckRange(target) && CheckAngle(target) && CheckView(target);
         public bool IsFollowing() => _isFollowing;
         public void SetFollowing(bool isFollowing) => _isFollowing = isFollowing;
