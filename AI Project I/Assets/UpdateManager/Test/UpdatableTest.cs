@@ -9,6 +9,6 @@ public class UpdatableTest : UpdatableBehaviour
 {
     public override void Tick()
     {
-        Debug.Log(UpdateLayer.ToString());
+        Debug.Log(UpdateMask.ToString());
     }
 }

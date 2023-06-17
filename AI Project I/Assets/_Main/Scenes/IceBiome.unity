@@ -13706,7 +13706,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7574225338619284586, guid: e26176f5209d0944c85ffe42394ac78b, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7574225338619284586, guid: e26176f5209d0944c85ffe42394ac78b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -43511,7 +43511,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5796557105052662328, guid: bce5902db60c3124eb58cde8ebe2f160, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5796557105052662328, guid: bce5902db60c3124eb58cde8ebe2f160, type: 3}
       propertyPath: m_LocalPosition.x
@@ -43555,11 +43555,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5796557105052662329, guid: bce5902db60c3124eb58cde8ebe2f160, type: 3}
       propertyPath: layers.content.Array.data[1].frameRate
-      value: 120
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 5796557105052662329, guid: bce5902db60c3124eb58cde8ebe2f160, type: 3}
       propertyPath: layers.content.Array.data[1].fixedFrameRate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5796557105052662329, guid: bce5902db60c3124eb58cde8ebe2f160, type: 3}
       propertyPath: layers.content.Array.data[3].fixedFrameRate
@@ -43757,6 +43757,14 @@ PrefabInstance:
     - target: {fileID: 6211915852871192566, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6211915852871192572, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
+      propertyPath: <UpdateLayer>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6211915852871192575, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
+      propertyPath: <UpdateLayer>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a72c5b2da9a10944b868543506d266ca, type: 3}
@@ -62574,7 +62582,7 @@ Transform:
   - {fileID: 2083139783}
   - {fileID: 2125787168}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1766671766 stripped
 Transform:
@@ -69663,7 +69671,7 @@ Transform:
   - {fileID: 883028253}
   - {fileID: 915612404}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2033832659
 GameObject:

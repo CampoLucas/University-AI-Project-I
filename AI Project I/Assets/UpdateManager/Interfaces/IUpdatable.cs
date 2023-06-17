@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public interface IUpdatable
 {
-    Layer UpdateLayer { get; }
+    UpdateMask UpdateMask { get; }
     void Tick();
     void LateTick();
 }

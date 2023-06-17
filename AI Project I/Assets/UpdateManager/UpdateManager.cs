@@ -6,10 +6,10 @@ public class UpdateManager : MonoBehaviour
 {
     public static UpdateManager Instance { get; private set; }
 
-    [SerializeField] private EnumDataContainer<UpdateLayer, Layer> layers;
+    [SerializeField] private EnumDataContainer<UpdateLayer, UpdateMask> layers;
 
     private List<UpdateLayer> layersList = new();
-    private Dictionary<Layer, UpdateLayer> _updatableDictionary = new();
+    private Dictionary<UpdateMask, UpdateLayer> _updatableDictionary = new();
 
     private void Awake()
     {
@@ -50,25 +50,25 @@ public class UpdateManager : MonoBehaviour
 
     public void Add(IUpdatable tick)
     {
-        if (!_updatableDictionary.TryGetValue(tick.UpdateLayer, out var layer))
+        if (!_updatableDictionary.TryGetValue(tick.UpdateMask, out var layer))
         {
-            layer = layers[(int)tick.UpdateLayer];
-            _updatableDictionary[tick.UpdateLayer] = layer;
+            layer = layers[(int)tick.UpdateMask];
+            _updatableDictionary[tick.UpdateMask] = layer;
         }
         layer.Add(tick);
     }
 
     public void Remove(IUpdatable tick)
     {
-        if (_updatableDictionary.ContainsKey(tick.UpdateLayer))
-            _updatableDictionary[tick.UpdateLayer].Remove(tick);
+        if (_updatableDictionary.ContainsKey(tick.UpdateMask))
+            _updatableDictionary[tick.UpdateMask].Remove(tick);
     }
 
-    public float LayerDelta(Layer updateLayer)
+    public float LayerDelta(UpdateMask updateMask)
     {
-        if (!_updatableDictionary.TryGetValue(updateLayer, out var layer))
+        if (!_updatableDictionary.TryGetValue(updateMask, out var layer))
         {
-            layer = layers[(int)updateLayer];
+            layer = layers[(int)updateMask];
         }
 
         return layer.Delta;
@@ -87,7 +87,7 @@ public class UpdateManager : MonoBehaviour
     }
 }
 
-public enum Layer
+public enum UpdateMask
 {
     Default,
     Gameplay,
@@ -106,7 +106,7 @@ public class UpdateLayer : System.IDisposable
     [Range(30, 360)][SerializeField] public int frameRate = 60;
 
     private List<IUpdatable> _tickList = new();
-    private Dictionary<IUpdatable, Layer> _tickDictionary = new();
+    private Dictionary<IUpdatable, UpdateMask> _tickDictionary = new();
     private float _updateInterval;
     private float _updateTime;
     private float _lateUpdateTime;
@@ -219,7 +219,7 @@ public class UpdateLayer : System.IDisposable
     {
         if (_tickDictionary.ContainsKey(tick)) return;
         Debug.Log("Updtatable Added to Layer");
-        var layer = tick.UpdateLayer;
+        var layer = tick.UpdateMask;
         _tickDictionary[tick] = layer;
         _tickList.Add(tick);
     }

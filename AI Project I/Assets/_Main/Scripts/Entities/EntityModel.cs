@@ -36,7 +36,7 @@ namespace Game.Entities
             _lightAttack = GetComponent<LightAttack>();
             _heavyAttack = GetComponent<HeavyAttack>();
             Damageable = GetComponent<Damageable>();
-            _waitTimer = new WaitTimer();
+            _waitTimer = new WaitTimer(UpdateMask.Gameplay);
         }
 
         public virtual void Move(Vector3 dir) => _movement?.Move(dir);

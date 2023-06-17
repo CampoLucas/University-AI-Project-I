@@ -32,7 +32,8 @@ namespace Game.Entities
         public override void Tick()
         {
             base.Tick();
-            Fsm.OnUpdate();
+            if (Fsm != null)
+                Fsm.OnUpdate();
         }
 
         public EntityModel GetModel() => _model;
