@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Game.Player
 {
-    public class PlayerInputHandler : MonoBehaviour
+    public class PlayerInputHandler : UpdatableBehaviour
     {
         public Vector3 MoveDir { get; private set; }
         public float MoveAmount { get; private set; }
@@ -36,13 +36,15 @@ namespace Game.Player
             _input.Disable();
         }
 
-        private void Update()
+        public override void Tick()
         {
+            base.Tick();
             HandleInput();
         }
 
-        private void LateUpdate()
+        public override void LateTick()
         {
+            base.LateTick();
             FlagLightAttack = false;
             FlagHeavyAttack = false;
             _inputLightAttack = false;
