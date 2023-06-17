@@ -8,15 +8,9 @@ namespace Game.Entities
     public class WaitTimer
     {
         private float _currentTime;
-        private UpdateMask _updateMask;
-
-        public WaitTimer(UpdateMask updateMask)
-        {
-            _updateMask = updateMask;
-        }
 
         public bool TimerComplete() => _currentTime > 0;
-        public void RunTimer() => _currentTime -= UpdateManager.Instance.LayerDelta(_updateMask);
+        public void RunTimer() => _currentTime -= Time.deltaTime;
         public void SetTimer(float time) => _currentTime = time;
         public float GetRandomTime(float maxTime) => Random.Range(0, maxTime);
 

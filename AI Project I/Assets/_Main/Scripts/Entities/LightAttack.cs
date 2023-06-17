@@ -7,7 +7,7 @@ using Game.Items.Weapons;
 
 namespace Game.Entities
 {
-    public class LightAttack : UpdatableBehaviour, IAttack
+    public class LightAttack : MonoBehaviour, IAttack
     {
         protected EntityModel Entity;
         private float _timer;
@@ -20,12 +20,11 @@ namespace Game.Entities
             Entity = GetComponent<EntityModel>();
         }
 
-        public override void Tick()
+        protected void Update()
         {
-            base.Tick();
             if (_enable)
             {
-                _timer += UpdateManager.LayerDelta(this.UpdateMask);
+                _timer += Time.deltaTime;
 
                 if (!_activated && _timer >= GetStartTime())
                 {

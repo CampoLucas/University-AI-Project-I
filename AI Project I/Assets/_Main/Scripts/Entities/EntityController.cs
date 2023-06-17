@@ -4,7 +4,7 @@ using Game.FSM;
 
 namespace Game.Entities
 {
-    public class EntityController<T> : UpdatableBehaviour
+    public class EntityController<T> : MonoBehaviour
     {
         private EntityModel _model;
         private EntityView _view;
@@ -23,15 +23,13 @@ namespace Game.Entities
             MyTransform = transform;
         }
 
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
             InitFSM();
         }
 
-        public override void Tick()
+        protected virtual void Update()
         {
-            base.Tick();
             if (Fsm != null)
                 Fsm.OnUpdate();
         }

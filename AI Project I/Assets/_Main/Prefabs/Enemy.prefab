@@ -192,18 +192,6 @@ PrefabInstance:
       propertyPath: damageLayerMask.m_Bits
       value: 64
       objectReference: {fileID: 0}
-    - target: {fileID: 2114879826204767294, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3317932273744018569, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6992768951632543916, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 7118878947998023052, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -251,22 +239,6 @@ PrefabInstance:
     - target: {fileID: 7118878947998023055, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
       propertyPath: m_Name
       value: ArmingSword
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118878947998023055, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118878949143416094, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7929219905371388070, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8718496985495369093, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
