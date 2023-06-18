@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Game.Entities;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class BulletScript : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class BulletScript : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float damage;
     public String Owner;
+    private IObjectPool<BulletScript> mypool;
 
     void Start()
     {
@@ -25,20 +27,17 @@ public class BulletScript : MonoBehaviour
         {
             transform.position += transform.forward * speed * Time.deltaTime;
         }
-        else
-        {
-            gameObject.SetActive(false);
-        }
     }
 
-    public void Activate()
+    private void OnEnable()
     {
-        isActive = true;        
+        isActive = true;                
     }
 
     public void Deactivate()
     {
         isActive = false;
+        this.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -47,7 +46,12 @@ public class BulletScript : MonoBehaviour
         if (player != null)
         {
             player.TakeDamage(damage);
-            this.gameObject.SetActive(false);
         }
+        mypool.Release(this);
+    }
+
+    public void SetPool(IObjectPool<BulletScript> pool)
+    {
+        mypool = pool;
     }
 }

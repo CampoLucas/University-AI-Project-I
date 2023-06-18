@@ -16,19 +16,20 @@ public class MovingBladeScript : MonoBehaviour
         rb = this.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         xVelocity += Time.deltaTime * speed * normalize;
         xVelocity = Mathf.Clamp(xVelocity, -Maxspeed, Maxspeed);
         rb.velocity = new Vector3(xVelocity, 0, 0);
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer.Equals(9))
+        if (transform.localPosition.x > 1)
         {
-            normalize *= -1;
+            normalize = -1;
+        }
+
+        if (transform.localPosition.x < -1)
+        {
+            normalize = 1;
         }
     }
 }

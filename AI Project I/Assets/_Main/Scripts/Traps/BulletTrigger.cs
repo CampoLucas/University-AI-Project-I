@@ -8,9 +8,15 @@ public class BulletTrigger : MonoBehaviour
 {
 
     [SerializeField] private GameObject spawner;
+    private BulletShooter _bulletshooter;
     
+    private void Start()
+    {
+        _bulletshooter = spawner.GetComponent<BulletShooter>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        spawner.GetComponent<BulletShooter>().ShootBullet();
+        _bulletshooter.ShootBullet();
     }
 }
