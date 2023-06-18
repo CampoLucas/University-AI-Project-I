@@ -20,7 +20,7 @@ namespace Game.Entities
             Entity = GetComponent<EntityModel>();
         }
 
-        private void Update()
+        protected void Update()
         {
             if (_enable)
             {

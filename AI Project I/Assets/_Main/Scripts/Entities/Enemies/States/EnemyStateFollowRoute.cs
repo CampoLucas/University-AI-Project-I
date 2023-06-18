@@ -4,6 +4,12 @@ namespace Game.Enemies.States
 {
     public class EnemyStateFollowRoute<T> : EnemyStateBase<T>
     {
+        public override void Awake()
+        {
+            base.Awake();
+            Model.SetMovement(Model.GetWalkingMovement());
+        }
+
         public override void Execute()
         {
             base.Execute();
@@ -13,14 +19,14 @@ namespace Game.Enemies.States
             {
                 Model.ChangeWaypoint();
             }
-            Model.FollowTarget(Model.GetNextWaypoint(), 0.5f);
+            Model.FollowTarget(Model.GetNextWaypoint(), Controller.GetObsAvoid());
             View.UpdateMovementValues(0.5f);
         }
 
         public override void Sleep()
         {
             base.Sleep();
-            Model.Move(Vector3.zero, Model.GetMoveAmount());
+            Model.Move(Vector3.zero);
             //View.UpdateMovementValues(Model.GetMoveAmount());
         }
     }

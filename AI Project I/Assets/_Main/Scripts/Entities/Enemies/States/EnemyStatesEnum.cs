@@ -3,14 +3,12 @@
     public enum EnemyStatesEnum
     {
         Idle,
-        ChaseSeek,
-        ChasePursuit,
+        Seek,
+        Pursuit,
         LightAttack,
         HeavyAttack,
         Die,
         Damage,
         FollowRoute,
-        Dodge,
-        Scape,
     }
 }

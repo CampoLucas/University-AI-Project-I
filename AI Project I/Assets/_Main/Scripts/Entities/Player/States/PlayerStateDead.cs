@@ -9,6 +9,7 @@ namespace Game.Player.States
         {
             base.Awake();
             View.PlayTargetAnimation(Model.GetData().DeathAnimation.name);
+            UnsubscribeAll();
         }
     }
 }

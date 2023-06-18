@@ -14,9 +14,9 @@ TagManager:
   - Player
   - Enemy
   - Obstacle
-  - Limits
-  - 
-  - 
+  - Floor
+  - Trap
+  - Node
   - 
   - 
   - 

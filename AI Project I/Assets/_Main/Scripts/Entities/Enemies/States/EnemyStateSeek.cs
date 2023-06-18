@@ -1,23 +1,50 @@
-﻿using UnityEngine;
+﻿using Game.Interfaces;
+using UnityEngine;
 
 namespace Game.Enemies.States
 {
-    public class EnemyStateSeek<T> : EnemyStateBase<T>
+    public class EnemyStateSeek<T> : EnemyStatePursuit<T>
     {
+        public EnemyStateSeek(ISteering steering, ISteering obsAvoidance) : base(steering, obsAvoidance) {}
+
+        public override void Awake()
+        {
+            base.Awake();
+            Model.SetTimer(Random.Range(8f, 16f));
+            CalculatePath();
+            Model.SetTarget(Controller.Player.transform);
+        }
+
         public override void Execute()
         {
             base.Execute();
 
-            Tree.Execute();
-            Model.FollowTarget(Model.GetSeek(), Model.GetMoveAmount());
-            View.UpdateMovementValues(Model.GetMoveAmount());
+            if (Model.GetTimerComplete())
+            {
+                Model.RunTimer();
+            }
+            else
+            {
+                Model.SetFollowing(false);
+            }
         }
 
-        public override void Sleep()
+        private void CalculatePath()
         {
-            base.Sleep();
-            Model.Move(Vector3.zero, Model.GetMoveAmount());
-            View.UpdateMovementValues(Model.GetMoveAmount());
+            var pos = Model.transform.position;
+            var targetPos = Controller.Player.transform.position;
+
+            Model.SetNodes(pos, targetPos);
+            Model.CalculatePath();
+        }
+
+        protected override void Follow()
+        {
+            if (!Model.IsTargetInRange())
+            {
+                CalculatePath();
+            }
+            Model.FollowTarget(Model.GetPathfinder(), Steering, ObsAvoidance);
         }
     }
 }

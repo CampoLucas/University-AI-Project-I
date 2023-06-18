@@ -145,6 +145,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 005c1834706664c41b36ab799ffe9a47, type: 3}
   m_PrefabInstance: {fileID: 7118878949258757623}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1090548959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7929219905371388070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edfa2119453b1b04a84bfbd69ee8895e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1090548957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,15 +174,3 @@ MonoBehaviour:
   damageLayerMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &1090548959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7929219905371388070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edfa2119453b1b04a84bfbd69ee8895e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

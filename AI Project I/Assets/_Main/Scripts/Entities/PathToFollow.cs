@@ -8,32 +8,36 @@ namespace Game.Entities
 {
     public class PathToFollow : MonoBehaviour
     {
-        [SerializeField] private PathSO path;
+        [field: SerializeField] public PathSO Path { get; private set; }
         private int _index;
         private int _dir = 1;
 
         public Vector3 GetCurrentPoint()
         {
-            return path.Waypoints[_index] + path.WorldOffset;
+            if (Path)
+                return Path.Waypoints[_index] + Path.WorldOffset;
+            return default;
         }
 
         public Vector3 GetNextWaypoint()
         {
-            return path.Waypoints[GetNextIndex()] + path.WorldOffset;
+            if (Path)
+                return Path.Waypoints[GetNextIndex()] + Path.WorldOffset;
+            return default;
         }
 
         private int GetNextIndex()
         {
             var currentIndex = _index;
-            if (path.IsCircular)
+            if (Path.IsCircular)
             {
-                currentIndex = path.IsReversed ? currentIndex - 1 : currentIndex + 1;
+                currentIndex = Path.IsReversed ? currentIndex - 1 : currentIndex + 1;
                 
                 if (currentIndex < 0)
                 {
-                    currentIndex = path.Waypoints.Count - 1;
+                    currentIndex = Path.Waypoints.Count - 1;
                 }
-                else if (currentIndex > path.Waypoints.Count - 1)
+                else if (currentIndex > Path.Waypoints.Count - 1)
                 {
                     currentIndex = 0;
                 }
@@ -44,7 +48,7 @@ namespace Game.Entities
                 if (_dir == 1)
                 {
                     currentIndex++;
-                    if (currentIndex  > path.Waypoints.Count - 1)
+                    if (currentIndex  > Path.Waypoints.Count - 1)
                     {
                         _dir = -1;
                         currentIndex = 0;
@@ -56,7 +60,7 @@ namespace Game.Entities
                     if (currentIndex < 0)
                     {
                         _dir = 1;
-                        currentIndex = path.Waypoints.Count - 1;
+                        currentIndex = Path.Waypoints.Count - 1;
                     }
                 }
                 
@@ -67,7 +71,9 @@ namespace Game.Entities
 
         public bool ReachedWaypoint()
         {
-            return Vector3.Distance(transform.position, GetNextWaypoint()) < path.Threshold;
+            if (Path)
+                return Vector3.Distance(transform.position, GetNextWaypoint()) < Path.Threshold;
+            return default;
         }
 
         public Vector3 GetWaypointDirection()
@@ -82,12 +88,12 @@ namespace Game.Entities
         
         private void OnDrawGizmos()
         {
-            if (path == null) return;
+            if (Path == null) return;
 
-            for (int i = 0; i < path.Waypoints.Count; i++)
+            for (int i = 0; i < Path.Waypoints.Count; i++)
             {
-                var waypoint = path.Waypoints[i];
-                var waypointOffset = waypoint + path.WorldOffset;
+                var waypoint = Path.Waypoints[i];
+                var waypointOffset = waypoint + Path.WorldOffset;
                 if (waypointOffset.y != 0)
                 {
                     if (waypointOffset.y > 0)
@@ -101,15 +107,15 @@ namespace Game.Entities
                     Gizmos.DrawLine(new Vector3(waypointOffset.x, 0, waypointOffset.z), waypointOffset);
                 }
                 
-                if (waypoint == path.Waypoints[_index])
+                if (waypoint == Path.Waypoints[_index])
                 {
                     Gizmos.color = Color.magenta;
                 }
-                else if (waypoint == path.Waypoints[GetNextIndex()])
+                else if (waypoint == Path.Waypoints[GetNextIndex()])
                 {
                     Gizmos.color = Color.red;
                 }
-                else if (waypoint == path.Waypoints[0])
+                else if (waypoint == Path.Waypoints[0])
                 {
                     Gizmos.color = Color.green;
                 }
@@ -119,17 +125,17 @@ namespace Game.Entities
                 }
 
                 Gizmos.DrawSphere(waypointOffset, 0.2f);
-                Gizmos.DrawWireSphere(waypointOffset, path.Threshold);
+                Gizmos.DrawWireSphere(waypointOffset, Path.Threshold);
 
                 if (i > 0)
                 {
-                    Gizmos.DrawLine(path.Waypoints[i - 1] + path.WorldOffset, waypointOffset);
+                    Gizmos.DrawLine(Path.Waypoints[i - 1] + Path.WorldOffset, waypointOffset);
                 }
             }
 
-            if (path.IsCircular && path.Waypoints.Count > 1)
+            if (Path.IsCircular && Path.Waypoints.Count > 1)
             {
-                Gizmos.DrawLine(path.Waypoints[path.Waypoints.Count - 1] + path.WorldOffset, path.Waypoints[0] + path.WorldOffset);
+                Gizmos.DrawLine(Path.Waypoints[Path.Waypoints.Count - 1] + Path.WorldOffset, Path.Waypoints[0] + Path.WorldOffset);
             }
         }
     }

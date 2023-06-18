@@ -10,6 +10,10 @@ namespace Game.Entities.Steering
         {
         }
 
+        /// <summary>
+        /// A method that gets the flee direction.
+        /// </summary>
+        /// <returns> Returns the opposite direction of seek</returns>
         public override Vector3 GetDir()
         {
             return -base.GetDir();
