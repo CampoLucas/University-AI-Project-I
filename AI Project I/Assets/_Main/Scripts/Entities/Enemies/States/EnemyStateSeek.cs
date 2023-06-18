@@ -42,6 +42,7 @@ namespace Game.Enemies.States
         {
             if (!Model.IsTargetInRange())
             {
+                Logging.LogPathfinder($"Is target in range: {Model.IsTargetInRange()}");
                 CalculatePath();
             }
             Model.FollowTarget(Model.GetPathfinder(), Steering, ObsAvoidance);

@@ -1,3 +1,4 @@
+using System;
 using Game.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace Game.Pathfinding
     {
         public List<Vector3> Waypoints { get; private set; } = new();
         public int NextPoint { get; private set; } = 0;
+        
         [field: SerializeField] public Transform Target { get; private set; }
 
         [SerializeField] private float radius;
@@ -25,7 +27,7 @@ namespace Game.Pathfinding
             var endPos = _endNode.transform.position;
             Logging.LogError("Target is null", () => !Target);
             endPos.y = Target.transform.position.y;
-            return Vector3.Distance(Target.position, _endNode.transform.position) < radius;
+            return Vector3.Distance(Target.position, endPos) <= radius;
         }
 
         public void SetTarget(Transform target)
@@ -33,7 +35,16 @@ namespace Game.Pathfinding
             Target = target;
         }
 
-        public void Run()
+        private void Start()
+        {
+            LoggingTwo.Log("log", LoggingType.Debug);
+            LoggingTwo.Log("log", LoggingType.Info);
+            LoggingTwo.Log("log", LoggingType.Warning);
+            LoggingTwo.Log("log", LoggingType.Error);
+            LoggingTwo.Log("log", LoggingType.Critical);
+        }
+
+        public void RunPathfinder()
         {
             if (!_startNode || !_endNode) return;
 
@@ -105,6 +116,37 @@ namespace Game.Pathfinding
         //    _waypointsDictionary[startEnd] = path;
         //}
 
+        public void Run()
+        {
+            // is the start and end nodes are null, returns null
+            if (!_startNode || !_endNode || !Target)
+            {
+                // No possible path found
+                return;
+            }
+            
+            // checks if the nodes are in the dictionary
+            // -- Set the saved waypoint
+
+            var nodePath = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic);
+            Logging.LogPathfinder($"node path: {nodePath}");
+            // Convert the node list into a Vector3 list with its position at the start and the target position at the end
+            var cleanedPath = new List<Vector3> { transform.position };
+
+            for (var i = 0; i < nodePath.Count; i++)
+            {
+                cleanedPath.Add(nodePath[i].transform.position);
+            }
+            cleanedPath.Add(Target.position);
+
+            // Cleans the path
+            Logging.LogPathfinder($"Before cleaning path: {cleanedPath}");
+            _aStar.CleanPath(cleanedPath, InView, out cleanedPath);
+            
+            LoggingTwo.Log($"Final path: 0");
+            Waypoints = cleanedPath;
+        }
+
         private bool Satisfies(Node curr)
         {
             return curr == _endNode;
@@ -120,6 +162,11 @@ namespace Game.Pathfinding
             var startPos = from.transform.position;
             var endPos = to.transform.position;
             return !Physics.Linecast(startPos, endPos, maskObs);
+        }
+
+        private bool InView(Vector3 from, Vector3 to)
+        {
+            return !Physics.Linecast(from, to, maskObs);
         }
 
         private float Heuristic(Node curr)

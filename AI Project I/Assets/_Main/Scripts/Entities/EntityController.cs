@@ -43,7 +43,8 @@ namespace Game.Entities
         {
             _model = null;
             _view = null;
-            Fsm.Dispose();
+            if (Fsm != null)
+                Fsm.Dispose();
             Fsm = null;
         }
     }

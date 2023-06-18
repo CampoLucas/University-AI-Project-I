@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Pathfinding
 {
@@ -102,10 +99,10 @@ namespace Game.Pathfinding
             return path;
         }
 
-        public void CleanPath(List<T> path, Func<T, T, bool> inView, out List<T> cleanedPath)
+        public void CleanPath<TList>(List<TList> path, Func<TList, TList, bool> inView, out List<TList> cleanedPath)
         {
-            cleanedPath = new List<T>();
-            if (path == null || path.Count <= 2)
+            cleanedPath = new List<TList>();
+            if (path is not { Count: > 2 })
             {
                 cleanedPath = path;
                 return;
@@ -114,14 +111,13 @@ namespace Game.Pathfinding
             cleanedPath.Add(path[0]);
             for (var i = 2; i < path.Count - 2; i++)
             {
-                var gp = cleanedPath[cleanedPath.Count - 1];
+                var gp = cleanedPath[^1];
                 if (!inView(gp, path[i]))
                 {
                     cleanedPath.Add(path[i - 1]);
                 }
             }
-            cleanedPath.Add(path[path.Count - 1]);
-            return;
+            cleanedPath.Add(path[^1]);
         }
     }
 

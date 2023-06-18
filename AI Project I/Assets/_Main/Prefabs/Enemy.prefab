@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 0}
-  radius: 0
+  radius: 2
   mask:
     serializedVersion: 2
     m_Bits: 64

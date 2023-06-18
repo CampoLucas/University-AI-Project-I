@@ -1,42 +1,45 @@
-﻿using Conditional = System.Diagnostics.ConditionalAttribute;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
 using Debug = UnityEngine.Debug;
+using UnityEngine;
+using Object = UnityEngine.Object;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Game
 {
     
     public static class Logging
     {
-        [Conditional("UNITY_ENGINE"), 
-         Conditional("ENABLE_LOG")]
+        [Conditional("ENABLE_LOG")]
         public static void Log(object obj)
         {
             Debug.Log($"LOG: {obj}");
         }
 
-        [Conditional("UNITY_ENGINE"),
-         Conditional("ENABLE_LOG")]
+        [Conditional("ENABLE_LOG")]
         public static void LogError(object obj)
         {
             Debug.LogError($"ERROR: {obj}");
         }
 
-        [Conditional("UNITY_ENGINE"),
-         Conditional("ENABLE_LOG")]
+        [Conditional("ENABLE_LOG")]
         public static void LogError(object obj, System.Func<bool> condition)
         {
             if (condition())
                 LogError(obj);
         }
 
-        [Conditional("UNITY_ENGINE"),
-         Conditional("ENABLE_LOG")]
+        [System.Diagnostics.Conditional("ENABLE_LOG")]
         public static void LogWarning(object obj)
         {
             Debug.LogWarning($"WARNING: {obj}");
         }
 
-        [Conditional("UNITY_ENGINE"),
-         Conditional("ENABLE_LOG")]
+        [System.Diagnostics.Conditional("ENABLE_LOG")]
         public static void LogWarning(object obj, System.Func<bool> condition)
         {
             if (condition())
@@ -44,10 +47,131 @@ namespace Game
         }
 
 
-        [Conditional("UNITY_ENGINE"), Conditional("ENABLE_LOG_DESTROY")]
+        [System.Diagnostics.Conditional("ENABLE_LOG_DESTROY")]
         public static void LogDestroy(object obj)
         {
             Debug.Log(obj);
+        }
+        
+        [System.Diagnostics.Conditional("ENABLE_LOG_PATHFINDER")]
+        public static void LogPathfinder(object obj)
+        {
+            Debug.Log($"LOG_PATHFINDER: {obj}");
+        }
+        
+    }
+
+    public enum LoggingType
+    {
+        Debug,
+        Info,
+        Warning,
+        Error,
+        Critical
+    }
+    
+    public static class LoggingTwo
+    {
+        [Conditional("ENABLE_LOG")]
+        public static void Log(object message)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"{GetSourceInformation()} <color=lightblue><b>INFO:</b> {message}</color>");
+#endif
+        }
+        
+        [Conditional("ENABLE_LOG")]
+        public static void Log(object message, Object context)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"{GetSourceInformation()} <color=lightblue><b>INFO:</b> {message}</color>", context);
+#endif
+        }
+        
+        [Conditional("ENABLE_LOG")]
+        public static void Log(object message, LoggingType type = LoggingType.Info, Object context = null)
+        {
+#if UNITY_EDITOR
+            if (!Enum.IsDefined(typeof(LoggingType), type))
+                throw new InvalidEnumArgumentException(nameof(type), (int)type, typeof(LoggingType));
+            
+            var color = "light";
+            switch (type)
+            {
+                case LoggingType.Debug:
+                    color = IsDarkMode() ? "#00E01A" : "#8BFA5F";
+                    
+                    Debug.Log($"{GetSourceInformation()} <color={color}><b>DEBUG:</b> {message}</color>", context);
+                    break;
+                case LoggingType.Info:
+                    color = IsDarkMode() ? "#3DBAB8" : "#52FAF7";
+                    Debug.Log($"{GetSourceInformation()} <color={color}><b>INFO:</b> {message}</color>", context);
+                    break;
+                case LoggingType.Warning:
+                    color = IsDarkMode() ? "#E0D900" : "yellow";
+                    Debug.LogWarning($"{GetSourceInformation()} <color={color}><b>WARNING:</b> {message}</color>", context);
+                    break;
+                case LoggingType.Error:
+                    color = IsDarkMode() ? "orange" : "#BD5E00";
+                    Debug.LogError($"{GetSourceInformation()} <color={color}><b>ERROR:</b> {message}</color>", context);
+                    break;
+                case LoggingType.Critical:
+                    color = IsDarkMode() ? "red" : "#BD2A00";
+                    Debug.LogError($"{GetSourceInformation()} <color={color}><b>CRITICAL:</b> {message}</color>", context);
+                    Debug.Break();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+#endif
+        }
+
+        [Conditional("ENABLE_LOG")]
+        public static void Log(object message, Func<bool> condition, LoggingType type = LoggingType.Info, Object context = null)
+        {
+#if UNITY_EDITOR
+            if (!condition()) return;
+            Log(message, type, context);
+#endif
+        }
+        
+        private static void GetLogInfo(out string timestamp, out string info)
+        {
+            timestamp = DateTime.Now.ToString("yyyy-MM-dd");
+            info = GetSourceInformation();
+        }
+
+        private static string GetSourceInformation()
+        {
+            var stackTrace = new StackTrace();
+            var loggingTwoType = typeof(LoggingTwo);
+
+            // Find the first frame that doesn't belong to the LoggingTwo class
+            for (var frameIndex = 0; frameIndex < stackTrace.FrameCount; frameIndex++)
+            {
+                var frame = stackTrace.GetFrame(frameIndex);
+                var method = frame.GetMethod();
+                var declaringType = method.DeclaringType;
+
+                if (declaringType != loggingTwoType)
+                {
+                    var className = declaringType?.Name ?? "Un-Class";
+                    var methodName = method?.Name ?? "Un-Method";
+                    var color = IsDarkMode() ? "white" : "black";
+                    return $"<b><color={color}>[{className}.{methodName}()]</color></b>";
+                }
+            }
+
+            return ""; // If no suitable frame is found, return an empty string
+        }
+
+        private static bool IsDarkMode()
+        {
+#if UNITY_EDITOR
+            return EditorGUIUtility.isProSkin;
+#else
+            return false;
+#endif
         }
     }
 }
