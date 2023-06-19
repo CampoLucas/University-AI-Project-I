@@ -46,25 +46,17 @@ namespace Game.Pathfinding
             }
             
             // checks if the nodes are in the dictionary
-            var startEnd = new[] { _startNode.transform.position, _endNode.transform.position };
-            LoggingTwo.Log($"start end position: {startEnd[0]} - {startEnd[1]}");
-            if (!_waypointsDictionary.TryGetValue(startEnd, out var nodePath))
+            List<Node> nodePath;
+            if (InView(_startNode, _endNode))
             {
-                if (InView(_startNode, _endNode))
-                {
-                    nodePath = new List<Node> { _startNode, _endNode };
-                    LoggingTwo.Log("Return path from: View", LoggingType.Debug);
-                }
-                else
-                {
-                    nodePath = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic);
-                    LoggingTwo.Log("Return path from: A*", LoggingType.Debug);
-                }
-
-                _waypointsDictionary[startEnd] = nodePath;
+                nodePath = new List<Node> { _startNode, _endNode };
+                LoggingTwo.Log("Return path from: View", LoggingType.Debug);
             }
             else
-                LoggingTwo.Log("Return path from: Dictionary", LoggingType.Debug);
+            {
+                nodePath = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic);
+                LoggingTwo.Log("Return path from: A*", LoggingType.Debug);
+            }
 
             // Convert the node list into a Vector3 list with its position at the start and the target position at the end
             var cleanedPath = new List<Vector3> { transform.position };
