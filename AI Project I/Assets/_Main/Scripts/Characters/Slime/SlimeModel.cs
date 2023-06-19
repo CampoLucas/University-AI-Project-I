@@ -35,20 +35,20 @@ namespace Game.Entities.Slime
             _isPathNull = _path == null;
         }
 
-        public void FollowTarget(Vector3 target, ISteering avoidance, float moveAmount = 0)
+        public void FollowTarget(Vector3 target, ISteering avoidance)
         {
             var dir = (target - transform.position).normalized + avoidance.GetDir() * _data.ObsMultiplier;
             dir.y = 0;
-            Move(transform.forward, moveAmount);
+            Move(transform.forward);
             Rotate(dir);
         }
         
-        public void FollowTarget(Vector3 target, ISteering avoidance, FlockingManager flocking, float moveAmount = 0)
+        public void FollowTarget(Vector3 target, ISteering avoidance, FlockingManager flocking)
         {
             var steering = ((avoidance.GetDir() * _data.ObsMultiplier) + flocking.GetDir()) / 2;
             var dir = (target - transform.position).normalized + steering.normalized;
             dir.y = 0;
-            Move(transform.forward, moveAmount);
+            Move(transform.forward);
             Rotate(dir);
         }
 

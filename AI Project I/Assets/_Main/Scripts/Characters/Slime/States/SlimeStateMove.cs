@@ -21,7 +21,7 @@ namespace Game.Entities.Slime.States
         public override void Sleep()
         {
             base.Sleep();
-            Model.Move(Vector3.zero,0);
+            Model.Move(Vector3.zero);
         }
     }
 }
