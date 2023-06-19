@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1c9fe052d94f8bb74a51af2a67cb8a, type: 3}
   m_Name: EnemyStats
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 4
   walkSpeed: 2
   moveLerpSpeed: 10
   rotSpeed: 2
@@ -21,7 +21,7 @@ MonoBehaviour:
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
   deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}
   attackRange: 1.5
-  fovRange: 5.8
+  fovRange: 5.41
   fovAngle: 120
   fovMask:
     serializedVersion: 2

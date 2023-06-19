@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2878532175023282206}
   - component: {fileID: 56466937}
   - component: {fileID: 298113399026734968}
+  - component: {fileID: 4826039641117432753}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -96,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceb21de111db4aefb1655760ca0fba75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnable: 0
   stats: {fileID: 11400000, guid: a0266c3916141964b95f06451acf23b8, type: 2}
   weapon: {fileID: 298113400796027390}
 --- !u!114 &5450059233993777539
@@ -159,6 +161,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Path>k__BackingField: {fileID: 0}
+--- !u!114 &4826039641117432753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2878532175023282192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8605b7e4d5580b546a0f5e36ac2f5693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Target>k__BackingField: {fileID: 0}
+  radius: 2
+  mask:
+    serializedVersion: 2
+    m_Bits: 64
+  maskObs:
+    serializedVersion: 2
+    m_Bits: 264
+  inViewRadius: 0.5
 --- !u!1001 &298113400268742842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -169,18 +192,6 @@ PrefabInstance:
     - target: {fileID: 1090548957, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
       propertyPath: damageLayerMask.m_Bits
       value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 2114879826204767294, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3317932273744018569, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6992768951632543916, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7118878947998023052, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
       propertyPath: m_RootOrder
@@ -229,22 +240,6 @@ PrefabInstance:
     - target: {fileID: 7118878947998023055, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
       propertyPath: m_Name
       value: ArmingSword
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118878947998023055, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118878949143416094, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7929219905371388070, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8718496985495369093, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
