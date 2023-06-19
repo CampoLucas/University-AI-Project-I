@@ -11,7 +11,8 @@ namespace Game.Entities
     public class EntityModel : MonoBehaviour
     {
         public Damageable Damageable { get; private set; }
-
+        public int Level { get; private set; }
+        
         [SerializeField] private bool spawnable;
         [SerializeField] private StatSO stats;
         [SerializeField] private Weapon weapon;
@@ -37,6 +38,8 @@ namespace Game.Entities
             _heavyAttack = GetComponent<HeavyAttack>();
             Damageable = GetComponent<Damageable>();
             _waitTimer = new WaitTimer();
+            
+            //Level = stats.Level;
         }
 
         public virtual void Move(Vector3 dir) => _movement?.Move(dir);
@@ -53,6 +56,7 @@ namespace Game.Entities
         public void CancelLightAttack() => _lightAttack.CancelAttack();
         public void HeavyAttack() => _heavyAttack.Attack();
         public void CancelHeavyAttack() => _heavyAttack.CancelAttack();
+        public void IncreaseLevel() => Level++;
         
         #region Timer Methods
 
