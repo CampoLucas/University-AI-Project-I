@@ -6,30 +6,33 @@ using UnityEngine;
 
 public class MovingBladeScript : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float Maxspeed;
+    [SerializeField] private Vector3 speed;
+    [SerializeField] private Vector3 Maxspeed;
     private int normalize = 1;
     private Rigidbody rb;
-    private float xVelocity = 0;
+    private Vector3 initPos;
     private void Start()
     {
         rb = this.GetComponent<Rigidbody>();
+        initPos = transform.localPosition;
     }
 
     void Update()
     {
-        xVelocity += Time.deltaTime * speed * normalize;
-        xVelocity = Mathf.Clamp(xVelocity, -Maxspeed, Maxspeed);
-        rb.velocity = new Vector3(xVelocity, 0, 0);
+        rb.velocity += Time.deltaTime * speed * normalize;
+        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -Maxspeed.x, Maxspeed.x),0,
+            Mathf.Clamp(rb.velocity.z, -Maxspeed.z, Maxspeed.z));
 
-        if (transform.localPosition.x > 1)
+        if (Vector3.Distance(transform.localPosition, initPos) > 1)
         {
-            normalize = -1;
-        }
-
-        if (transform.localPosition.x < -1)
-        {
-            normalize = 1;
+            if (speed.x != 0)
+            {
+                normalize = transform.localPosition.x > initPos.x ? -1 : 1;
+            }
+            else if (speed.z != 0)
+            {
+                normalize = transform.localPosition.z < initPos.z ? -1 : 1;
+            }
         }
     }
 }
