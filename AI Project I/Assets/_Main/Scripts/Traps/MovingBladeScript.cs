@@ -6,33 +6,22 @@ using UnityEngine;
 
 public class MovingBladeScript : MonoBehaviour
 {
-    [SerializeField] private Vector3 speed;
-    [SerializeField] private Vector3 Maxspeed;
-    private int normalize = 1;
-    private Rigidbody rb;
-    private Vector3 initPos;
+    [SerializeField] private Transform saw, pointA, pointB;
+    [SerializeField] private float speed;
+    private Transform _currentPoint;
     private void Start()
     {
-        rb = this.GetComponent<Rigidbody>();
-        initPos = transform.localPosition;
+        saw.transform.position = pointA.transform.position;
+        _currentPoint = pointB;
     }
 
     void Update()
     {
-        rb.velocity += Time.deltaTime * speed * normalize;
-        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -Maxspeed.x, Maxspeed.x),0,
-            Mathf.Clamp(rb.velocity.z, -Maxspeed.z, Maxspeed.z));
+        saw.position = Vector3.MoveTowards(saw.position, _currentPoint.position, speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.localPosition, initPos) > 1)
+        if (Vector3.Distance(saw.position, _currentPoint.position) <= 0.1f)
         {
-            if (speed.x != 0)
-            {
-                normalize = transform.localPosition.x > initPos.x ? -1 : 1;
-            }
-            else if (speed.z != 0)
-            {
-                normalize = transform.localPosition.z < initPos.z ? -1 : 1;
-            }
+            _currentPoint = _currentPoint == pointB ? pointA : pointB;
         }
     }
 }
