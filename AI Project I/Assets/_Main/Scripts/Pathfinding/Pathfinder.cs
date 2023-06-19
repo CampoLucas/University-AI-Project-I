@@ -16,9 +16,10 @@ namespace Game.Pathfinding
         [SerializeField] private float radius;
         [SerializeField] private LayerMask mask;
         [SerializeField] private LayerMask maskObs;
+        [SerializeField] private float inViewRadius = 2f;
 
         private AStar<Node> _aStar = new();
-        private Dictionary<Node[], List<Node>> _waypointsDictionary = new();
+        private Dictionary<Vector3[], List<Node>> _waypointsDictionary = new();
         private Node _startNode;
         private Node _endNode;
 
@@ -35,87 +36,6 @@ namespace Game.Pathfinding
             Target = target;
         }
 
-        private void Start()
-        {
-            LoggingTwo.Log("log", LoggingType.Debug);
-            LoggingTwo.Log("log", LoggingType.Info);
-            LoggingTwo.Log("log", LoggingType.Warning);
-            LoggingTwo.Log("log", LoggingType.Error);
-            LoggingTwo.Log("log", LoggingType.Critical);
-        }
-
-        public void RunPathfinder()
-        {
-            if (!_startNode || !_endNode) return;
-
-            var startEnd = new Node[] { _startNode, _endNode };
-            if (_waypointsDictionary.TryGetValue(startEnd, out var path))
-            {
-                Logging.Log("Path from dictionary");
-                SetWaypoints(path);
-                return;
-            }
-
-            var startPos = _startNode.transform.position;
-            var endPos = _endNode.transform.position;
-            var endDir = endPos - startPos;
-
-            //if (InView(_startNode, _endNode))
-            //{
-            //    path = new() { _startNode, _endNode };
-            //    Logging.Log("Path from sphere cast");
-            //}
-            //else
-            //{
-            //    path = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic, 500);
-            //    Logging.Log("Path from a star");
-            //}
-
-            path = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic, 500);
-            Logging.LogError("Path is 0", () => path.Count == 0);
-            Logging.Log("Path from a star");
-
-            SetWaypoints(path);
-            _waypointsDictionary[startEnd] = path;
-            Logging.Log(startEnd);
-        }
-
-        //public IEnumerator<Vector3> Run()
-        //{
-        //    if (!_startNode || !_endNode) yield break; 
-
-        //    var startEnd = new Path(_startNode, _endNode);
-        //    if (_waypointsDictionary.TryGetValue(startEnd, out var path))
-        //    {
-        //        SetWaypoints(path);
-        //        yield break; 
-        //    }
-
-        //    var startPos = _startNode.transform.position;
-        //    var endPos = _endNode.transform.position;
-        //    var endDir = endPos - startPos;
-
-        //    if (Physics.SphereCast(startPos, 1.5f, endDir, out var hit, endDir.magnitude, maskObs))
-        //    {
-        //        path = new() { startPos, endPos };
-        //    }
-        //    else
-        //    {
-        //        var aStarPath = new List<Node>(_aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic, 500));
-
-        //        for (var i = 0; i < aStarPath.Count; i++)
-        //        {
-        //            path.Add(aStarPath[i].transform.position);
-        //            yield return aStarPath[i].transform.position;
-        //        }
-
-
-        //    }
-
-        //    SetWaypoints(path);
-        //    _waypointsDictionary[startEnd] = path;
-        //}
-
         public void Run()
         {
             // is the start and end nodes are null, returns null
@@ -126,10 +46,26 @@ namespace Game.Pathfinding
             }
             
             // checks if the nodes are in the dictionary
-            // -- Set the saved waypoint
+            var startEnd = new[] { _startNode.transform.position, _endNode.transform.position };
+            LoggingTwo.Log($"start end position: {startEnd[0]} - {startEnd[1]}");
+            if (!_waypointsDictionary.TryGetValue(startEnd, out var nodePath))
+            {
+                if (InView(_startNode, _endNode))
+                {
+                    nodePath = new List<Node> { _startNode, _endNode };
+                    LoggingTwo.Log("Return path from: View", LoggingType.Debug);
+                }
+                else
+                {
+                    nodePath = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic);
+                    LoggingTwo.Log("Return path from: A*", LoggingType.Debug);
+                }
 
-            var nodePath = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic);
-            Logging.LogPathfinder($"node path: {nodePath}");
+                _waypointsDictionary[startEnd] = nodePath;
+            }
+            else
+                LoggingTwo.Log("Return path from: Dictionary", LoggingType.Debug);
+
             // Convert the node list into a Vector3 list with its position at the start and the target position at the end
             var cleanedPath = new List<Vector3> { transform.position };
 
@@ -140,10 +76,8 @@ namespace Game.Pathfinding
             cleanedPath.Add(Target.position);
 
             // Cleans the path
-            Logging.LogPathfinder($"Before cleaning path: {cleanedPath}");
             _aStar.CleanPath(cleanedPath, InView, out cleanedPath);
             
-            LoggingTwo.Log($"Final path: 0");
             Waypoints = cleanedPath;
         }
 
@@ -161,7 +95,9 @@ namespace Game.Pathfinding
         {
             var startPos = from.transform.position;
             var endPos = to.transform.position;
-            return !Physics.Linecast(startPos, endPos, maskObs);
+            var dir = startPos - endPos;
+            //return !Physics.Linecast(startPos, endPos, maskObs);
+            return !Physics.SphereCast(startPos, inViewRadius, dir.normalized, out var hit, dir.magnitude, maskObs);
         }
 
         private bool InView(Vector3 from, Vector3 to)
@@ -238,7 +174,8 @@ namespace Game.Pathfinding
 
         private void OnDrawGizmos()
         {
-            
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, inViewRadius);
             
             if (_startNode != null)
             {
@@ -269,23 +206,6 @@ namespace Game.Pathfinding
                     Gizmos.DrawLine(point, nextPoint);
                 }
             }
-        }
-    }
-
-    public class Path
-    {
-        public Node Start;
-        public Node End;
-
-        public Path(Node start, Node end)
-        {
-            Start = start;
-            End = end;
-        }
-
-        public override string ToString()
-        {
-            return "(" + Start.Name + " + " + End.Name + ")";
         }
     }
 }

@@ -617,7 +617,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: ENABLE_LOG_;ENABLE_LOG_DESTROY_;ENABLE_LOG_PATHFINDER
+    Standalone: ENABLE_LOG;ENABLE_LOG_DESTROY_;ENABLE_LOG_PATHFINDER
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
