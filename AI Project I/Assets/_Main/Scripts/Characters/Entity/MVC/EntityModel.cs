@@ -96,6 +96,17 @@ namespace Game.Entities
                 _rotate.Dispose();
             _rotate = rotation;
         }
+
+        public void SetLightAttack(IAttack attack)
+        {
+            _lightAttack = attack;
+        }
+
+        public void SetHeavyAttack(IAttack attack)
+        {
+            _heavyAttack = attack;
+        }
+        
         #endregion
 
         protected virtual void OnDestroy()
