@@ -17,7 +17,7 @@ namespace Game.Entities
         [SerializeField] private StatSO stats;
         [SerializeField] private Weapon weapon;
 
-        private Rigidbody _rigidbody;
+        protected Rigidbody Rigidbody { get; private set; }
         private IMovement _walkMovement;
         private IMovement _runMovement;
         private IMovement _movement;
@@ -28,10 +28,10 @@ namespace Game.Entities
 
         protected virtual void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            Rigidbody = GetComponent<Rigidbody>();
 
-            _runMovement = new Movement(stats.MoveSpeed, stats.MoveLerpSpeed, _rigidbody);
-            _walkMovement = new Movement(stats.WalkSpeed, stats.MoveLerpSpeed, _rigidbody);
+            _runMovement = new Movement(stats.MoveSpeed, stats.MoveLerpSpeed, Rigidbody);
+            _walkMovement = new Movement(stats.WalkSpeed, stats.MoveLerpSpeed, Rigidbody);
             SetMovement(_runMovement);
             SetRotation(new Rotation(transform, stats));
             _lightAttack = GetComponent<LightAttack>();
@@ -46,7 +46,7 @@ namespace Game.Entities
         public void Rotate(Vector3 dir) => _rotate?.Rotate(dir);
         public StatSO GetData() => stats;
         public T GetData<T>() where T : StatSO => (T)stats;
-        public float GetSpeed() => _rigidbody.velocity.magnitude;
+        public float GetSpeed() => Rigidbody.velocity.magnitude;
         public Vector3 GetForward() => transform.forward;
         public bool IsAlive() => Damageable.IsAlive();
         public bool IsInvulnerable() => Damageable.IsInvulnerable();
