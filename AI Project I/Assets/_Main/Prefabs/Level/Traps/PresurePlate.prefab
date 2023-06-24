@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2198910936634230972}
   - component: {fileID: 2198910936634230969}
   - component: {fileID: 2198910936634230968}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 7822729699201535861}
   - component: {fileID: 4938665800353875625}
   - component: {fileID: 410681931882715950}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PresurePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
