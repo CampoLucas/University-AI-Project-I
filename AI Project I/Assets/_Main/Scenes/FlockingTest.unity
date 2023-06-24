@@ -1018,6 +1018,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833149, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -12258,6 +12262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833149, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -16591,6 +16599,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833149, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -20481,6 +20493,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833151, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -21963,6 +21979,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833149, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -22778,7 +22798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1147390473}
   - component: {fileID: 1147390474}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Slimes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29219,6 +29239,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833149, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -30861,6 +30885,10 @@ PrefabInstance:
     - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_Name
       value: Slime (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833149, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_UseGravity
@@ -34333,6 +34361,10 @@ PrefabInstance:
     - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_Name
       value: Slime (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833149, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_UseGravity
@@ -43846,6 +43878,10 @@ PrefabInstance:
     - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_Name
       value: Slime
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879940330146833146, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833151, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: m_Materials.Array.data[0]

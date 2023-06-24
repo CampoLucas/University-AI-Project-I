@@ -40,7 +40,7 @@ MonoBehaviour:
   maxBoids: 10
   whatIsBoid:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 5120
   boidRadius: 3.7
   minSize: 0.5
   maxSize: 2
