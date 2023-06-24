@@ -2,35 +2,20 @@
 using System.Collections.Generic;
 using Game.Entities.Flocking;
 using Game.Interfaces;
+using Game.SO;
 using UnityEngine;
 
 namespace Game.Entities.Slime
 {
-    public class SlimeFlockingManager : FlockingManager
+    public sealed class SlimeFlockingManager : FlockingManager
     {
-        [Header("Predator")]
-        [Range(1,10)][SerializeField] private float pRange;
-        [Range(1,10)][SerializeField] private int pMax;
-        [SerializeField] private LayerMask whatIsPredator;
-        [Space]
-        [Header("Multipliers")]
-        [Range(0f,10f)][SerializeField] private float predatorMultiplier;
-        [Range(0f,10f)][SerializeField] private float alignmentMultiplier;
-        [Range(0f,10f)][SerializeField] private float cohesionMultiplier;
-        
-        protected override void SetFlocking()
+        public SlimeFlockingManager(SlimeSO data, IBoid self) : base(self, data.MaxBoids, data.WhatIsBoid, data.FlockingMultiplier)
         {
-            var predator = new Predator(predatorMultiplier, pRange, pMax, whatIsPredator);
-            var alignment = new Alignment(alignmentMultiplier);
-            var cohesion = new Cohesion(cohesionMultiplier);
+            var predator = new Predator(data.PredatorMultiplier, data.PredatorRange, data.MaxPredators, data.WhatIsPredator);
+            var alignment = new Alignment(data.AlignmentMultiplier);
+            var cohesion = new Cohesion(data.CohesionMultiplier);
 
             Flocking = new IFlocking[] {predator,alignment,cohesion};
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, pRange);
         }
     }
 }

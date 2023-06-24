@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63f2f9fda5a429696023441ca4f1362, type: 3}
   m_Name: SlimePathTest
   m_EditorClassIdentifier: 
-  <IsCircular>k__BackingField: 0
+  <IsCircular>k__BackingField: 1
   <IsReversed>k__BackingField: 0
-  <Threshold>k__BackingField: 0
+  <Threshold>k__BackingField: 1
   <WorldOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <Waypoints>k__BackingField: []
+  <Waypoints>k__BackingField:
+  - {x: 0, y: 0, z: 0}
+  - {x: 10, y: 0, z: 0}
+  - {x: 10, y: 0, z: 10}
+  - {x: 0, y: 0, z: 10}

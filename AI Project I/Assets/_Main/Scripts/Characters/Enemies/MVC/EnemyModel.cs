@@ -67,6 +67,11 @@ namespace Game.Enemies
             _followTarget.Follow(target, obsAvoidance);
         }
 
+        public void FollowTarget(Transform target, Vector3 flocking, ISteering obsAvoidance)
+        {
+            _followTarget.Follow(target,flocking, obsAvoidance);
+        }
+
         public void FollowTarget(Vector3 target, ISteering obsAvoidance)
         {
             _followTarget.Follow(target, obsAvoidance);
@@ -77,9 +82,13 @@ namespace Game.Enemies
             _followTarget.Follow(steering, obsAvoidance);
         }
 
-        public void FollowTarget(IPathfinder pathfinder, ISteering steering, ISteering obsAvoindance)
+        public void FollowTarget(IPathfinder pathfinder, ISteering steering, ISteering obsAvoidance)
         {
-            _followTarget.Follow(pathfinder, steering, obsAvoindance);
+            _followTarget.Follow(pathfinder, steering, obsAvoidance);
+        }
+        public void FollowTarget(IPathfinder pathfinder, Vector3 flocking, ISteering obsAvoidance)
+        {
+            _followTarget.Follow(pathfinder, flocking, obsAvoidance);
         }
 
         public void SetNodes(Vector3 origin, Vector3 target)
@@ -122,14 +131,14 @@ namespace Game.Enemies
             _data = null;
         }
 
-        private void OnDrawGizmosSelected()
+        protected virtual void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, GetData<EnemySO>().AttackRange);
         }
 
         #if UNITY_EDITOR
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             var transform1 = transform;
             var forward = transform1.forward;

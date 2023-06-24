@@ -4,32 +4,32 @@ using UnityEngine;
 
 namespace Game.Entities.Flocking
 {
-    public abstract class FlockingManager : MonoBehaviour
+    public abstract class FlockingManager
     {
-        [Header("General")]
-        [Range(1, 15)] [SerializeField] private int maxBoids;
-        [SerializeField] private LayerMask whatIsBoid;
+        
+        protected IFlocking[] Flocking { private get; set; }
+        private readonly List<IBoid> _boids;
+        private readonly IBoid _self;
+        private readonly Collider[] _colliders;
+        private readonly LayerMask _whatIsBoid;
+        private readonly float _multiplier;
 
-        protected IFlocking[] Flocking { get; set; }
-        private List<IBoid> _boids;
-        private IBoid _self;
-        private Collider[] _colliders;
 
-        private void Start()
+        protected FlockingManager(IBoid self, int maxBoids, LayerMask whatIsBoid, float multiplier)
         {
-            _self = GetComponent<IBoid>();
-            _boids = new List<IBoid>();
+            _self = self;
             _colliders = new Collider[maxBoids];
-            SetFlocking();
+            _boids = new List<IBoid>();
+            _whatIsBoid = whatIsBoid;
+            _multiplier = multiplier;
         }
-
-        protected abstract void SetFlocking();
+        
 
         public Vector3 GetDir()
         {
             _boids.Clear();
             
-            int count = Physics.OverlapSphereNonAlloc(_self.Position, _self.Radius, _colliders, whatIsBoid);
+            int count = Physics.OverlapSphereNonAlloc(_self.Position, _self.Radius, _colliders, _whatIsBoid);
 
             for (int i = 0; i < count; i++)
             {
@@ -46,7 +46,8 @@ namespace Game.Entities.Flocking
                 dir += currFlock.GetDir(_boids, _self);
             }
             
-            return dir.normalized;
+            
+            return dir.normalized * _multiplier;
         }
     }
 }

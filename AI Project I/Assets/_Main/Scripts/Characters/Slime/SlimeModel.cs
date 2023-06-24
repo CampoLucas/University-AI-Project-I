@@ -1,89 +1,67 @@
 ﻿using System;
+using Game.Enemies;
 using Game.Entities.Flocking;
 using Game.Interfaces;
 using Game.SO;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game.Entities.Slime
 {
-    public class SlimeModel : EntityModel, IBoid
+    public class SlimeModel : EnemyModel, IBoid
     {
-        [Range(1, 25)] 
-        [SerializeField] private float boidRadius = 5;
+        private SlimeSO _slimeData;
+        private bool _isDataNull;
 
-        private EnemySO _data;
         private SlimeFlockingManager _slimeFlocking;
-        private PathToFollow _path;
-        
-        private bool _isPathNull;
-
         public Vector3 Position => transform.position;
         public Vector3 Front => transform.forward;
-        public float Radius => boidRadius;
+        public float Radius => GetBoidRadius();
 
         protected override void Awake()
         {
             base.Awake();
-            _data = GetData<EnemySO>();
-            _slimeFlocking = GetComponent<SlimeFlockingManager>();
-            _path = GetComponent<PathToFollow>();
+            _slimeData = GetData<SlimeSO>();
+            _isDataNull = _slimeData == null;
         }
 
         private void Start()
         {
-            _isPathNull = _path == null;
+            SetSize();
         }
 
-        public void FollowTarget(Vector3 target, ISteering avoidance)
+        private float GetBoidRadius()
         {
-            var dir = (target - transform.position).normalized + avoidance.GetDir() * _data.ObsMultiplier;
-            dir.y = 0;
-            Move(transform.forward);
-            Rotate(dir);
-        }
-        
-        public void FollowTarget(Vector3 target, ISteering avoidance, FlockingManager flocking)
-        {
-            var steering = ((avoidance.GetDir() * _data.ObsMultiplier) + flocking.GetDir()) / 2;
-            var dir = (target - transform.position).normalized + steering.normalized;
-            dir.y = 0;
-            Move(transform.forward);
-            Rotate(dir);
+            return _isDataNull ? 0 : _slimeData.BoidRadius;
         }
 
-
-        #region Path
-
-        public Vector3 GetNextWaypoint()
+        private void SetSize()
         {
-            return _isPathNull ? Vector3.zero : _path.GetNextWaypoint();
+            if (_isDataNull) return;
+
+            var size = Random.Range(_slimeData.MinSize, _slimeData.MaxSize);
+            
+            transform.localScale = new Vector3(size,size,size);
         }
 
-        public bool HasARoute()
+        public bool HasTargetNode()
         {
-            return _isPathNull ? false : _path.Path;
+            return GetPathfinder().Target;
         }
 
-        public bool ReachedWaypoint()
+        protected override void OnDrawGizmosSelected()
         {
-            return !_isPathNull && _path.ReachedWaypoint();
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().BoidRadius);
+            
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().PredatorRange);
         }
 
-        public void ChangeWaypoint()
+        protected override void OnDrawGizmos()
         {
-            if (_isPathNull) return;
-                
-            _path.ChangeWaypoint();
-        }
-
-        #endregion
-
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(Position, Radius);
+            
         }
     }
 }

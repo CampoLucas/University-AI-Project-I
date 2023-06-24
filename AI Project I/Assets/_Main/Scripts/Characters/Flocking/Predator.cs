@@ -9,27 +9,30 @@ namespace Game.Entities.Flocking
     {
         private readonly float _multiplier;
         private readonly float _predatorRange;
-        private int _predatorMax;
-        private readonly LayerMask _predatorMask;
+        private readonly LayerMask _whatIsPredator;
         readonly Collider[] _colliders;
 
-        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask predatorMask)
+        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask whatIsPredator)
         {
-            this._multiplier = multiplier;
-            this._predatorRange = predatorRange;
-            this._predatorMax = predatorMax;
-            this._predatorMask = predatorMask;
+            _multiplier = multiplier;
+            _predatorRange = predatorRange;
+            _whatIsPredator = whatIsPredator;
             _colliders = new Collider[predatorMax];
         }
         public Vector3 GetDir(List<IBoid> boids, IBoid self)
         {
-            int count = Physics.OverlapSphereNonAlloc(self.Position, _predatorRange, _colliders, _predatorMask);
+            int count = Physics.OverlapSphereNonAlloc(self.Position, _predatorRange, _colliders, _whatIsPredator);
+
+            if (count < 1) return Vector3.zero;
+            
             Vector3 dir = Vector3.zero;
+            
             for (int i = 0; i < count; i++)
             {
                 var diff = self.Position - _colliders[i].transform.position;
                 dir += diff.normalized * (_predatorRange - diff.magnitude);
             }
+            
             return dir.normalized * _multiplier;
         }
     }

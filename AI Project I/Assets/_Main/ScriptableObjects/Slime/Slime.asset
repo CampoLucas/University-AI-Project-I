@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6507415629f044bdb5a24ec705fab91e, type: 3}
+  m_Name: Slime
+  m_EditorClassIdentifier: 
+  moveSpeed: 1.5
+  walkSpeed: 3
+  moveLerpSpeed: 10
+  rotSpeed: 10
+  maxHealth: 100
+  invulnerableCooldown: 0.1
+  hitAnimation: {fileID: 0}
+  deathAnimation: {fileID: 0}
+  attackRange: 0.5
+  fovRange: 5
+  fovAngle: 120
+  fovMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obsRange: 1
+  obsAngle: 180
+  maxObs: 5
+  obsMultiplier: 2
+  obsMask:
+    serializedVersion: 2
+    m_Bits: 384
+  pursuitTime: 0.5
+  flockingMultiplier: 5
+  maxBoids: 10
+  whatIsBoid:
+    serializedVersion: 2
+    m_Bits: 1024
+  boidRadius: 3.7
+  minSize: 1
+  maxSize: 1
+  predatorRange: 5
+  maxPredators: 5
+  whatIsPredator:
+    serializedVersion: 2
+    m_Bits: 64
+  predatorMultiplier: 5
+  alignmentMultiplier: 1.5
+  cohesionMultiplier: 3

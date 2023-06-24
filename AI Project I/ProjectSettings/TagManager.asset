@@ -14,8 +14,8 @@ TagManager:
   - Player
   - Enemy
   - Obstacle
+  - Floor
   - Boid
-  - 
   - 
   - 
   - 

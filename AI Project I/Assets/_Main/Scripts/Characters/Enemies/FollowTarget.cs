@@ -32,6 +32,15 @@ public class FollowTarget
         Follow(target.position, obsAvoidance);
     }
 
+    public void Follow(Transform target, Vector3 flocking, ISteering obsAvoidance)
+    {
+        var transform1 = _origin;
+        var dir = (target.position - transform1.position).normalized + (obsAvoidance.GetDir() * _data.ObsMultiplier) + flocking;
+        dir.y = 0;
+        _model.Move(transform1.forward);
+        _model.Rotate(dir);
+    }
+
     public void Follow(ISteering steering, ISteering obsAvoindance)
     {
         var dir = (steering.GetDir() + obsAvoindance.GetDir() * _data.ObsMultiplier).normalized;
@@ -40,7 +49,7 @@ public class FollowTarget
         _model.Rotate(dir);
     }
 
-    public void Follow(IPathfinder pathfinder, ISteering steering, ISteering obsAvoindance)
+    public void Follow(IPathfinder pathfinder, ISteering steering, ISteering obsAvoidance)
     {
         if (pathfinder.NextPoint == 0 && pathfinder.NextPoint + 1 < pathfinder.Waypoints.Count)
             pathfinder.SetNextPoint();
@@ -52,7 +61,7 @@ public class FollowTarget
         point.y = _origin.position.y;
 
         var dir = point - _origin.position;
-        var finalDir = (dir + obsAvoindance.GetDir() * _data.ObsMultiplier).normalized;
+        var finalDir = (dir + obsAvoidance.GetDir() * _data.ObsMultiplier).normalized;
         if (dir.sqrMagnitude < 0.001f)
         {
             if (pathfinder.NextPoint + 1 < pathfinder.Waypoints.Count)
@@ -60,12 +69,37 @@ public class FollowTarget
         }
 
 
-        // Si es el ultimo punto del path va directo asia el player en vez del punto
+        // Si es el ultimo punto del path va directo hacia el player en vez del punto
         if (pathfinder.NextPoint == pathfinder.Waypoints.Count - 1)
-            finalDir = (steering.GetDir() + obsAvoindance.GetDir() * _data.ObsMultiplier).normalized;
+            finalDir = (steering.GetDir() + obsAvoidance.GetDir() * _data.ObsMultiplier).normalized;
 
         finalDir.y = 0;
 
+        
+        _model.Move(_origin.forward);
+        _model.Rotate(finalDir);
+    }
+    
+    public void Follow(IPathfinder pathfinder, Vector3 flocking, ISteering obsAvoidance)
+    {
+        if (pathfinder.NextPoint == 0 && pathfinder.NextPoint + 1 < pathfinder.Waypoints.Count)
+            pathfinder.SetNextPoint();
+
+        if (pathfinder.NextPoint >= pathfinder.Waypoints.Count)
+            return;
+
+        var point = pathfinder.Waypoints[pathfinder.NextPoint];
+        point.y = _origin.position.y;
+        
+        var dir = point - _origin.position;
+        var finalDir = (dir + flocking + obsAvoidance.GetDir() * _data.ObsMultiplier).normalized;
+        if (dir.sqrMagnitude < 0.001f)
+        {
+            if (pathfinder.NextPoint + 1 < pathfinder.Waypoints.Count)
+                pathfinder.SetNextPoint();
+        }
+
+        finalDir.y = 0;
 
         _model.Move(_origin.forward);
         _model.Rotate(finalDir);

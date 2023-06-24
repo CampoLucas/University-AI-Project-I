@@ -14,34 +14,42 @@ namespace Game.Entities.Slime
 {
     public class SlimeController : EntityController<SlimeStatesEnum>
     {
-        [SerializeField] private EnemySO data;
-        
+        private SlimeSO _data;
         private ITreeNode _root;
-        
         private ISteering _obsAvoidance;
         private FlockingManager _flocking;
-
+        
         private bool _isFlockingNull;
+        private bool _isDataNull;
+        
 
 
         protected override void Awake()
         {
             base.Awake();
-            _flocking = GetComponent<FlockingManager>();
+            _data = GetModel().GetData<SlimeSO>();
+
         }
 
         protected override void Start()
         {
+            _isFlockingNull = _flocking == null;
+            _isDataNull = _data == null;
+            
             InitSteering();
             InitTree();
-            base.Start();
+            
+            if(!_isDataNull)
+                _flocking = new SlimeFlockingManager(_data, GetModel<SlimeModel>());
 
             _isFlockingNull = _flocking == null;
+            
+            base.Start();
         }
         
         private void InitSteering()
         {
-            _obsAvoidance = new ObstacleAvoidance(transform, data.ObsAngle, data.ObsRange, data.MaxObs,data.ObsMask);
+            _obsAvoidance = new ObstacleAvoidance(transform, _data.ObsAngle, _data.ObsRange, _data.MaxObs,_data.ObsMask);
         }
 
         protected override void InitFSM()
@@ -115,7 +123,7 @@ namespace Game.Entities.Slime
 
         private bool HasToMove()
         {
-            return GetModel() && GetModel<SlimeModel>().HasARoute();
+            return GetModel() && GetModel<SlimeModel>().HasTargetNode();
         }
 
         private bool IsAlive()
