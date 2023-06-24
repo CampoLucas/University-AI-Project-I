@@ -5,6 +5,10 @@ namespace Game.SO
     [CreateAssetMenu(fileName = "SlimeStats", menuName = "SO/Entities/SlimeStats", order = 3)]
     public class SlimeSO : EnemySO
     {
+        public float JumpForce => jumpForce;
+
+        public float JumpDelay => jumpDelay;
+
         public float FlockingMultiplier => flockingMultiplier;
 
         public int MaxBoids => maxBoids;
@@ -29,6 +33,8 @@ namespace Game.SO
         public float CohesionMultiplier => cohesionMultiplier;
 
         [Header("Slime Values")]
+        [Range(0.1f, 10)][SerializeField] private float jumpForce = 2;
+        [Range(0.1f, 10)][SerializeField] private float jumpDelay = 1;
         [Space]
         [Header("Flocking")] 
         [Range(1, 10)] [SerializeField] private float flockingMultiplier = 2f;

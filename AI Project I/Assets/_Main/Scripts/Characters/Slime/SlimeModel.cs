@@ -11,6 +11,7 @@ namespace Game.Entities.Slime
 {
     public class SlimeModel : EnemyModel, IBoid
     {
+        private float _jumpDelay;
         private SlimeSO _slimeData;
         private bool _isDataNull;
 
@@ -29,6 +30,29 @@ namespace Game.Entities.Slime
         private void Start()
         {
             SetSize();
+        }
+
+        private void Update()
+        {
+            if (_jumpDelay > 0)
+            {
+                _jumpDelay -= Time.deltaTime;
+            }
+        }
+
+        public override void Move(Vector3 dir)
+        {
+            if (_jumpDelay > 0) return;
+
+            var jumpForce = GetData<SlimeSO>().JumpForce;
+            var finalDir = (dir + transform.up).normalized;
+            Rigidbody.AddForce(finalDir * jumpForce, ForceMode.Impulse);
+            ResetJump();
+        }
+
+        private void ResetJump()
+        {
+            _jumpDelay = GetData<SlimeSO>().JumpDelay;
         }
 
         private float GetBoidRadius()
@@ -50,6 +74,9 @@ namespace Game.Entities.Slime
             return GetPathfinder().Target;
         }
 
+
+        #region Gizmos
+
         protected override void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
@@ -63,5 +90,8 @@ namespace Game.Entities.Slime
         {
             
         }
+
+        #endregion
+
     }
 }

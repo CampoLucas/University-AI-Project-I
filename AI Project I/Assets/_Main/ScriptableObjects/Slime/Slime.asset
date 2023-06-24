@@ -34,14 +34,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   pursuitTime: 0.5
+  jumpForce: 2
+  jumpDelay: 0.75
   flockingMultiplier: 5
   maxBoids: 10
   whatIsBoid:
     serializedVersion: 2
     m_Bits: 1024
   boidRadius: 3.7
-  minSize: 1
-  maxSize: 1
+  minSize: 0.5
+  maxSize: 2
   predatorRange: 5
   maxPredators: 5
   whatIsPredator:
