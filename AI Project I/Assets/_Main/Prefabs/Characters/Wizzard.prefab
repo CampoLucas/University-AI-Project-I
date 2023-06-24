@@ -44,13 +44,14 @@ GameObject:
   - component: {fileID: 8626599789361412467}
   - component: {fileID: 8626599789361412468}
   - component: {fileID: 3238385871410511036}
-  - component: {fileID: 8458844519111354008}
   - component: {fileID: 2010629574342885615}
   - component: {fileID: 8626599789361412465}
   - component: {fileID: 8626599789361412466}
   - component: {fileID: 5784116220488760469}
   - component: {fileID: 6081640156120938004}
   - component: {fileID: 1350172195834378973}
+  - component: {fileID: 577561869}
+  - component: {fileID: 577561871}
   m_Layer: 7
   m_Name: Wizzard
   m_TagString: Untagged
@@ -117,21 +118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Player>k__BackingField: {fileID: 0}
---- !u!114 &8458844519111354008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8626599789361412476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb21de111db4aefb1655760ca0fba75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnable: 0
-  stats: {fileID: 11400000, guid: a0266c3916141964b95f06451acf23b8, type: 2}
-  weapon: {fileID: 5024770118941797238}
 --- !u!114 &2010629574342885615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +200,33 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   inViewRadius: 0.5
+--- !u!114 &577561869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8626599789361412476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b256a331e9f58ab47b1a075349899577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &577561871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8626599789361412476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842b1be09a619554e80324f4d3262416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnable: 0
+  stats: {fileID: 11400000, guid: 7b3ae7296cbab2747a1b37744df2637d, type: 2}
+  weapon: {fileID: 5024770118941797238}
 --- !u!1001 &4743623857317057145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -294,7 +307,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5554579989111680808}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: c527a2afbce426540b9fce3568af0723, type: 3}
   m_Controller: {fileID: 9100000, guid: b00b76e540d520f44ade3d891c049763, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
