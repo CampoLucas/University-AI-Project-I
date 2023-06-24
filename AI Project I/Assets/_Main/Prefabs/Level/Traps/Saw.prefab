@@ -109,11 +109,10 @@ GameObject:
   - component: {fileID: 3342454052288671872}
   - component: {fileID: 3342454052288671873}
   - component: {fileID: 3342454052288671879}
-  - component: {fileID: 3342454052288671876}
   - component: {fileID: 3342454052288671874}
   - component: {fileID: 867574063}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Saw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,22 +196,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
---- !u!114 &3342454052288671876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3342454052288671877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac0df4d00543a6844a3ffc8e6bdf8b0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saw: {fileID: 54835672730926153}
-  pointA: {fileID: 6539829406367522670}
-  pointB: {fileID: 4801409805478737589}
-  speed: 1
 --- !u!54 &3342454052288671874
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -313,6 +296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 54835672730926153}
+  - component: {fileID: 1513865528706992899}
   m_Layer: 0
   m_Name: Saw
   m_TagString: Untagged
@@ -339,3 +323,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1513865528706992899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7261742344718881376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0df4d00543a6844a3ffc8e6bdf8b0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saw: {fileID: 3342454052288671875}
+  pointA: {fileID: 6539829406367522670}
+  pointB: {fileID: 4801409805478737589}
+  speed: 1
