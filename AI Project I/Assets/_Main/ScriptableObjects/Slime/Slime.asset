@@ -20,6 +20,7 @@ MonoBehaviour:
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 0}
   deathAnimation: {fileID: 0}
+  level: 1
   attackRange: 0.5
   fovRange: 5
   fovAngle: 120
@@ -50,5 +51,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   predatorMultiplier: 5
-  alignmentMultiplier: 1.5
+  alignmentMultiplier: 2
   cohesionMultiplier: 3

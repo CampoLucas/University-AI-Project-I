@@ -11,8 +11,10 @@ namespace Game.Entities.Flocking
         private readonly float _predatorRange;
         private readonly LayerMask _whatIsPredator;
         readonly Collider[] _colliders;
+        private int _selfLevel;
+        private int _predLevel;
 
-        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask whatIsPredator)
+        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask whatIsPredator, float selfLevel)
         {
             _multiplier = multiplier;
             _predatorRange = predatorRange;
@@ -31,9 +33,21 @@ namespace Game.Entities.Flocking
             {
                 var diff = self.Position - _colliders[i].transform.position;
                 dir += diff.normalized * (_predatorRange - diff.magnitude);
+                
+                if(!_colliders[i].TryGetComponent(out EntityModel predator)) continue;
+
+                _predLevel = predator.Level;
             }
-            
-            return dir.normalized * _multiplier;
+
+            var lvlDiff = _selfLevel - _predLevel;
+            lvlDiff = lvlDiff switch
+            {
+                < 0 => 1,
+                > 0 => -1,
+                _ => 0
+            };
+
+            return dir.normalized * (_multiplier * lvlDiff);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Game.Entities
             Damageable = GetComponent<Damageable>();
             _waitTimer = new WaitTimer();
             
-            //Level = stats.Level;
+            Level = stats.Level;
         }
 
         public virtual void Move(Vector3 dir) => _movement?.Move(dir);

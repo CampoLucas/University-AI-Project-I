@@ -19,6 +19,7 @@ namespace Game.Entities.Slime
         public Vector3 Position => transform.position;
         public Vector3 Front => transform.forward;
         public float Radius => GetBoidRadius();
+        public int BLevel => Level;
 
         protected override void Awake()
         {
@@ -31,14 +32,7 @@ namespace Game.Entities.Slime
         {
             SetSize();
         }
-
-        private void Update()
-        {
-            if (_jumpDelay > 0)
-            {
-                _jumpDelay -= Time.deltaTime;
-            }
-        }
+        
 
         public override void Move(Vector3 dir)
         {
@@ -48,6 +42,20 @@ namespace Game.Entities.Slime
             var finalDir = (dir + transform.up).normalized;
             Rigidbody.AddForce(finalDir * jumpForce, ForceMode.Impulse);
             ResetJump();
+        }
+
+        public void PowerUp()
+        {
+            IncreaseLevel();
+            SetSize();
+        }
+
+        public void ReloadJump()
+        {
+            if (_jumpDelay > 0)
+            {
+                _jumpDelay -= Time.deltaTime;
+            }
         }
 
         private void ResetJump()
@@ -63,9 +71,10 @@ namespace Game.Entities.Slime
         private void SetSize()
         {
             if (_isDataNull) return;
-
-            var size = Random.Range(_slimeData.MinSize, _slimeData.MaxSize);
             
+            var size = (float)Level/10 * 5;
+            
+            Debug.Log(size);
             transform.localScale = new Vector3(size,size,size);
         }
 

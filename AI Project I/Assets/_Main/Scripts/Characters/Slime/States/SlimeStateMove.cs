@@ -17,6 +17,7 @@ namespace Game.Entities.Slime.States
             
             Tree.Execute(); 
             Follow();
+            Model.ReloadJump();
         }
 
         private void CalculatePath()
