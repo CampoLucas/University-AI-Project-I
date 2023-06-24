@@ -94,8 +94,9 @@ GameObject:
   - component: {fileID: 2541910921590470604}
   - component: {fileID: -9028491860551226558}
   - component: {fileID: 892643930927613484}
-  - component: {fileID: 9083784731341857334}
   - component: {fileID: 7882073025450470335}
+  - component: {fileID: 5466808808591596797}
+  - component: {fileID: 2312859333577738532}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -145,23 +146,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyOnEnter: 1
---- !u!114 &9083784731341857334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2541910921590470603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f1cd653957e48bcbb7f62e004901f7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boxSize: {x: 0.4, y: 0.4, z: 0.4}
-  boxCenter: {x: 0, y: 0, z: 0}
-  damageLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!54 &7882073025450470335
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -178,3 +162,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &5466808808591596797
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541910921590470603}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2312859333577738532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541910921590470603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe64f35ecaa4ff0bbdeb5019b939372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEnter: 1
