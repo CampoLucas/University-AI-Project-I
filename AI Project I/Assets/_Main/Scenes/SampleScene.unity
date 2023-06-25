@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5713,6 +5713,7 @@ MonoBehaviour:
   - {fileID: 2147031483}
   - {fileID: 1452536577}
   - {fileID: 663205002}
+  radius: 2
   hideGizmos: 0
   hideNodes: 0
   hideLabels: 0
@@ -6667,10 +6668,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 577561871, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}
-      propertyPath: stats
-      value: 
-      objectReference: {fileID: 11400000, guid: b7bb14d8a5b867040840c9a5f5fa6d19, type: 2}
     - target: {fileID: 3110932148499037557, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}
       propertyPath: <Player>k__BackingField
       value: 
@@ -6722,10 +6719,6 @@ PrefabInstance:
     - target: {fileID: 8626599789361412476, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}
       propertyPath: m_Name
       value: Wizzard
-      objectReference: {fileID: 0}
-    - target: {fileID: 8626599789361412476, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}

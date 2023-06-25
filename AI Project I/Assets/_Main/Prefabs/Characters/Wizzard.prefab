@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnable: 0
-  stats: {fileID: 11400000, guid: 7b3ae7296cbab2747a1b37744df2637d, type: 2}
+  stats: {fileID: 11400000, guid: b7bb14d8a5b867040840c9a5f5fa6d19, type: 2}
   weapon: {fileID: 5024770118941797238}
 --- !u!114 &3110932148499037557
 MonoBehaviour:
