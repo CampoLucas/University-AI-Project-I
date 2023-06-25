@@ -10,5 +10,6 @@
         Die,
         Damage,
         FollowRoute,
+        Flee,
     }
 }

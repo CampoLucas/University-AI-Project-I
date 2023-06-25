@@ -5,8 +5,8 @@
         public override void Awake()
         {
             base.Awake();
-            var dir = Model.transform.position - Controller.Player.transform.position;
-            Model.Rotate(dir.normalized);
+            var dir = Controller.Player.transform.position - Model.transform.position;
+            Model.Rotate(dir.normalized * 10);
             Attack();
         }
 
