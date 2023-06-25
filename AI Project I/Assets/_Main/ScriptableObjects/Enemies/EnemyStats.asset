@@ -15,17 +15,18 @@ MonoBehaviour:
   moveSpeed: 4
   walkSpeed: 2
   moveLerpSpeed: 10
-  rotSpeed: 2
+  rotSpeed: 30
   maxHealth: 3
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
   deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}
   attackRange: 1.5
-  fovRange: 6
-  fovAngle: 120
-  fovMask:
-    serializedVersion: 2
-    m_Bits: 8
+  fieldOfView:
+    range: 4
+    angle: 120
+    mask:
+      serializedVersion: 2
+      m_Bits: 8
   obsRange: 1
   obsAngle: 180
   maxObs: 5

@@ -1,4 +1,5 @@
-﻿using Game.Interfaces;
+﻿using Game.Data;
+using Game.Interfaces;
 using Game.SO;
 using UnityEngine;
 
@@ -10,10 +11,10 @@ namespace Game.Enemies
     /// </summary>
     public class FieldOfView : IFieldOfView
     {
-        private EnemySO _data;
+        private FieldOfViewData _data;
         private Transform _origin;
 
-        public FieldOfView(EnemySO data, Transform origin)
+        public FieldOfView(FieldOfViewData data, Transform origin)
         {
             _data = data;
             _origin = origin;
@@ -22,7 +23,7 @@ namespace Game.Enemies
         public bool CheckRange(Transform target)
         {
             var distance = Vector3.Distance(_origin.position, target.position);
-            return distance < _data.FovRange;
+            return distance < _data.Range;
         }
 
         public bool CheckAngle(Transform target)
@@ -30,7 +31,7 @@ namespace Game.Enemies
             var forward = _origin.forward;
             var dirToTarget = target.position - _origin.position;
             var angleToTarget = Vector3.Angle(forward, dirToTarget);
-            return _data.FovAngle / 2 > angleToTarget;
+            return _data.Angle / 2 > angleToTarget;
         }
 
         public bool CheckView(Transform target)
@@ -40,7 +41,7 @@ namespace Game.Enemies
             var dirToTarget = diff.normalized;
             var distanceToTarget = diff.magnitude;
 
-            return !Physics.Raycast(position, dirToTarget, out var hit, distanceToTarget, _data.FovMask);
+            return !Physics.Raycast(position, dirToTarget, out var hit, distanceToTarget, _data.Mask);
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Game.Data;
+using Game.Enemies;
+using UnityEngine;
 
 namespace Game.SO
 {
@@ -6,9 +8,7 @@ namespace Game.SO
     public class EnemySO : StatSO
     {
         public float AttackRange => attackRange;
-        public float FovRange => fovRange;
-        public float FovAngle => fovAngle;
-        public LayerMask FovMask => fovMask;
+        public FieldOfViewData FOV => fieldOfView; 
         public float ObsRange => obsRange;
         public float ObsAngle => obsAngle;
         public int MaxObs => maxObs;
@@ -20,9 +20,7 @@ namespace Game.SO
         [SerializeField] private float attackRange = 0.5f;
         
         [Header("Cone Vision")]
-        [SerializeField] private float fovRange = 5;
-        [SerializeField] private float fovAngle = 120;
-        [SerializeField] private LayerMask fovMask;
+        [SerializeField] private FieldOfViewData fieldOfView;
         
         [Header("Obstacle Avoidance")]
         [SerializeField] private float obsRange = 5;

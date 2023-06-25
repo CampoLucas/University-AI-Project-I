@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Game;
 using Game.DecisionTree;
 using Game.Enemies;
 using Game.Enemies.States;
@@ -8,7 +9,7 @@ using Game.FSM;
 using Game.Interfaces;
 using UnityEngine;
 
-public class WizzardController : EnemyController
+public class WizardController : EnemyController
 {
     private ISteering _flee;
 
@@ -42,6 +43,7 @@ public class WizzardController : EnemyController
         states.Add(heavyAttack);
         states.Add(dead);
         states.Add(followRoute);
+        states.Add(flee);
         
         idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
         {
@@ -152,21 +154,21 @@ public class WizzardController : EnemyController
 
         var isHeavyAttack = new TreeQuestion(IsHeavyAttack, heavyAttack, lightAttack);
         var willAttack = new TreeQuestion(WillAttack, isHeavyAttack, idle);
-        var isTooClose = new TreeQuestion(QuestionIsPlayerTooClose, flee, willAttack);
-        var isInAttackRange = new TreeQuestion(IsInAttackingRange, isTooClose, pursuit);
+        var isInFront = new TreeQuestion(IsPlayerInFront, willAttack, pursuit);
         var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
         var isPlayerOutOfSight = new TreeQuestion(IsPlayerOutOfSight, chase, hasARoute);
-        var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInAttackRange, isPlayerOutOfSight);
-        var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, hasARoute);
+        var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInFront, isPlayerOutOfSight);
+        var isTooClose = new TreeQuestion(IsInAttackingRange, flee, isPlayerInSight);
+        var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isTooClose, hasARoute);
         var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
         var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
 
         Root = isAlive;
     }
 
-    private bool QuestionIsPlayerTooClose()
+    private bool IsPlayerInFront()
     {
-        return false;
+        return GetModel() && GetModel<WizardModel>().IsTargetInFront(Player.transform);
     }
 
     private void ActionFlee() => Fsm.Transitions(EnemyStatesEnum.Flee);

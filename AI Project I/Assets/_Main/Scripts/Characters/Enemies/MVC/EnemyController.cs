@@ -182,9 +182,7 @@ namespace Game.Enemies
 
         protected bool IsInAttackingRange()
         {
-            if (GetModel())
-                return GetModel<EnemyModel>().TargetInRange(Player.transform);
-            return false;
+            return GetModel() && GetModel<EnemyModel>().TargetInRange(Player.transform);
         }
 
         protected bool HasARoute()
@@ -196,9 +194,7 @@ namespace Game.Enemies
 
         protected bool IsPlayerInSight()
         {
-            if (GetModel())
-                return GetModel<EnemyModel>().IsTargetInSight(Player.transform);
-            return false;
+            return GetModel() && GetModel<EnemyModel>().IsTargetInSight(Player.transform);
         }
 
         protected bool IsPlayerOutOfSight()
