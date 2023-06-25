@@ -17,6 +17,5 @@ MonoBehaviour:
   <Threshold>k__BackingField: 0.5
   <WorldOffset>k__BackingField: {x: 4.23, y: 0, z: -0.98}
   <Waypoints>k__BackingField:
-  - {x: 102, y: 0, z: 0}
-  - {x: 102, y: 0, z: 9}
-  - {x: 102, y: 0, z: -9}
+  - {x: 76.75, y: 0, z: -6.5}
+  - {x: 87, y: 0, z: -6.5}
