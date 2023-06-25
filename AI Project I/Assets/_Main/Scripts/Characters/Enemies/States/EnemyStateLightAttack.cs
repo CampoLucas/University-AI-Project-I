@@ -5,10 +5,9 @@
         public override void Awake()
         {
             base.Awake();
-            Model.LightAttack();
-            View.PlayTargetAnimation(Model.CurrentWeapon().GetData().LightAttack01.EventHash);
-            var timer = Model.CurrentWeapon().GetData().LightAttack01.Duration;
-            Model.SetTimer(timer);
+            var dir = Model.transform.position - Controller.Player.transform.position;
+            Model.Rotate(dir.normalized);
+            Attack();
         }
 
         public override void Execute()
@@ -28,6 +27,19 @@
         {
             base.Sleep();
             Model.SetTimer(0);
+            CancelAttack();
+        }
+
+        protected virtual void Attack()
+        {
+            Model.LightAttack();
+            View.PlayTargetAnimation(Model.CurrentWeapon().GetData().LightAttack01.EventHash);
+            var timer = Model.CurrentWeapon().GetData().LightAttack01.Duration;
+            Model.SetTimer(timer);
+        }
+        
+        protected virtual void CancelAttack()
+        {
             Model.CancelLightAttack();
         }
     }

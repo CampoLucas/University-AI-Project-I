@@ -297,6 +297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 54835672730926153}
   - component: {fileID: 1513865528706992899}
+  - component: {fileID: 1084921086995794893}
   m_Layer: 10
   m_Name: Saw
   m_TagString: Untagged
@@ -339,3 +340,16 @@ MonoBehaviour:
   pointA: {fileID: 6539829406367522670}
   pointB: {fileID: 4801409805478737589}
   speed: 1
+--- !u!65 &1084921086995794893
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7261742344718881376}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.54, y: 6.54, z: 1.75}
+  m_Center: {x: 0, y: 0, z: 0}
