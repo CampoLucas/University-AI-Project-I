@@ -15,9 +15,6 @@ namespace Game.Entities.Slime
 {
     public class SlimeController : EntityController<SlimeStatesEnum>
     {
-        [Tooltip("0: Move, 1: Idle, 2: Spin, 3: PowerUp")] 
-        [Range(0.1f, 100)] [SerializeField] private float[] ranges = new float[4];
-        
         private SlimeSO _data;
         private ITreeNode _root;
         private ISteering _obsAvoidance;
@@ -30,7 +27,6 @@ namespace Game.Entities.Slime
         {
             base.Awake();
             _data = GetModel().GetData<SlimeSO>();
-
         }
 
         protected override void Start()
@@ -48,7 +44,14 @@ namespace Game.Entities.Slime
             
             base.Start();
         }
-        
+
+        protected override void Update()
+        {
+            base.Update();
+            Debug.Log(GetCurrentState());
+        }
+
+
         private void InitSteering()
         {
             _obsAvoidance = new ObstacleAvoidance(transform, _data.ObsAngle, _data.ObsRange, _data.MaxObs,_data.ObsMask);
@@ -130,10 +133,10 @@ namespace Game.Entities.Slime
             if (Fsm == null) return;
             var state =MyRandoms.Roulette(new Dictionary<Action, float>
             {
-                { ActionMove, ranges[0] },
-                { ActionIdle, ranges[1]},
-                { ActionSpin, ranges[2]},
-                { ActionPowerUp, ranges[3]}
+                { ActionMove, _data.MoveOdds },
+                { ActionIdle, _data.IdleOdds},
+                { ActionSpin, _data.SpinOdds},
+                { ActionPowerUp, _data.PowerUpOdds}
             });
             
             state?.Invoke();
@@ -192,6 +195,11 @@ namespace Game.Entities.Slime
         public FlockingManager GetFlocking()
         {
             return _isFlockingNull ? default : _flocking;
+        }
+
+        public string GetCurrentState()
+        {
+            return Fsm.CurrentState;
         }
 
         #endregion

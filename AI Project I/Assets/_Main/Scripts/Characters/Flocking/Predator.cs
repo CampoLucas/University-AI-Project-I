@@ -14,12 +14,13 @@ namespace Game.Entities.Flocking
         private int _selfLevel;
         private int _predLevel;
 
-        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask whatIsPredator, float selfLevel)
+        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask whatIsPredator, int selfLevel)
         {
             _multiplier = multiplier;
             _predatorRange = predatorRange;
             _whatIsPredator = whatIsPredator;
             _colliders = new Collider[predatorMax];
+            _selfLevel = selfLevel;
         }
         public Vector3 GetDir(List<IBoid> boids, IBoid self)
         {
@@ -39,15 +40,14 @@ namespace Game.Entities.Flocking
                 _predLevel = predator.Level;
             }
 
-            var lvlDiff = _selfLevel - _predLevel;
-            lvlDiff = lvlDiff switch
-            {
-                < 0 => 1,
-                > 0 => -1,
-                _ => 0
-            };
+            var lvlDiff = _predLevel - _selfLevel;
+            var lvlMultiplier = 1;
+            if (lvlDiff != 0)
+                lvlMultiplier = Math.Sign(lvlDiff);
 
-            return dir.normalized * (_multiplier * lvlDiff);
+            Debug.Log(lvlMultiplier);
+
+            return dir.normalized * (_multiplier * lvlMultiplier);
         }
     }
 }

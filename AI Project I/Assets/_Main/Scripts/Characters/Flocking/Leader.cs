@@ -18,7 +18,7 @@ namespace Game.Entities.Flocking
 
         public Vector3 GetDir(List<IBoid> boids, IBoid self)
         {
-            return (_target.position - self.Position).normalized * _multiplier;
+            return _target == null ? Vector3.zero : (_target.position - self.Position).normalized * _multiplier;
         }
     }
 

@@ -13,6 +13,8 @@ namespace Game.Entities.Slime
 {
     public class SlimeModel : EnemyModel, IBoid
     {
+        private Transform _cube;
+        private BoxCollider _collider;
         private float _currJumpDelay;
         private SlimeFlockingManager _slimeFlocking;
         private SlimeSO _slimeData;
@@ -30,6 +32,10 @@ namespace Game.Entities.Slime
             base.Awake();
             _slimeData = GetData<SlimeSO>();
             _isDataNull = _slimeData == null;
+
+            _cube = transform.GetChild(0);
+            _collider = GetComponent<BoxCollider>();
+            
             CanJump = true;
         }
 
@@ -42,21 +48,25 @@ namespace Game.Entities.Slime
 
         public override void Move(Vector3 dir)
         {
+            Jump(dir);
+        }
+
+        public void Jump(Vector3 dir, float multiplier = 1)
+        {
             if (!CanJump || _currJumpDelay > 0) return;
             
-            var jumpForce = GetData<SlimeSO>().JumpForce;
+            var jumpForce = _slimeData.JumpForce;
             var finalDir = (dir + transform.up).normalized;
-            Rigidbody.AddForce(finalDir * jumpForce, ForceMode.Impulse);
+            Rigidbody.AddForce(finalDir * (jumpForce * multiplier), ForceMode.Impulse);
             
-            var targetVelocity = dir * GetData<SlimeSO>().MoveSpeed;
+            var targetVelocity = dir * _slimeData.MoveSpeed;
             var cachedProjectedVelocity = Vector3.ProjectOnPlane(targetVelocity, Vector3.zero);
-            Rigidbody.velocity = Vector3.Lerp(Rigidbody.velocity, cachedProjectedVelocity, GetData<SlimeSO>().MoveLerpSpeed);
-            //CanJump = false;
+            Rigidbody.velocity = Vector3.Lerp(Rigidbody.velocity, cachedProjectedVelocity, _slimeData.MoveLerpSpeed);
         }
 
         public void Spin()
         {
-            var rotSpeed = GetData<SlimeSO>().RotSpeed * GetData<SlimeSO>().RotationMultiplier;
+            var rotSpeed = _slimeData.RotSpeed * _slimeData.RotationMultiplier;
             transform.Rotate( transform.up * (rotSpeed * Time.deltaTime));
         }
 
@@ -66,9 +76,14 @@ namespace Game.Entities.Slime
                 _currJumpDelay -= Time.deltaTime;
         }
 
+        public void ClearJumpDelay()
+        {
+            _currJumpDelay = 0;
+        }
+
         private void ResetJumpDelay()
         {
-            _currJumpDelay = GetData<SlimeSO>().JumpDelay;
+            _currJumpDelay = _slimeData.JumpDelay;
         }
 
         #endregion
@@ -78,23 +93,25 @@ namespace Game.Entities.Slime
         public void IncreaseSize()
         {
             var currScale = transform.localScale.x;
-            var speed = GetData<SlimeSO>().GrowSpeed * Time.deltaTime;
+            var speed = _slimeData.GrowSpeed * Time.deltaTime;
 
-            currScale = Mathf.Clamp(currScale + speed, currScale, TargetSize);
+            currScale += speed;
 
-            transform.localScale = Vector3.one * currScale;
-        }
-
-        public bool HasTargetSize()
-        {
-            return Math.Abs(transform.localScale.x - TargetSize) < 0.1f;
+            if (currScale > TargetSize)
+                currScale = TargetSize;
+            
+            var newSize = Vector3.one * currScale;
+            _cube.localScale = newSize;
+            _collider.size = newSize;
         }
 
         private void SetSize()
         {
             if (_isDataNull) return;
 
-            transform.localScale = TargetSize * Vector3.one;
+            var size =TargetSize * Vector3.one;
+            _cube.localScale = size;
+            _collider.size = size;
         }
         
 
@@ -119,7 +136,7 @@ namespace Game.Entities.Slime
         public void GetRandomNode()
         {
             var randPoint = Random.insideUnitSphere;
-            var finalValue = randPoint * GetData<SlimeSO>().RandomPointRadius;
+            var finalValue = randPoint * _slimeData.RandomPointRadius;
             finalValue.y = 0;
             var targetNode = NodeGrid.GetInstance().GetClosestNode(finalValue);
             
@@ -137,7 +154,7 @@ namespace Game.Entities.Slime
             targetPos.y = 0;
             var distance = Vector3.Distance(transform.position, targetPos);
 
-            return distance <= GetData<SlimeSO>().AttackRange;
+            return distance <= _slimeData.AttackRange;
         }
 
         #endregion
@@ -167,12 +184,15 @@ namespace Game.Entities.Slime
 
         protected override void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.yellow;
+            //Boids
+            Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().BoidRadius);
             
+            //Predator
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().PredatorRange);
             
+            //RandomPoint
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().RandomPointRadius);
         }

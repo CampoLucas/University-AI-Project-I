@@ -8,9 +8,7 @@ namespace Game.Entities.Slime.States
         public override void Awake()
         {
             base.Awake();
-            var timer = Model.GetRandomTime(5f);
-            if (timer < 2)
-                timer = 2;
+            var timer = Model.GetRandomTime(2f);
             Model.SetTimer(timer);
         }
 
