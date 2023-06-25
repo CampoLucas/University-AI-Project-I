@@ -13,7 +13,6 @@ namespace Game.Pathfinding
         
         [Header("Position Settings")]
         [SerializeField] private Vector3 gridWorldSize;
-        [SerializeField] private Vector3 gridOffset;
         [SerializeField] private bool clampToFloor;
         [SerializeField] private float clampOffset;
         
@@ -221,9 +220,7 @@ namespace Game.Pathfinding
             hasTrap = Physics.OverlapBox(pos, Vector3.one * nodeRadius, Quaternion.identity, trapMask).Length > 0;
 
             var e = new Collider[1];
-            RaycastHit[] hits = new RaycastHit[1];
-
-            RaycastHit hit;
+            var hits = new RaycastHit[1];
 
             var nRadius = nodeRadius / 2;
             var forwardPos = pos + Vector3.forward * nRadius;
