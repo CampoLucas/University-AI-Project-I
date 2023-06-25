@@ -2,12 +2,13 @@
 
 namespace Game.Entities.Slime.States
 {
-    public sealed class SlimeStateMove<T> : SlimeStateBase<T>
+    public sealed class SlimeStatesFollowRoute<T> : SlimeStateBase<T>
     {
         public override void Awake()
         {
             base.Awake();
             
+            Model.GetRandomNode();
             CalculatePath();
         }
 
@@ -15,9 +16,23 @@ namespace Game.Entities.Slime.States
         {
             base.Execute();
             
-            Tree.Execute(); 
-            Follow();
-            Model.ReloadJump();
+            Model.RunJumpDelay();
+            
+            if (Model.HasReachedTarget())
+            {
+                Tree.Execute();
+            }
+            else
+            {
+                Follow();
+            }
+        }
+
+        public override void Sleep()
+        {
+            base.Sleep();
+            Model.Move(Vector3.zero);
+            Model.ClearTarget();
         }
 
         private void CalculatePath()
@@ -27,17 +42,11 @@ namespace Game.Entities.Slime.States
             Model.SetNodes(pos, targetPos);
             Model.CalculatePath();
         }
-
+        
         private void Follow()
         {
             Vector3 flockingDir = Controller.GetFlocking().GetDir();
             Model.FollowTarget(Model.GetPathfinder(), flockingDir, Controller.GetAvoidance());
-        }
-
-        public override void Sleep()
-        {
-            base.Sleep();
-            Model.Move(Vector3.zero);
         }
     }
 }

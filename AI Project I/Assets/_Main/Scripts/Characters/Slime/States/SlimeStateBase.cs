@@ -1,5 +1,6 @@
 ﻿using Game.DecisionTree;
 using Game.FSM;
+using UnityEngine;
 
 namespace Game.Entities.Slime.States
 {
@@ -31,6 +32,7 @@ namespace Game.Entities.Slime.States
                 Model.Damageable.OnTakeDamage += OnDamageHandler;
                 Model.Damageable.OnDie += OnDieHandler;
             }
+            
         }
 
         public override void Sleep()

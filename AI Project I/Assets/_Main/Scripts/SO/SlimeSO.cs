@@ -9,6 +9,12 @@ namespace Game.SO
 
         public float JumpDelay => jumpDelay;
 
+        public float GrowSpeed => growSpeed;
+
+        public float RandomPointRadius => randomPointRadius;
+
+        public float RotationMultiplier => rotationMultiplier;
+
         public float FlockingMultiplier => flockingMultiplier;
 
         public int MaxBoids => maxBoids;
@@ -33,8 +39,11 @@ namespace Game.SO
         public float CohesionMultiplier => cohesionMultiplier;
 
         [Header("Slime Values")]
-        [Range(0.1f, 10)][SerializeField] private float jumpForce = 2;
-        [Range(0.1f, 10)][SerializeField] private float jumpDelay = 1;
+        [Range(0.1f, 10)] [SerializeField] private float jumpForce = 2;
+        [Range(0.1f, 10)] [SerializeField] private float jumpDelay = 1;
+        [Range(0.1f, 2)] [SerializeField] private float growSpeed = 1;
+        [Range(1f, 100f)] [SerializeField] private float randomPointRadius = 25;
+        [Range(1f, 100f)] [SerializeField] private float rotationMultiplier = 75;
         [Space]
         [Header("Flocking")] 
         [Range(1, 10)] [SerializeField] private float flockingMultiplier = 2f;

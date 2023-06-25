@@ -21,7 +21,8 @@ MonoBehaviour:
   hitAnimation: {fileID: 0}
   deathAnimation: {fileID: 0}
   level: 1
-  attackRange: 0.5
+  maxLevel: 5
+  attackRange: 2
   fovRange: 5
   fovAngle: 120
   fovMask:
@@ -35,8 +36,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   pursuitTime: 0.5
-  jumpForce: 2
+  jumpForce: 1
   jumpDelay: 0.75
+  growSpeed: 1
+  randomPointRadius: 25
+  rotationMultiplier: 100
   flockingMultiplier: 5
   maxBoids: 10
   whatIsBoid:

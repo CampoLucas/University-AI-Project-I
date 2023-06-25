@@ -16,6 +16,8 @@ namespace Game.SO
 
         public int Level => level;
 
+        public int MaxLevel => maxLevel;
+
         [Header("Movement")]
         [SerializeField] private float moveSpeed = 5;
         [SerializeField] private float walkSpeed = 3;
@@ -30,8 +32,9 @@ namespace Game.SO
         [SerializeField] private AnimationEventSO hitAnimation;
         [SerializeField] private AnimationEventSO deathAnimation;
 
-        [Header("Misc")] 
+        [Header("Level")] 
         [SerializeField] private int level = 1;
+        [SerializeField] private int maxLevel = 15;
 
 
     }

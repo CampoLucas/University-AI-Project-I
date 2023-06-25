@@ -6,6 +6,7 @@ using Game.Entities.Slime.States;
 using Game.Entities.Steering;
 using Game.FSM;
 using Game.Interfaces;
+using Game.Sheared;
 using Game.Slime.States;
 using Game.SO;
 using UnityEngine;
@@ -14,6 +15,9 @@ namespace Game.Entities.Slime
 {
     public class SlimeController : EntityController<SlimeStatesEnum>
     {
+        [Tooltip("0: Move, 1: Idle, 2: Spin, 3: PowerUp")] 
+        [Range(0.1f, 100)] [SerializeField] private float[] ranges = new float[4];
+        
         private SlimeSO _data;
         private ITreeNode _root;
         private ISteering _obsAvoidance;
@@ -21,8 +25,6 @@ namespace Game.Entities.Slime
         
         private bool _isFlockingNull;
         private bool _isDataNull;
-        
-
 
         protected override void Awake()
         {
@@ -59,22 +61,47 @@ namespace Game.Entities.Slime
             var states = new List<SlimeStateBase<SlimeStatesEnum>>();
 
             var idle = new SlimeStateIdle<SlimeStatesEnum>();
-            var move = new SlimeStateMove<SlimeStatesEnum>();
+            var followRoute = new SlimeStatesFollowRoute<SlimeStatesEnum>();
+            var powerUp = new SlimeStatePowerUp<SlimeStatesEnum>();
+            var spin = new SlimeStateSpin<SlimeStatesEnum>();
             var die = new SlimeStatesDead<SlimeStatesEnum>();
             
             states.Add(idle);
-            states.Add(move);
+            states.Add(followRoute);
+            states.Add(powerUp);
+            states.Add(spin);
+            states.Add(die);
             
             idle.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
             {
-                { SlimeStatesEnum.Move, move },
-                { SlimeStatesEnum.Die, die },
+                { SlimeStatesEnum.FollowRoute, followRoute },
+                { SlimeStatesEnum.PowerUp, powerUp },
+                { SlimeStatesEnum.Spin, spin },
+                { SlimeStatesEnum.Die, die }
             });
             
-            move.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
+            followRoute.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
             {
                 { SlimeStatesEnum.Idle, idle },
-                { SlimeStatesEnum.Die, die },
+                { SlimeStatesEnum.PowerUp, powerUp },
+                { SlimeStatesEnum.Spin, spin },
+                { SlimeStatesEnum.Die, die }
+            });
+            
+            powerUp.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
+            {
+                { SlimeStatesEnum.Idle, idle },
+                { SlimeStatesEnum.FollowRoute, followRoute },
+                { SlimeStatesEnum.Spin, spin },
+                { SlimeStatesEnum.Die, die }
+            });
+            
+            spin.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
+            {
+                { SlimeStatesEnum.Idle, idle },
+                { SlimeStatesEnum.FollowRoute, followRoute },
+                { SlimeStatesEnum.PowerUp, powerUp },
+                { SlimeStatesEnum.Die, die }
             });
 
             foreach (var state in states)
@@ -87,14 +114,29 @@ namespace Game.Entities.Slime
 
         private void InitTree()
         {
-            var idle = new TreeAction(ActionIdle);
-            var move = new TreeAction(ActionMove);
             var death = new TreeAction(ActionDead);
+            var roulette = new TreeAction(CheckRoulette);
 
-            var hasToMove = new TreeQuestion(HasToMove, move, idle);
-            var isAlive = new TreeQuestion(IsAlive, hasToMove, death);
+            /*var hasToMove = new TreeQuestion(HasToMove, move, idle);
+            var isAlive = new TreeQuestion(IsAlive, hasToMove, death);*/
+            
+            var isAlive = new TreeQuestion(IsAlive, roulette, death);
 
             _root = isAlive;
+        }
+        
+        private void CheckRoulette()
+        {
+            if (Fsm == null) return;
+            var state =MyRandoms.Roulette(new Dictionary<Action, float>
+            {
+                { ActionMove, ranges[0] },
+                { ActionIdle, ranges[1]},
+                { ActionSpin, ranges[2]},
+                { ActionPowerUp, ranges[3]}
+            });
+            
+            state?.Invoke();
         }
 
         #region TreeActions
@@ -108,7 +150,19 @@ namespace Game.Entities.Slime
         private void ActionMove()
         {
             if(Fsm == null) return;
-            Fsm.Transitions(SlimeStatesEnum.Move);
+            Fsm.Transitions(SlimeStatesEnum.FollowRoute);
+        }
+
+        private void ActionPowerUp()
+        {
+            if (Fsm == null) return;
+            Fsm.Transitions(SlimeStatesEnum.PowerUp);
+        }
+
+        private void ActionSpin()
+        {
+            if (Fsm == null) return;
+            Fsm.Transitions(SlimeStatesEnum.Spin);
         }
 
         private void ActionDead()
@@ -120,11 +174,6 @@ namespace Game.Entities.Slime
         #endregion
 
         #region TreeQuestions
-
-        private bool HasToMove()
-        {
-            return GetModel() && GetModel<SlimeModel>().HasTargetNode();
-        }
 
         private bool IsAlive()
         {
@@ -146,7 +195,5 @@ namespace Game.Entities.Slime
         }
 
         #endregion
-        
-
     }
 }

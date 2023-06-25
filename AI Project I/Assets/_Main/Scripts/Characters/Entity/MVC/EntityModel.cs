@@ -57,7 +57,12 @@ namespace Game.Entities
         public void HeavyAttack() => _heavyAttack.Attack();
         public void CancelHeavyAttack() => _heavyAttack.CancelAttack();
         public void IncreaseLevel() => Level++;
-        
+
+        public bool HasReachedMaxLevel()
+        {
+            return Level >= GetData<StatSO>().MaxLevel;
+        }
+
         #region Timer Methods
 
         public bool GetTimerComplete() => _waitTimer?.TimerComplete() ?? default;
