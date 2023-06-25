@@ -25,6 +25,9 @@ namespace Game.Pathfinding
         [SerializeField] private Node prefab;
         [SerializeField] private float nodeRadius;
         [SerializeField] private List<Node> nodes;
+
+        [Header("Condition Settings")] 
+        [Range(0.1f, 10)] [SerializeField] private float radius = 2f;
         
         private Collider[] _closestNodes;
         private static NodeGrid _instance;
@@ -227,6 +230,7 @@ namespace Game.Pathfinding
             var backwardPos = pos + Vector3.back * nRadius;
             var rightPos = pos + Vector3.right * nRadius;
             var leftPos = pos + Vector3.left * nRadius;
+            
             var maxDistance = NodeDiameter * 2;
             var forward = Physics.Raycast(forwardPos, Vector3.down, maxDistance, floorMask);
             var backward = Physics.Raycast(backwardPos, Vector3.down, maxDistance, floorMask);
@@ -234,8 +238,15 @@ namespace Game.Pathfinding
             var left = Physics.Raycast(leftPos, Vector3.down, maxDistance, floorMask);
 
 
-            var insideFloor = Physics.OverlapSphereNonAlloc(pos, nodeRadius, e, floorMask) > 0;
-            var insideUnWalkable = Physics.OverlapSphereNonAlloc(pos, nodeRadius, e, obsMask) > 0;
+            //var insideFloor = Physics.OverlapSphereNonAlloc(pos, nodeRadius, e, floorMask) > 0;
+            var insideFloor =
+                Physics.OverlapBoxNonAlloc(pos, Vector3.one * nodeRadius, e, Quaternion.identity, floorMask) > 0;
+            
+            //var insideUnWalkable = Physics.OverlapSphereNonAlloc(pos, nodeRadius * radius, e, obsMask) > 0;
+            
+            var insideUnWalkable =
+                Physics.OverlapBoxNonAlloc(pos, Vector3.one * nodeRadius, e, Quaternion.identity, obsMask) > 0;
+            
             if (!forward || !backward || !right || !left || insideFloor || insideUnWalkable) return false;
             var overlapUp = Physics.SphereCastNonAlloc(pos, nodeRadius, Vector3.up, hits, NodeDiameter, floorMask) > 0;
             if (overlapUp) return false;
@@ -243,43 +254,6 @@ namespace Game.Pathfinding
             return overlapDown;
         }
         
-        private bool Condition(Vector3 pos)
-        {
-            var e = new Collider[1];
-            RaycastHit[] hits = new RaycastHit[1];
-
-            RaycastHit hit;
-
-            var nRadius = nodeRadius / 2;
-            var forwardPos = pos + Vector3.forward * nRadius;
-            var backwardPos = pos + Vector3.back * nRadius;
-            var rightPos = pos + Vector3.right * nRadius;
-            var leftPos = pos + Vector3.left * nRadius;
-            var maxDistance = NodeDiameter * 2;
-            var forward = Physics.Raycast(forwardPos, Vector3.down, maxDistance, floorMask);
-            var backward = Physics.Raycast(backwardPos, Vector3.down, maxDistance, floorMask);
-            var right = Physics.Raycast(rightPos, Vector3.down, maxDistance, floorMask);
-            var left = Physics.Raycast(leftPos, Vector3.down, maxDistance, floorMask);
-
-
-            var insideFloor = Physics.OverlapSphereNonAlloc(pos, nodeRadius, e, floorMask) > 0;
-            var insideUnwalkable = Physics.OverlapSphereNonAlloc(pos, nodeRadius, e, obsMask) > 0;
-            if (forward && backward && right && left && !insideFloor && !insideUnwalkable)
-            {
-                var overlapUp = Physics.SphereCastNonAlloc(pos, nodeRadius, Vector3.up, hits, NodeDiameter, floorMask) > 0;
-                if (!overlapUp)
-                {
-                    var overlapDown = Physics.SphereCastNonAlloc(pos, nodeRadius, Vector3.down, hits, NodeDiameter, floorMask) > 0;
-                    if (overlapDown)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-
-        }
 
 #if UNITY_EDITOR
         private void DebugGizmos()
@@ -296,6 +270,7 @@ namespace Game.Pathfinding
                         for (var z = 0; z < GridSize.z; z++)
                         {
                             var position = GetWorldPosition(x, y, z);
+                            
                             if (!Condition(position, out var hasTrap)) continue;
                             var color = new Color(0, 0, 1, 0.5f);
                             if (hasTrap)
