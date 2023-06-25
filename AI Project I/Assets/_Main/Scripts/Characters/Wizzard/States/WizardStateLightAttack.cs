@@ -1,6 +1,6 @@
 ﻿namespace Game.Enemies.States
 {
-    public class EnemyStateLightAttack<T> : EnemyStateBase<T>
+    public class WizardStateLightAttack<T> : WizardStateBase<T>
     {
         public override void Awake()
         {

@@ -15,7 +15,6 @@ namespace Game.Pathfinding
 
         [SerializeField] private float radius;
         [SerializeField] private LayerMask nodeLayer;
-        [SerializeField] private LayerMask mask;
         [SerializeField] private LayerMask maskObs;
         [SerializeField] private float inViewRadius = 2f;
         [SerializeField] private float closestNodeRange = 15f;
@@ -57,7 +56,7 @@ namespace Game.Pathfinding
             
             // checks if the nodes are in the dictionary
             List<Node> nodePath;
-            if (InView(_startNode, _endNode))
+            if (InView(transform.position, Target.position))
             {
                 nodePath = new List<Node> { _startNode, _endNode };
                 LoggingTwo.Log("Return path from: View", LoggingType.Debug);
@@ -67,16 +66,16 @@ namespace Game.Pathfinding
                 nodePath = _aStar.Run(_startNode, Satisfies, GetConnections, GetCost, Heuristic);
                 LoggingTwo.Log("Return path from: A*", LoggingType.Debug);
             }
-
+        
             // Convert the node list into a Vector3 list with its position at the start and the target position at the end
             var cleanedPath = new List<Vector3> { transform.position };
-
+        
             for (var i = 0; i < nodePath.Count; i++)
             {
                 cleanedPath.Add(nodePath[i].transform.position);
             }
             cleanedPath.Add(Target.position);
-
+        
             // Cleans the path
             _aStar.CleanPath(cleanedPath, InView, out cleanedPath);
             
@@ -95,16 +94,19 @@ namespace Game.Pathfinding
 
         private bool InView(Node from, Node to)
         {
-            var startPos = from.transform.position;
-            var endPos = to.transform.position;
-            var dir = startPos - endPos;
-            //return !Physics.Linecast(startPos, endPos, maskObs);
-            return !Physics.SphereCast(startPos, inViewRadius, dir.normalized, out var hit, dir.magnitude, maskObs);
+            return InView(from.transform.position, to.transform.position);
         }
 
         private bool InView(Vector3 from, Vector3 to)
         {
-            return !Physics.Linecast(from, to, maskObs);
+            var dir = from - to;
+            var right = transform.right;
+            var lineRight = !Physics.Linecast(from + right * inViewRadius, to);
+            var lineMiddle = !Physics.Linecast(from, to, maskObs);
+            var lineLeft = !Physics.Linecast(from + right * -inViewRadius, to);
+            
+            return lineLeft && lineRight && lineMiddle;
+            //return !Physics.SphereCast(from, inViewRadius, dir.normalized, out var hit, dir.magnitude, maskObs);
         }
 
         private float Heuristic(Node curr)

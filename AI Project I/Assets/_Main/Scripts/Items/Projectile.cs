@@ -24,6 +24,7 @@ namespace Game.Items
             _damageBox = GetComponent<DamageBoxCollider>();
             //_overlap = GetComponent<BoxCastTrigger>();
             //.EnableCollider();
+            Destroy(gameObject, 10f);
         }
         
         public void InitData(WeaponSO data)

@@ -18,47 +18,46 @@ namespace Game.Enemies
     {
         [field: SerializeField] public PlayerModel Player { get; private set; }
 
+        protected ITreeNode Root;
+
+        protected ISteering Seek;
+        protected ISteering Pursuit;
+        protected ISteering ObsAvoidance;
+        
         private EnemySO _data;
 
-        private List<EnemyStateBase<EnemyStatesEnum>> _states;
-
-        private ITreeNode _root;
-
-        private ISteering _seek;
-        private ISteering _pursuit;
-        private ISteering _obsAvoidance;
         
-        private void InitSteering()
+        protected virtual void InitSteering()
         {
             var transform1 = transform;
             var transform2 = Player.transform;
-            _seek = new Seek(transform1, transform2);
-            _pursuit = new Pursuit(transform1, Player, _data.PursuitTime);
-            _obsAvoidance = new ObstacleAvoidance(transform1, _data.ObsAngle, _data.ObsRange, _data.MaxObs, _data.ObsMask);
+            Seek = new Seek(transform1, transform2);
+            Pursuit = new Pursuit(transform1, Player, _data.PursuitTime);
+            ObsAvoidance = new ObstacleAvoidance(transform1, _data.ObsAngle, _data.ObsRange, _data.MaxObs, _data.ObsMask);
         }
 
         protected override void InitFSM()
         {
             base.InitFSM();
-            _states = new List<EnemyStateBase<EnemyStatesEnum>>();
+            var states = new List<EnemyStateBase<EnemyStatesEnum>>();
 
             var idle = new EnemyStateIdle<EnemyStatesEnum>();
-            var seek = new EnemyStateSeek<EnemyStatesEnum>(_seek, _obsAvoidance);
-            var pursuit = new EnemyStatePursuit<EnemyStatesEnum>(_pursuit, _obsAvoidance);
+            var seek = new EnemyStateSeek<EnemyStatesEnum>(Seek, ObsAvoidance);
+            var pursuit = new EnemyStatePursuit<EnemyStatesEnum>(Pursuit, ObsAvoidance);
             var damage = new EnemyStateDamage<EnemyStatesEnum>();
             var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
             var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
             var dead = new EnemyStateDeath<EnemyStatesEnum>();
             var followRoute = new EnemyStateFollowRoute<EnemyStatesEnum>();
             
-            _states.Add(idle);
-            _states.Add(seek);
-            _states.Add(pursuit);
-            _states.Add(damage);
-            _states.Add(lightAttack);
-            _states.Add(heavyAttack);
-            _states.Add(dead);
-            _states.Add(followRoute);
+            states.Add(idle);
+            states.Add(seek);
+            states.Add(pursuit);
+            states.Add(damage);
+            states.Add(lightAttack);
+            states.Add(heavyAttack);
+            states.Add(dead);
+            states.Add(followRoute);
             
             idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
@@ -122,7 +121,7 @@ namespace Game.Enemies
                 { EnemyStatesEnum.FollowRoute, followRoute },
             });
             
-            followRoute.AddTransition(new FlexibleDictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
+            followRoute.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
             {
                 { EnemyStatesEnum.Idle, idle },
                 { EnemyStatesEnum.Pursuit, pursuit },
@@ -131,15 +130,14 @@ namespace Game.Enemies
                 { EnemyStatesEnum.Die, dead},
             });
 
-            foreach (var state in _states)
+            foreach (var state in states)
             {
-                state.Init(GetModel<EnemyModel>(), GetView<EnemyView>(), this, _root);
+                state.Init(GetModel<EnemyModel>(), GetView<EnemyView>(), this, Root);
             }
-            _states = null;
             Fsm.SetInit(idle);
         }
 
-        private void InitTree()
+        protected virtual void InitTree()
         {
             var idle = new TreeAction(ActionIdle);
             var chase = new TreeAction(ActionSeek);
@@ -160,7 +158,7 @@ namespace Game.Enemies
             var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
             var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
 
-            _root = isAlive;
+            Root = isAlive;
         }
         
         protected override void Awake()
@@ -178,32 +176,28 @@ namespace Game.Enemies
             //_model.Spawn();
         }
 
-        public ISteering GetSeek() => _seek;
-        public ISteering GetPursuit() => _pursuit;
-        public ISteering GetObsAvoid() => _obsAvoidance;
+        public ISteering GetSeek() => Seek;
+        public ISteering GetPursuit() => Pursuit;
+        public ISteering GetObsAvoid() => ObsAvoidance;
 
-        private bool IsInAttackingRange()
+        protected bool IsInAttackingRange()
         {
-            if (GetModel())
-                return GetModel<EnemyModel>().TargetInRange(Player.transform);
-            return false;
+            return GetModel() && GetModel<EnemyModel>().TargetInRange(Player.transform);
         }
 
-        private bool HasARoute()
+        protected bool HasARoute()
         {
             if (GetModel())
                 return GetModel<EnemyModel>().HasARoute();
             return false;
         }
 
-        private bool IsPlayerInSight()
+        protected bool IsPlayerInSight()
         {
-            if (GetModel())
-                return GetModel<EnemyModel>().IsTargetInSight(Player.transform);
-            return false;
+            return GetModel() && GetModel<EnemyModel>().IsTargetInSight(Player.transform);
         }
 
-        private bool IsPlayerOutOfSight()
+        protected bool IsPlayerOutOfSight()
         {
             if (GetModel())
                 return !GetModel<EnemyModel>().IsTargetInSight(Player.transform) && GetModel<EnemyModel>().IsFollowing();
@@ -211,7 +205,7 @@ namespace Game.Enemies
         }
 
         // ToDo: Usar ruleta con algo que de mas de 2 opciones
-        private bool WillAttack()
+        protected bool WillAttack()
         {
             return MyRandoms.Roulette(new Dictionary<bool, float>
             {
@@ -220,7 +214,7 @@ namespace Game.Enemies
             });
         }
 
-        private bool IsHeavyAttack()
+        protected bool IsHeavyAttack()
         {
             return MyRandoms.Roulette(new Dictionary<bool, float>
             {
@@ -229,89 +223,49 @@ namespace Game.Enemies
             });
         }
 
-        private bool IsPlayerAlive()
+        protected bool IsPlayerAlive()
         {
             if (GetModel())
                 return GetModel<EnemyModel>().IsPlayerAlive(Player);
             return false;
         }
 
-        private bool HasTakenDamage()
+        protected bool HasTakenDamage()
         {
             if (GetModel())
                 return GetModel<EnemyModel>().HasTakenDamage();
             return false;
         }
 
-        private bool IsAlive()
+        protected bool IsAlive()
         {
             if (GetModel())
                 return GetModel<EnemyModel>().IsAlive();
             return false;
         }
 
-        private void ActionSeek()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.Seek);
-        }
-
-        private void ActionPursuit()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.Pursuit);
-        }
-
-        private void ActionLightAttack()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.LightAttack);
-        }
-
-        private void ActionHeavyAttack()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.HeavyAttack);
-        }
-
-        private void ActionDamage()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.Damage);
-        }
-
-        private void ActionDie()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.Die);
-        }
-
-        private void ActionIdle()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.Idle);
-        }
-
-        private void ActionFollowRoute()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(EnemyStatesEnum.FollowRoute);
-        }
+        protected void ActionSeek() => Fsm.Transitions(EnemyStatesEnum.Seek);
+        protected void ActionPursuit() => Fsm.Transitions(EnemyStatesEnum.Pursuit);
+        protected void ActionLightAttack() => Fsm.Transitions(EnemyStatesEnum.LightAttack);
+        protected void ActionHeavyAttack() => Fsm.Transitions(EnemyStatesEnum.HeavyAttack);
+        protected void ActionDamage() => Fsm.Transitions(EnemyStatesEnum.Damage);
+        protected void ActionDie() => Fsm.Transitions(EnemyStatesEnum.Die);
+        protected void ActionIdle() => Fsm.Transitions(EnemyStatesEnum.Idle);
+        protected void ActionFollowRoute() => Fsm.Transitions(EnemyStatesEnum.FollowRoute);
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if (_root != null)
-                _root.Dispose();
-            _seek.Dispose();
-            _pursuit.Dispose();
-            _obsAvoidance.Dispose();
+            if (Root != null)
+                Root.Dispose();
+            Seek.Dispose();
+            Pursuit.Dispose();
+            ObsAvoidance.Dispose();
             Player = null;
-            _states = null;
-            _root = null;
-            _seek = null;
-            _pursuit = null;
-            _obsAvoidance = null;
+            Root = null;
+            Seek = null;
+            Pursuit = null;
+            ObsAvoidance = null;
         }
     }
 }

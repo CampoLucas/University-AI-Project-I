@@ -9,20 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b1c9fe052d94f8bb74a51af2a67cb8a, type: 3}
-  m_Name: EnemyStats
+  m_Script: {fileID: 11500000, guid: 608ccf55bea54614b8ea87d5d9fddf9e, type: 3}
+  m_Name: WizzardStats
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  walkSpeed: 2
+  moveSpeed: 3.5
+  walkSpeed: 1.5
   moveLerpSpeed: 10
-  rotSpeed: 30
-  maxHealth: 3
+  rotSpeed: 10
+  maxHealth: 5
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
   deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}
-  attackRange: 1.5
+  attackRange: 3.5
   fieldOfView:
-    range: 4
+    range: 8
     angle: 120
     mask:
       serializedVersion: 2
@@ -35,3 +35,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   pursuitTime: 0.5
+  attackFov:
+    range: 6
+    angle: 10
+    mask:
+      serializedVersion: 2
+      m_Bits: 0
