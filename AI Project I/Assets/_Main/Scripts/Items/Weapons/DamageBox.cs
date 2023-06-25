@@ -28,7 +28,8 @@ namespace Game.Items.Weapons
 
         private void Start()
         {
-            _trigger.OnCastEnter += CastEnter;
+            if (_trigger)
+                _trigger.OnCastEnter += CastEnter;
         }
 
         private void Damage(Damageable damageable)
@@ -52,7 +53,7 @@ namespace Game.Items.Weapons
                     Damage(damageable);
                 }
             }
-            if (destroyOnEnter) Destroy(this);
+            if (destroyOnEnter) Destroy(gameObject);
         }
 
         private void OnDestroy()

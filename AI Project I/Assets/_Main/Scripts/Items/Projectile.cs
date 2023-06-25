@@ -14,16 +14,16 @@ namespace Game.Items
         
         private Rigidbody _rb;
         private Movement _movement;
-        private DamageBox _damageBox;
-        private BoxCastTrigger _overlap;
+        private DamageBoxCollider _damageBox;
+        //private BoxCastTrigger _overlap;
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
             _movement = new Movement(speed, 1, _rb);
-            _damageBox = GetComponent<DamageBox>();
-            _overlap = GetComponent<BoxCastTrigger>();
-            _overlap.EnableCollider();
+            _damageBox = GetComponent<DamageBoxCollider>();
+            //_overlap = GetComponent<BoxCastTrigger>();
+            //.EnableCollider();
         }
         
         public void InitData(WeaponSO data)
