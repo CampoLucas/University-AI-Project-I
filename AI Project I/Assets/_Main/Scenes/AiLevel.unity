@@ -1324,18 +1324,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e8d0c670f8dca41917680720092b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 8313743209861775601, guid: 2e2a2d3d0c2cf134bb176b82581d0640, type: 3}
   gridWorldSize: {x: 56.3, y: 11.74, z: 10.49}
   nodeRadius: 1
-  floorMask:
-    serializedVersion: 2
-    m_Bits: 512
-  obsMask:
-    serializedVersion: 2
-    m_Bits: 8
-  trapMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  prefab: {fileID: 8313743209861775601, guid: 2e2a2d3d0c2cf134bb176b82581d0640, type: 3}
+  clampToFloor: 0
+  clampOffset: 0
   nodes:
   - {fileID: 2117512928}
   - {fileID: 1161868808}
@@ -1393,6 +1386,17 @@ MonoBehaviour:
   - {fileID: 1709014570}
   - {fileID: 666437518}
   - {fileID: 1774656970}
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 512
+  obsMask:
+    serializedVersion: 2
+    m_Bits: 8
+  trapMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  hideGizmos: 0
+  onSelected: 1
   previewNodes: 0
 --- !u!4 &362058832
 Transform:
@@ -8281,6 +8285,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1350172195834378973, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}
+      propertyPath: closestNodeRange
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1350172195834378973, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}
+      propertyPath: nodeLayer.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
     - target: {fileID: 3238385871410511036, guid: b3b8108021b7cdb47ae1cd92dbd118fc, type: 3}
       propertyPath: <Player>k__BackingField
       value: 

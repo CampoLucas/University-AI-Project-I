@@ -91,9 +91,9 @@ namespace Game.Enemies
             _followTarget.Follow(pathfinder, flocking, obsAvoidance);
         }
 
-        public void SetNodes(Vector3 origin, Vector3 target)
+        public bool SetNodes(Vector3 origin, Vector3 target)
         {
-            _pathfinder.SetNodes(origin, target);
+            return _pathfinder.SetNodes(origin, target);
         }
 
         public void CalculatePath()

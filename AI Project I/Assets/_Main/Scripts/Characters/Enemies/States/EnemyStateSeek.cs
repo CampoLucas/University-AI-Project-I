@@ -34,8 +34,8 @@ namespace Game.Enemies.States
             var pos = Model.transform.position;
             var targetPos = Controller.Player.transform.position;
 
-            Model.SetNodes(pos, targetPos);
-            Model.CalculatePath();
+            if (Model.SetNodes(pos, targetPos))
+                Model.CalculatePath();
         }
 
         protected override void Follow()

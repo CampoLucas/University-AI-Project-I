@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 6879940330146833148}
   - component: {fileID: 6879940330146833141}
   - component: {fileID: 1092686641}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,6 +108,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 0}
   radius: 3
+  nodeLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   mask:
     serializedVersion: 2
     m_Bits: 64
@@ -115,6 +118,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   inViewRadius: 0.5
+  closestNodeRange: 5
+  hideGizmos: 1
 --- !u!114 &6879940330146833140
 MonoBehaviour:
   m_ObjectHideFlags: 0

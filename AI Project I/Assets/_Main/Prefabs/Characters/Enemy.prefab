@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnable: 0
   stats: {fileID: 11400000, guid: a0266c3916141964b95f06451acf23b8, type: 2}
-  weapon: {fileID: 298113400796027390}
+  weapon: {fileID: 0}
 --- !u!114 &5450059233993777539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98697a34a389ba4a90826dfa26ba784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Path>k__BackingField: {fileID: 0}
+  <Path>k__BackingField: {fileID: 11400000, guid: de00d250b21bf8341b79ba18361a5d46, type: 2}
 --- !u!114 &4826039641117432753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +175,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 0}
   radius: 2
+  nodeLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   mask:
     serializedVersion: 2
     m_Bits: 64
@@ -182,6 +185,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   inViewRadius: 0.5
+  closestNodeRange: 5
+  hideGizmos: 0
 --- !u!1 &2941201905607459326
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,17 +280,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
---- !u!114 &298113400796027390 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 553023812, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}
-  m_PrefabInstance: {fileID: 298113400268742842}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44e86a55755a436685d1c6a659e6cb40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &7415258293462949174 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7118878947998023052, guid: f1c4cc49d264d6e4ca66ad19fa9be072, type: 3}

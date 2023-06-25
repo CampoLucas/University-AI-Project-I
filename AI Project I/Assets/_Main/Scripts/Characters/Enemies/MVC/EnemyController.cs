@@ -301,7 +301,8 @@ namespace Game.Enemies
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            _root.Dispose();
+            if (_root != null)
+                _root.Dispose();
             _seek.Dispose();
             _pursuit.Dispose();
             _obsAvoidance.Dispose();

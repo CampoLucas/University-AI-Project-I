@@ -193,6 +193,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 0}
   radius: 2
+  nodeLayer:
+    serializedVersion: 2
+    m_Bits: 0
   mask:
     serializedVersion: 2
     m_Bits: 64
@@ -200,6 +203,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   inViewRadius: 0.5
+  closestNodeRange: 5
+  hideGizmos: 0
 --- !u!114 &577561869
 MonoBehaviour:
   m_ObjectHideFlags: 0

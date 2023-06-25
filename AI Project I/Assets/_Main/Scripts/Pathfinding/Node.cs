@@ -12,17 +12,14 @@ namespace Game.Pathfinding
         public Transform MyTransform { get; private set; }
         public string Name => gameObject.name;
         public List<Node> Neightbourds => neightbours;
-        public bool Walkable => walkable;
         public bool IsTrap => isTrap;
 
-        [SerializeField] private bool walkable;
         [SerializeField] private bool isTrap;
         [SerializeField] private List<Node> neightbours;
         [SerializeField] private LayerMask mask;
 
-        public void Init(bool _walkable, bool _isTrap, string name)
+        public void Init(bool _isTrap, string name)
         {
-            walkable = _walkable;
             isTrap = _isTrap;
             MyTransform = transform;
             gameObject.name = name;
@@ -68,29 +65,26 @@ namespace Game.Pathfinding
             
             var sRadius = 0.2f;
             var color = new Color(0, 0, 1, 0.5f);
-            if (!walkable)
-            {
-                color = new Color(0.2f, 0.2f, 0.2f, 0.5f);
-            }
-            else if (isTrap)
+            if (isTrap)
             {
                 color = new Color(1, 0, 0, 0.5f);
             }
             Gizmos.color = color;
-            Gizmos.DrawSphere(transform.position, sRadius);
-            UnityEditor.Handles.Label(transform.position, Name);
+            var position1 = transform.position;
+            Gizmos.DrawSphere(position1, sRadius);
+            UnityEditor.Handles.Label(position1, Name);
 
-            if (!walkable) return;
             if (neightbours == null) return;
 
             foreach (var n in neightbours)
             {
                 if (n == null) continue;
                 Gizmos.color = new Color(0, 0.5f, 0.5f, 0.5f);
-                Gizmos.DrawLine(transform.position, n.transform.position);
+                var position = n.transform.position;
+                Gizmos.DrawLine(transform.position, position);
                 Gizmos.color = new Color(0, 1, 1, 0.5f);
-                Gizmos.DrawSphere(n.transform.position, sRadius/2);
-                UnityEditor.Handles.Label(n.transform.position, n.Name);
+                Gizmos.DrawSphere(position, sRadius/2);
+                UnityEditor.Handles.Label(position, n.Name);
             }
         }
 #endif
