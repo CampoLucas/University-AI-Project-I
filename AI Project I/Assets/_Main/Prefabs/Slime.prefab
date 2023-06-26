@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 8955060124286274571}
   - component: {fileID: 5516193021886013722}
   - component: {fileID: 6879940330146833148}
-  - component: {fileID: 6879940330146833141}
+  - component: {fileID: 7116375487921704249}
   - component: {fileID: 1092686641}
   m_Layer: 12
   m_Name: Slime
@@ -152,6 +152,7 @@ MonoBehaviour:
   spawnable: 0
   stats: {fileID: 11400000, guid: 7023395086153454095c017c93569ac9, type: 2}
   weapon: {fileID: 0}
+  leader: {fileID: 0}
 --- !u!114 &6879940330146833136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98697a34a389ba4a90826dfa26ba784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Path>k__BackingField: {fileID: 0}
+  <Path>k__BackingField: {fileID: 11400000, guid: 890d72275a732a24bbb5a29345c036ca, type: 2}
 --- !u!114 &6879940330146833142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyOnEnter: 0
-  damage: 0
+  damage: 1
 --- !u!114 &5516193021886013722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,8 +240,8 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &6879940330146833141
-SphereCollider:
+--- !u!136 &7116375487921704249
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -249,9 +250,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.5
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!54 &1092686641
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -266,5 +268,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0

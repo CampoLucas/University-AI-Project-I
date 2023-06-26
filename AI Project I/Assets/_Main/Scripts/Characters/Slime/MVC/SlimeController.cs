@@ -38,7 +38,7 @@ namespace Game.Entities.Slime
             InitTree();
             
             if(!_isDataNull)
-                _flocking = new SlimeFlockingManager(_data, GetModel<SlimeModel>(), GetModel().GetLevelable());
+                _flocking = new SlimeFlockingManager(_data, GetModel<SlimeModel>(), GetModel().GetLevelable(),GetModel<SlimeModel>().GetLeader());
 
             _isFlockingNull = _flocking == null;
             

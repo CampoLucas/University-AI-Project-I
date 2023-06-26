@@ -77,6 +77,11 @@ namespace Game.Enemies
             _followTarget.Follow(target, obsAvoidance);
         }
         
+        public void FollowTarget(Vector3 target, Vector3 flocking ,ISteering obsAvoidance)
+        {
+            _followTarget.Follow(target,flocking, obsAvoidance);
+        }
+        
         public void FollowTarget(ISteering steering, ISteering obsAvoidance)
         {
             _followTarget.Follow(steering, obsAvoidance);

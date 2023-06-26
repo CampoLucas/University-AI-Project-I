@@ -12,49 +12,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6507415629f044bdb5a24ec705fab91e, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: 
-  moveSpeed: 0.5
+  moveSpeed: 1
   walkSpeed: 3
   moveLerpSpeed: 1
   rotSpeed: 10
-  maxHealth: 100
+  maxHealth: 1
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 0}
   deathAnimation: {fileID: 0}
   level: 1
   maxLevel: 10
-  attackRange: 2
-  fovRange: 5
-  fovAngle: 120
-  fovMask:
-    serializedVersion: 2
-    m_Bits: 8
-  obsRange: 1.8
+  attackRange: 5
+  fieldOfView:
+    range: 0.25
+    angle: 120
+    mask:
+      serializedVersion: 2
+      m_Bits: 0
+  obsRange: 1
   obsAngle: 180
   maxObs: 5
   obsMultiplier: 2
   obsMask:
     serializedVersion: 2
-    m_Bits: 4480
+    m_Bits: 384
   pursuitTime: 0.5
   jumpForce: 0.5
   jumpDelay: 0.5
   growSpeed: 1
   randomPointRadius: 25
   rotationMultiplier: 75
-  maxBoids: 10
+  maxBoids: 5
   whatIsBoid:
     serializedVersion: 2
     m_Bits: 4096
-  boidRadius: 0.1
-  predatorRange: 5
+  boidRadius: 1
+  personalRange: 1.5
+  predatorRange: 3
   maxPredators: 5
   whatIsPredator:
     serializedVersion: 2
     m_Bits: 64
-  flockingMultiplier: 4.74
-  predatorMultiplier: 10
-  alignmentMultiplier: 0
-  cohesionMultiplier: 0
+  flockingMultiplier: 3
+  predatorMultiplier: 5
+  alignmentMultiplier: 1
+  cohesionMultiplier: 2
+  leaderMultiplier: 0
+  avoidanceMultiplier: 2
   moveOdds: 100
   idleOdds: 0.1
   spinOdds: 0.1

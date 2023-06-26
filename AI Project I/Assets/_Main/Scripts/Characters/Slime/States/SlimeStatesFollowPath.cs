@@ -8,24 +8,29 @@ namespace Game.Entities.Slime.States
         {
             base.Awake();
             
-            Model.GetRandomNode();
-            CalculatePath();
+            //Model.GetRandomNode();
+            //CalculatePath();
+
+            var timer = 10f;
+            Model.SetTimer(timer);
         }
 
         public override void Execute()
         {
-            base.Execute();
-            
             Model.RunJumpDelay();
-            
-            if (Model.HasReachedTarget())
+
+            if (!Model.GetTimerComplete())
             {
                 Tree.Execute();
             }
-            else
+            
+            if (Model.ReachedWaypoint())
             {
-                Follow();
+                Model.ChangeWaypoint();
             }
+
+            Follow();
+            Model.RunTimer();
         }
 
         public override void Sleep()
@@ -46,7 +51,7 @@ namespace Game.Entities.Slime.States
         private void Follow()
         {
             Vector3 flockingDir = Controller.GetFlocking().GetDir();
-            Model.FollowTarget(Model.GetPathfinder(), flockingDir, Controller.GetAvoidance());
+            Model.FollowTarget(Model.GetNextWaypoint(), flockingDir, Controller.GetAvoidance());
         }
     }
 }

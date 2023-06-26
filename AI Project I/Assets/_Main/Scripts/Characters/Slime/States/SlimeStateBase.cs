@@ -34,7 +34,7 @@ namespace Game.Entities.Slime.States
             }
             
         }
-
+        
         public override void Sleep()
         {
             base.Sleep();

@@ -13,8 +13,11 @@ namespace Game.Entities.Slime
 {
     public class SlimeModel : EnemyModel, IBoid
     {
+        [SerializeField] private Transform leader;
+        
         private Transform _cube;
-        private BoxCollider _collider;
+        private BoxCollider _boxCollider;
+        private CapsuleCollider _capsuleCollider;
         private float _currJumpDelay;
         private SlimeFlockingManager _slimeFlocking;
         private SlimeSO _slimeData;
@@ -33,7 +36,8 @@ namespace Game.Entities.Slime
             _isDataNull = _slimeData == null;
 
             _cube = transform.GetChild(0);
-            _collider = GetComponent<BoxCollider>();
+            _boxCollider = GetComponent<BoxCollider>();
+            _capsuleCollider = GetComponent<CapsuleCollider>();
             
             CanJump = true;
         }
@@ -45,10 +49,10 @@ namespace Game.Entities.Slime
 
         #region Movement
 
-        public override void Move(Vector3 dir)
+        /*public override void Move(Vector3 dir)
         {
             Jump(dir);
-        }
+        }*/
 
         public void Jump(Vector3 dir, float multiplier = 1)
         {
@@ -101,7 +105,8 @@ namespace Game.Entities.Slime
             
             var newSize = Vector3.one * currScale;
             _cube.localScale = newSize;
-            _collider.size = newSize;
+            _boxCollider.size = newSize;
+            _capsuleCollider.radius = currScale;
         }
 
         private void SetSize()
@@ -110,7 +115,8 @@ namespace Game.Entities.Slime
 
             var size =GetTargetSize() * Vector3.one;
             _cube.localScale = size;
-            _collider.size = size;
+            _boxCollider.size = size;
+            _capsuleCollider.radius = GetTargetSize()/2;
         }
 
         private float GetTargetSize()
@@ -125,6 +131,11 @@ namespace Game.Entities.Slime
         private float GetBoidRadius()
         {
             return _isDataNull ? 0 : _slimeData.BoidRadius;
+        }
+
+        public Transform GetLeader()
+        {
+            return leader;
         }
 
         #endregion
@@ -198,6 +209,10 @@ namespace Game.Entities.Slime
             //RandomPoint
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().RandomPointRadius);
+            
+            //Separate
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().PersonalRange);
         }
 
         protected override void OnDrawGizmos()
