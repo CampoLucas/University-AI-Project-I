@@ -28,7 +28,6 @@ public class WizardController : EnemyController
         var idle = new EnemyStateIdle<EnemyStatesEnum>();
         var seek = new EnemyStateSeek<EnemyStatesEnum>(Seek, ObsAvoidance);
         var pursuit = new EnemyStatePursuit<EnemyStatesEnum>(Pursuit, ObsAvoidance);
-        var flee = new EnemyStatePursuit<EnemyStatesEnum>(_flee, ObsAvoidance);
         var damage = new EnemyStateDamage<EnemyStatesEnum>();
         var lightAttack = new EnemyStateLightAttack<EnemyStatesEnum>();
         var heavyAttack = new EnemyStateHeavyAttack<EnemyStatesEnum>();
@@ -43,7 +42,6 @@ public class WizardController : EnemyController
         states.Add(heavyAttack);
         states.Add(dead);
         states.Add(followRoute);
-        states.Add(flee);
         
         idle.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
         {
@@ -54,7 +52,6 @@ public class WizardController : EnemyController
             { EnemyStatesEnum.Damage, damage },
             { EnemyStatesEnum.Die, dead },
             { EnemyStatesEnum.FollowRoute, followRoute },
-            { EnemyStatesEnum.Flee, flee},
         });
         
         seek.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -66,7 +63,6 @@ public class WizardController : EnemyController
             { EnemyStatesEnum.Damage, damage },
             { EnemyStatesEnum.Die, dead},
             { EnemyStatesEnum.FollowRoute, followRoute },
-            { EnemyStatesEnum.Flee, flee},
         });
         
         pursuit.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -78,7 +74,6 @@ public class WizardController : EnemyController
             { EnemyStatesEnum.Damage, damage },
             { EnemyStatesEnum.Die, dead},
             { EnemyStatesEnum.FollowRoute, followRoute },
-            { EnemyStatesEnum.Flee, flee},
         });
         
         lightAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -89,7 +84,6 @@ public class WizardController : EnemyController
             { EnemyStatesEnum.Damage, damage },
             { EnemyStatesEnum.FollowRoute, followRoute },
             { EnemyStatesEnum.Die, dead},
-            { EnemyStatesEnum.Flee, flee},
         });
         
         heavyAttack.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -100,7 +94,6 @@ public class WizardController : EnemyController
             { EnemyStatesEnum.Damage, damage },
             { EnemyStatesEnum.Die, dead},
             { EnemyStatesEnum.FollowRoute, followRoute },
-            { EnemyStatesEnum.Flee, flee},
         });
         
         damage.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -110,7 +103,6 @@ public class WizardController : EnemyController
             { EnemyStatesEnum.Seek, seek },
             { EnemyStatesEnum.Die, dead},
             { EnemyStatesEnum.FollowRoute, followRoute },
-            { EnemyStatesEnum.Flee, flee},
         });
         
         followRoute.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
@@ -120,19 +112,8 @@ public class WizardController : EnemyController
             { EnemyStatesEnum.Seek, seek },
             { EnemyStatesEnum.Damage, damage },
             { EnemyStatesEnum.Die, dead},
-            { EnemyStatesEnum.Flee, flee},
         });
-        
-        flee.AddTransition(new Dictionary<EnemyStatesEnum, IState<EnemyStatesEnum>>
-        {
-            { EnemyStatesEnum.Idle, idle },
-            { EnemyStatesEnum.Pursuit, pursuit },
-            { EnemyStatesEnum.Seek, seek },
-            { EnemyStatesEnum.Damage, damage },
-            { EnemyStatesEnum.Die, dead},
-            { EnemyStatesEnum.FollowRoute, followRoute},
-        });
-        
+
         foreach (var state in states)
         {
             state.Init(GetModel<EnemyModel>(), GetView<EnemyView>(), this, Root);
@@ -147,19 +128,15 @@ public class WizardController : EnemyController
         var pursuit = new TreeAction(ActionPursuit);
         var damage = new TreeAction(ActionDamage);
         var lightAttack = new TreeAction(ActionLightAttack);
-        var heavyAttack = new TreeAction(ActionHeavyAttack);
         var die = new TreeAction(ActionDie);
         var followRoute = new TreeAction(ActionFollowRoute);
-        var flee = new TreeAction(ActionFlee);
 
-        var isHeavyAttack = new TreeQuestion(IsHeavyAttack, heavyAttack, lightAttack);
-        var willAttack = new TreeQuestion(WillAttack, isHeavyAttack, idle);
+        var willAttack = new TreeQuestion(WillAttack, lightAttack, idle);
         var isInFront = new TreeQuestion(IsPlayerInFront, willAttack, pursuit);
         var hasARoute = new TreeQuestion(HasARoute, followRoute, idle);
         var isPlayerOutOfSight = new TreeQuestion(IsPlayerOutOfSight, chase, hasARoute);
         var isPlayerInSight = new TreeQuestion(IsPlayerInSight, isInFront, isPlayerOutOfSight);
-        var isTooClose = new TreeQuestion(IsInAttackingRange, flee, isPlayerInSight);
-        var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isTooClose, hasARoute);
+        var isPlayerAlive = new TreeQuestion(IsPlayerAlive, isPlayerInSight, hasARoute);
         var hasTakenDamage = new TreeQuestion(HasTakenDamage, damage, isPlayerAlive);
         var isAlive = new TreeQuestion(IsAlive, hasTakenDamage, die);
 
@@ -171,5 +148,4 @@ public class WizardController : EnemyController
         return GetModel() && GetModel<WizardModel>().IsTargetInFront(Player.transform);
     }
 
-    private void ActionFlee() => Fsm.Transitions(EnemyStatesEnum.Flee);
 }

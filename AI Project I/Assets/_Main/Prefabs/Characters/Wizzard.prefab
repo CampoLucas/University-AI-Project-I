@@ -332,6 +332,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1649925535}
     m_Modifications:
+    - target: {fileID: 2176907259847339942, guid: 5e823c39fcadd1f4e83b29f89e948494, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 6841013934773914876, guid: 5e823c39fcadd1f4e83b29f89e948494, type: 3}
       propertyPath: m_Name
       value: Staff

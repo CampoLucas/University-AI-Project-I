@@ -49,8 +49,9 @@ namespace Game.Items.Weapons
         //     if (destroyOnEnter) Destroy(this);
         // }
 
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
+            if (!other.gameObject.CompareTag("Player")) return;
             var otherGameObject = other.gameObject;
             if (_damageables.TryGetValue(otherGameObject, out var damageable))
             {
