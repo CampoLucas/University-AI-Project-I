@@ -56,8 +56,6 @@ namespace Game.Entities.Flocking
             if (lvlDiff != 0)
                 lvlMultiplier = Math.Sign(lvlDiff);
 
-            Debug.Log(_selfLevel.CurrentLevel);
-
             return dir.normalized * (_data.PredatorMultiplier * lvlMultiplier);
         }
 

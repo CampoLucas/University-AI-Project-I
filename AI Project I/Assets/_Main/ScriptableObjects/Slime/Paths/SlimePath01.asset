@@ -10,10 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d63f2f9fda5a429696023441ca4f1362, type: 3}
-  m_Name: SlimePath03
+  m_Name: SlimePath01
   m_EditorClassIdentifier: 
-  <IsCircular>k__BackingField: 0
+  <IsCircular>k__BackingField: 1
   <IsReversed>k__BackingField: 0
-  <Threshold>k__BackingField: 0
+  <Threshold>k__BackingField: 1
   <WorldOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <Waypoints>k__BackingField: []
+  <Waypoints>k__BackingField:
+  - {x: 9.6, y: 0, z: -9.05}
+  - {x: 13, y: 0, z: -2}
+  - {x: 2.36, y: 0, z: -2}
+  - {x: 2.36, y: 0, z: -12.78}
+  - {x: 12.99, y: 0, z: -12.78}
