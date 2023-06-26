@@ -138,12 +138,6 @@ namespace Game.Entities.Slime
             Fsm.Transitions(SlimeStatesEnum.PowerUp);
         }
 
-        private void ActionSpin()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(SlimeStatesEnum.Spin);
-        }
-
         private void ActionDead()
         {
             if(Fsm == null) return;

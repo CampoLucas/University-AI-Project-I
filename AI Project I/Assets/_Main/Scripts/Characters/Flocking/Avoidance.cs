@@ -11,12 +11,6 @@ namespace Game.Entities.Flocking
         private readonly float _multiplier;
         private readonly SlimeSO _data;
 
-        public Avoidance(float personalRange, float multiplier)
-        {
-            _personalRange = personalRange;
-            _multiplier = multiplier;
-        }
-
         public Avoidance(SlimeSO data)
         {
             _data = data;
@@ -35,18 +29,5 @@ namespace Game.Entities.Flocking
 
             return dir.normalized * _data.AvoidanceMultiplier;
         }
-
-        /*public Vector3 GetDir(List<IBoid> boids, IBoid self)
-        {
-            Vector3 dir = Vector3.zero;
-            for (int i = 0; i < boids.Count; i++)
-            {
-                Vector3 diff = self.Position - boids[i].Position;
-                float distance = diff.magnitude;
-                if (distance > _personalRange) continue;
-                dir += diff.normalized * (_personalRange - distance);
-            }
-            return dir.normalized * _multiplier;
-        }*/
     }
 }

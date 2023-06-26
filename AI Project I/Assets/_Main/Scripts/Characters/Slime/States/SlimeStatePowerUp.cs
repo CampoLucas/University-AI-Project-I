@@ -4,8 +4,6 @@ namespace Game.Entities.Slime.States
 {
     public sealed class SlimeStatePowerUp<T> : SlimeStateBase<T>
     {
-        private bool _pass;
-        
         public override void Awake()
         {
             base.Awake();

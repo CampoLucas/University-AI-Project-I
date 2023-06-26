@@ -29,15 +29,5 @@ namespace Game.Entities.Flocking
             }
             return front.normalized * _data.AlignmentMultiplier;
         }
-
-        /*public Vector3 GetDir(List<IBoid> boids, IBoid self)
-        {
-            Vector3 front = Vector3.zero;
-            for (int i = 0; i < boids.Count; i++)
-            {
-                front += boids[i].Front;
-            }
-            return front.normalized * _multiplier;
-        }*/
     }
 }

@@ -43,8 +43,6 @@ namespace Game.SO
 
         public float IdleOdds => idleOdds;
 
-        public float SpinOdds => spinOdds;
-
         public float PowerUpOdds => powerUpOdds;
 
         [Header("Slime Values")]
@@ -74,7 +72,6 @@ namespace Game.SO
         [Header("Roulette")]
         [Range(0.1f,100f)][SerializeField]private float moveOdds = 1;
         [Range(0.1f,100f)][SerializeField]private float idleOdds = 1;
-        [Range(0.1f,100f)][SerializeField]private float spinOdds = 1;
         [Range(0.1f, 100f)] [SerializeField] private float powerUpOdds = 1;
     }
 }

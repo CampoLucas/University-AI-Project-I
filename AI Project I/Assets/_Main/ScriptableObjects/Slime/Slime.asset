@@ -57,8 +57,7 @@ MonoBehaviour:
   predatorMultiplier: 5
   alignmentMultiplier: 1
   cohesionMultiplier: 0.75
-  avoidanceMultiplier: 2
+  avoidanceMultiplier: 1.5
   moveOdds: 80
   idleOdds: 20
-  spinOdds: 10
   powerUpOdds: 1

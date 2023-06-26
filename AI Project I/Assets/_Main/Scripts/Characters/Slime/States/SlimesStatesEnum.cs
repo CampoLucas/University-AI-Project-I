@@ -5,7 +5,6 @@
         Idle,
         FollowRoute,
         PowerUp,
-        Spin,
         Die
     }
 }

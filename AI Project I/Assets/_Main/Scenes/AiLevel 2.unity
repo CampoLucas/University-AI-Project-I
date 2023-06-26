@@ -11363,6 +11363,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1903157169}
     m_Modifications:
+    - target: {fileID: 3424966477587748700, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.221
+      objectReference: {fileID: 0}
     - target: {fileID: 6879940330146833143, guid: ef969eed7e32a2d4e97f4388ddee8340, type: 3}
       propertyPath: <Path>k__BackingField
       value: 
@@ -16641,6 +16645,14 @@ PrefabInstance:
     - target: {fileID: 3121724635306599978, guid: 8f17d4fc8a10d4f4993a445f3716b2e3, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121724636287064006, guid: 8f17d4fc8a10d4f4993a445f3716b2e3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 103.431885
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121724636287064006, guid: 8f17d4fc8a10d4f4993a445f3716b2e3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -99.224976
       objectReference: {fileID: 0}
     - target: {fileID: 3121724636581985729, guid: 8f17d4fc8a10d4f4993a445f3716b2e3, type: 3}
       propertyPath: player

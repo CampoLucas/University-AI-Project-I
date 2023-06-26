@@ -47,15 +47,8 @@ namespace Game.Entities.Slime
 
         #region Movement
 
-        /*public override void Move(Vector3 dir)
-        {
-            Jump(dir);
-        }*/
-
         public void Jump(Vector3 dir, float multiplier = 1)
         {
-            if (!CanJump || _currJumpDelay > 0) return;
-            
             var jumpForce = _slimeData.JumpForce;
             var finalDir = (dir + transform.up).normalized;
             Rigidbody.AddForce(finalDir * (jumpForce * multiplier), ForceMode.Impulse);
@@ -133,39 +126,6 @@ namespace Game.Entities.Slime
 
         #endregion
         
-        #region Nodes
-
-        public bool HasTargetNode()
-        {
-            return GetPathfinder().Target;
-        }
-
-        public void GetRandomNode()
-        {
-            var randPoint = Random.insideUnitSphere;
-            var finalValue = randPoint * _slimeData.RandomPointRadius;
-            finalValue.y = 0;
-            var targetNode = NodeGrid.GetInstance().GetClosestNode(finalValue);
-            
-            SetTarget(targetNode.transform);
-        }
-
-        public void ClearTarget()
-        {
-            SetTarget(null);
-        }
-
-        public bool HasReachedTarget()
-        {
-            var targetPos = GetPathfinder().Target.position;
-            targetPos.y = 0;
-            var distance = Vector3.Distance(transform.position, targetPos);
-
-            return distance <= _slimeData.AttackRange;
-        }
-
-        #endregion
-
         #region Collision
 
         private void OnCollisionEnter(Collision other)
