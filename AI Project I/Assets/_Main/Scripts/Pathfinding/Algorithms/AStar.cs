@@ -107,17 +107,16 @@ namespace Game.Pathfinding
                 cleanedPath = path;
                 return;
             }
-
             cleanedPath.Add(path[0]);
-            for (var i = 2; i < path.Count - 2; i++)
+            for (var i = 2; i < path.Count; i++)
             {
-                var gp = cleanedPath[^1];
+                var gp = cleanedPath[cleanedPath.Count - 1];
                 if (!inView(gp, path[i]))
                 {
                     cleanedPath.Add(path[i - 1]);
                 }
             }
-            cleanedPath.Add(path[^1]);
+            cleanedPath.Add(path[path.Count - 1]);
         }
     }
 
