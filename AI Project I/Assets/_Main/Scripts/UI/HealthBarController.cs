@@ -8,10 +8,18 @@ namespace Game.Scripts.UI
     {
         [SerializeField] private GameObject container;
         [SerializeField] private Damageable player;
+        [SerializeField] private GameObject lifeSprite;
 
         private void Start()
         {
             player.OnTakeDamage += OnTakeDamageHandler;
+
+            var lives = player.CurrentLife;
+
+            for (int i = 0; i < lives; i++)
+            {
+                Instantiate(lifeSprite, container.transform);
+            }
         }
 
         private void OnTakeDamageHandler()

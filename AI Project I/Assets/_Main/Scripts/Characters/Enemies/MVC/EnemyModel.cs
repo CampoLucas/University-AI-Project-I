@@ -1,4 +1,4 @@
-﻿using _Main.Scripts.VisionCone;
+﻿using Game.Scripts.VisionCone;
 using UnityEngine;
 using Game.Entities;
 using Game.Interfaces;
@@ -39,7 +39,7 @@ namespace Game.Enemies
             if (visionCone != null)
             {
                 _hasVisionCone = true;
-                visionCone.SetMesh((int)_data.FOV.Angle, _data.FOV.Range);
+                visionCone.SetMesh(_data.FOV);
             }
         }
 

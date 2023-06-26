@@ -25,10 +25,6 @@ namespace Game.Entities
         {
             _data = GetComponent<EntityModel>().GetData();
             _collider = GetComponent<Collider>();
-        }
-
-        private void Start()
-        {
             InitStats();
         }
 

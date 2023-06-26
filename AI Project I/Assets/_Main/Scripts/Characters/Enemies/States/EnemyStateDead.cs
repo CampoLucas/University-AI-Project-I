@@ -1,4 +1,4 @@
-﻿using _Main.Scripts.VisionCone;
+﻿using Game.Scripts.VisionCone;
 using UnityEngine;
 
 namespace Game.Enemies.States

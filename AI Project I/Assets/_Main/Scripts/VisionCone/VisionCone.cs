@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Data;
 using UnityEngine;
 
-namespace _Main.Scripts.VisionCone
+namespace Game.Scripts.VisionCone
 {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
@@ -56,8 +57,7 @@ namespace _Main.Scripts.VisionCone
             uv.Add(Vector2.one*0.5f);
 		
             int w,s;
-		
-            //for(w = _coneAngle/2; w < (_coneAngle/2+_coneAngle); w++)
+            
             for(w = _coneAngle/2; w < (_coneAngle/2+_coneAngle); w++)
             {
                 for(s = 0; s < _coneRange; s++)
@@ -135,11 +135,11 @@ namespace _Main.Scripts.VisionCone
 
             return tempMesh;
         }
-
-        public void SetMesh(int angle, float range)
+        
+        public void SetMesh(FieldOfViewData data)
         {
-            _coneAngle = angle;
-            _coneRange = range;
+            _coneAngle = (int)data.Angle;
+            _coneRange = data.Range;
             
             _meshFilter.mesh = Cone();
             

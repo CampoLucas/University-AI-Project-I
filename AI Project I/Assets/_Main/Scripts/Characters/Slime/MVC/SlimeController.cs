@@ -45,13 +45,6 @@ namespace Game.Entities.Slime
             base.Start();
         }
 
-        protected override void Update()
-        {
-            base.Update();
-            Debug.Log(GetCurrentState());
-        }
-
-
         private void InitSteering()
         {
             _obsAvoidance = new ObstacleAvoidance(transform, _data.ObsAngle, _data.ObsRange, _data.MaxObs,_data.ObsMask);
