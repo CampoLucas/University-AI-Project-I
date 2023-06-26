@@ -20,7 +20,7 @@ namespace Game.Entities.Slime.States
                 Model.ClearJumpDelay();
                 Model.Jump(Vector3.zero, 3);
                 Model.SetTimer(2f);
-                Debug.Log($"Curr Level: {Model.Level}");
+                Debug.Log($"Curr Level: {Model.GetCurrentLevel()}");
             }
 
         }

@@ -38,7 +38,7 @@ namespace Game.Entities.Slime
             InitTree();
             
             if(!_isDataNull)
-                _flocking = new SlimeFlockingManager(_data, GetModel<SlimeModel>());
+                _flocking = new SlimeFlockingManager(_data, GetModel<SlimeModel>(), GetModel().GetLevelable());
 
             _isFlockingNull = _flocking == null;
             
@@ -133,7 +133,7 @@ namespace Game.Entities.Slime
             if (Fsm == null) return;
             var state =MyRandoms.Roulette(new Dictionary<Action, float>
             {
-                { ActionMove, _data.MoveOdds },
+                { ActionMove, _data.MoveOdds},
                 { ActionIdle, _data.IdleOdds},
                 { ActionSpin, _data.SpinOdds},
                 { ActionPowerUp, _data.PowerUpOdds}
@@ -195,11 +195,6 @@ namespace Game.Entities.Slime
         public FlockingManager GetFlocking()
         {
             return _isFlockingNull ? default : _flocking;
-        }
-
-        public string GetCurrentState()
-        {
-            return Fsm.CurrentState;
         }
 
         #endregion

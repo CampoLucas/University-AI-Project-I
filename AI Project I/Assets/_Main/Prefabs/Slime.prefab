@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6879940330146833136}
   - component: {fileID: 6879940330146833143}
   - component: {fileID: 6879940330146833142}
-  - component: {fileID: 6879940330146833140}
+  - component: {fileID: 8955060124286274571}
   - component: {fileID: 5516193021886013722}
   - component: {fileID: 6879940330146833148}
   - component: {fileID: 6879940330146833141}
@@ -137,12 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c25186b1da4ccabd8d626900fb9733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ranges:
-  - 0
-  - 0
-  - 0
-  - 0
-  leader: {fileID: 0}
 --- !u!114 &6879940330146833138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +198,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   inViewRadius: 0.5
---- !u!114 &6879940330146833140
+--- !u!114 &8955060124286274571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,9 +207,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6879940330146833146}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 693a52b5beef9fc489cd24c57438e0b4, type: 3}
+  m_Script: {fileID: 11500000, guid: dbe64f35ecaa4ff0bbdeb5019b939372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyOnEnter: 0
   damage: 0
 --- !u!114 &5516193021886013722
 MonoBehaviour:

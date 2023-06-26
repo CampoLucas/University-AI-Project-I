@@ -11,10 +11,10 @@ namespace Game.Entities.Flocking
         private readonly float _predatorRange;
         private readonly LayerMask _whatIsPredator;
         readonly Collider[] _colliders;
-        private int _selfLevel;
         private int _predLevel;
+        private readonly Levelable _selfLevel;
 
-        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask whatIsPredator, int selfLevel)
+        public Predator(float multiplier, float predatorRange, int predatorMax, LayerMask whatIsPredator, Levelable selfLevel)
         {
             _multiplier = multiplier;
             _predatorRange = predatorRange;
@@ -22,6 +22,7 @@ namespace Game.Entities.Flocking
             _colliders = new Collider[predatorMax];
             _selfLevel = selfLevel;
         }
+
         public Vector3 GetDir(List<IBoid> boids, IBoid self)
         {
             int count = Physics.OverlapSphereNonAlloc(self.Position, _predatorRange, _colliders, _whatIsPredator);
@@ -37,15 +38,15 @@ namespace Game.Entities.Flocking
                 
                 if(!_colliders[i].TryGetComponent(out EntityModel predator)) continue;
 
-                _predLevel = predator.Level;
+                _predLevel = predator.GetCurrentLevel();
             }
 
-            var lvlDiff = _predLevel - _selfLevel;
+            var lvlDiff = _predLevel - _selfLevel.CurrentLevel;
             var lvlMultiplier = 1;
             if (lvlDiff != 0)
                 lvlMultiplier = Math.Sign(lvlDiff);
 
-            Debug.Log(lvlMultiplier);
+            Debug.Log(_selfLevel.CurrentLevel);
 
             return dir.normalized * (_multiplier * lvlMultiplier);
         }

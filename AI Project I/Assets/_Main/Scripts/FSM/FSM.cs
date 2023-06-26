@@ -10,7 +10,7 @@ namespace Game.FSM
     /// </summary>
     public class FSM<T> : IDisposable
     {
-        public string CurrentState { get; private set; }
+        public T CurrentState { get; private set; }
         private IState<T> _current;
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Game.FSM
             _current = newState;
             _current.Awake();
 
-            CurrentState = input.ToString();
+            CurrentState = input;
         }
 
         /// <summary>

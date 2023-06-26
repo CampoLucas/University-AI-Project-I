@@ -22,10 +22,9 @@ namespace Game.Entities.Slime
         public Vector3 Position => transform.position;
         public Vector3 Front => transform.forward;
         public float Radius => GetBoidRadius();
-        public int BLevel => Level;
+        public int BLevel => GetCurrentLevel();
         public bool CanJump { get; private set; }
-        private float TargetSize =>(float)Level/10 * 2.5f;
-        
+
 
         protected override void Awake()
         {
@@ -97,8 +96,8 @@ namespace Game.Entities.Slime
 
             currScale += speed;
 
-            if (currScale > TargetSize)
-                currScale = TargetSize;
+            if (currScale > GetTargetSize())
+                currScale = GetTargetSize();
             
             var newSize = Vector3.one * currScale;
             _cube.localScale = newSize;
@@ -109,11 +108,15 @@ namespace Game.Entities.Slime
         {
             if (_isDataNull) return;
 
-            var size =TargetSize * Vector3.one;
+            var size =GetTargetSize() * Vector3.one;
             _cube.localScale = size;
             _collider.size = size;
         }
-        
+
+        private float GetTargetSize()
+        {
+            return (float)GetCurrentLevel() / 10 * 2.5f;
+        }
 
         #endregion
 
