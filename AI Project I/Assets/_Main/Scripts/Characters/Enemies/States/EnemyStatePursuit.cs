@@ -1,4 +1,5 @@
-﻿using Game.Interfaces;
+﻿using _Main.Scripts.VisionCone;
+using Game.Interfaces;
 using UnityEngine;
 
 namespace Game.Enemies.States
@@ -19,6 +20,7 @@ namespace Game.Enemies.States
             base.Awake();
             Model.SetFollowing(true);
             Model.SetMovement(Model.GetRunningMovement());
+            Model.SetVisionConeColor(VisionConeEnum.InSight);
         }
 
 

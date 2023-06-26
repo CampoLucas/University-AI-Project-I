@@ -4,6 +4,7 @@ namespace Game.Interfaces
 {
     public interface IDamageable : IDisposable
     {
+        public float CurrentLife { get; }
         Action OnTakeDamage { get; set; }
         Action OnDie { get; set; }
         void TakeDamage(float damage);

@@ -1,4 +1,5 @@
-﻿using Game.Interfaces;
+﻿using _Main.Scripts.VisionCone;
+using Game.Interfaces;
 using UnityEngine;
 
 namespace Game.Enemies.States
@@ -13,6 +14,7 @@ namespace Game.Enemies.States
             Model.SetTimer(Random.Range(8f, 16f));
             CalculatePath();
             Model.SetTarget(Controller.Player.transform);
+            Model.SetVisionConeColor(VisionConeEnum.InSight);
         }
 
         public override void Execute()

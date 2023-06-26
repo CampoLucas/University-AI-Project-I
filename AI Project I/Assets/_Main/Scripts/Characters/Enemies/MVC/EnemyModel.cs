@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Main.Scripts.VisionCone;
+using UnityEngine;
 using Game.Entities;
 using Game.Interfaces;
 using Game.Player;
@@ -12,6 +13,8 @@ namespace Game.Enemies
 {
     public class EnemyModel : EntityModel
     {
+        private VisionCone visionCone;
+        private bool _hasVisionCone;
         private EnemySO _data;
         private FieldOfView _fieldOfView;
         private PathToFollow _path;
@@ -31,6 +34,13 @@ namespace Game.Enemies
             _range = new InRange(transform);
             _followTarget = new FollowTarget(transform, this, _data);
             _pathfinder = GetComponent<Pathfinder>();
+            visionCone = GetComponentInChildren<VisionCone>();
+
+            if (visionCone != null)
+            {
+                _hasVisionCone = true;
+                visionCone.SetMesh((int)_data.FOV.Angle, _data.FOV.Range);
+            }
         }
 
 
@@ -66,12 +76,7 @@ namespace Game.Enemies
         {
             _followTarget.Follow(target, obsAvoidance);
         }
-
-        public void FollowTarget(Transform target, Vector3 flocking, ISteering obsAvoidance)
-        {
-            _followTarget.Follow(target,flocking, obsAvoidance);
-        }
-
+        
         public void FollowTarget(Vector3 target, ISteering obsAvoidance)
         {
             _followTarget.Follow(target, obsAvoidance);
@@ -126,6 +131,12 @@ namespace Game.Enemies
         public void SetFollowing(bool isFollowing) => _isFollowing = isFollowing;
         public bool TargetInRange(Transform target) => _range.GetBool(target, _data.AttackRange);
         public bool IsPlayerAlive(PlayerModel player) => player && player.IsAlive();
+
+        public void SetVisionConeColor(VisionConeEnum input)
+        {
+            if (_hasVisionCone) 
+                visionCone.SetMaterial(input);
+        }
 
 
         protected override void OnDestroy()

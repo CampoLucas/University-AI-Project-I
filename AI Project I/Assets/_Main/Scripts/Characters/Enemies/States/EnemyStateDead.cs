@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Main.Scripts.VisionCone;
+using UnityEngine;
 
 namespace Game.Enemies.States
 {
@@ -8,6 +9,7 @@ namespace Game.Enemies.States
         public override void Awake()
         {
             base.Awake();
+            Model.SetVisionConeColor(VisionConeEnum.Nothing);
             View.PlayTargetAnimation(Model.GetData().DeathAnimation.name);
             UnsubscribeAll();
         }

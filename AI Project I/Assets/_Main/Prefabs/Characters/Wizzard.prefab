@@ -216,6 +216,7 @@ MonoBehaviour:
   spawnable: 0
   stats: {fileID: 11400000, guid: b7bb14d8a5b867040840c9a5f5fa6d19, type: 2}
   weapon: {fileID: 5024770118941797238}
+  visionCone: {fileID: 0}
 --- !u!114 &3110932148499037557
 MonoBehaviour:
   m_ObjectHideFlags: 0

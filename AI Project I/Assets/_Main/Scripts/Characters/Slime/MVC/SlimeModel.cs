@@ -13,8 +13,6 @@ namespace Game.Entities.Slime
 {
     public class SlimeModel : EnemyModel, IBoid
     {
-        [SerializeField] private Transform leader;
-        
         private Transform _cube;
         private BoxCollider _boxCollider;
         private CapsuleCollider _capsuleCollider;
@@ -44,7 +42,7 @@ namespace Game.Entities.Slime
 
         private void Start()
         {
-            SetSize();
+            SetInitSize();
         }
 
         #region Movement
@@ -109,7 +107,7 @@ namespace Game.Entities.Slime
             _capsuleCollider.radius = currScale;
         }
 
-        private void SetSize()
+        private void SetInitSize()
         {
             if (_isDataNull) return;
 
@@ -131,11 +129,6 @@ namespace Game.Entities.Slime
         private float GetBoidRadius()
         {
             return _isDataNull ? 0 : _slimeData.BoidRadius;
-        }
-
-        public Transform GetLeader()
-        {
-            return leader;
         }
 
         #endregion

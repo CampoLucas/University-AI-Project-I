@@ -37,8 +37,6 @@ namespace Game.SO
 
         public float CohesionMultiplier => cohesionMultiplier;
 
-        public float LeaderMultiplier => leaderMultiplier;
-
         public float AvoidanceMultiplier => avoidanceMultiplier;
 
         public float MoveOdds => moveOdds;
@@ -71,9 +69,8 @@ namespace Game.SO
         [Range(0f,10f)][SerializeField] private float predatorMultiplier;
         [Range(0f,10f)][SerializeField] private float alignmentMultiplier;
         [Range(0f,10f)][SerializeField] private float cohesionMultiplier;
-        [Range(0f,10f)][SerializeField] private float leaderMultiplier;
         [Range(0f,10f)][SerializeField] private float avoidanceMultiplier;
-
+        [Space]
         [Header("Roulette")]
         [Range(0.1f,100f)][SerializeField]private float moveOdds = 1;
         [Range(0.1f,100f)][SerializeField]private float idleOdds = 1;

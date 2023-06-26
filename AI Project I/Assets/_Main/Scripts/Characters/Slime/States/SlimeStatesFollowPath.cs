@@ -37,7 +37,6 @@ namespace Game.Entities.Slime.States
         {
             base.Sleep();
             Model.Move(Vector3.zero);
-            Model.ClearTarget();
         }
 
         private void CalculatePath()

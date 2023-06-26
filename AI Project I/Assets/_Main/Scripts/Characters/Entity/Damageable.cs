@@ -8,6 +8,7 @@ namespace Game.Entities
 {
     public class Damageable : MonoBehaviour, IDamageable
     {
+        public float CurrentLife => _currentLife;
         public Action OnTakeDamage { get; set; }
         public Action OnDie { get; set; }
         private StatSO _data;
@@ -46,6 +47,7 @@ namespace Game.Entities
             {
                 var roundedDamage = Mathf.Round(damage * 4) / 4f;
                 _currentLife -= roundedDamage;
+                Debug.Log(_currentLife);
                 _hasTakenDamage = true;
                 OnTakeDamage?.Invoke();
                 TurnInvulnerable();
