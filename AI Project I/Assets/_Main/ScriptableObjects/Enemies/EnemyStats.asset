@@ -35,5 +35,5 @@ MonoBehaviour:
   obsMultiplier: 2
   obsMask:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 4480
   pursuitTime: 0.5

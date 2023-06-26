@@ -1,4 +1,6 @@
-﻿namespace Game.Enemies.States
+﻿using Game.Scripts.VisionCone;
+
+namespace Game.Enemies.States
 {
     public class EnemyStateLightAttack<T> : EnemyStateBase<T>
     {
@@ -7,6 +9,7 @@
             base.Awake();
             
             Attack();
+            Model.SetVisionConeColor(VisionConeEnum.Nothing);
         }
 
         public override void Execute()

@@ -45,13 +45,6 @@ namespace Game.Entities.Slime
             base.Start();
         }
 
-        protected override void Update()
-        {
-            base.Update();
-            Debug.Log(GetCurrentState());
-        }
-
-
         private void InitSteering()
         {
             _obsAvoidance = new ObstacleAvoidance(transform, _data.ObsAngle, _data.ObsRange, _data.MaxObs,_data.ObsMask);
@@ -66,20 +59,17 @@ namespace Game.Entities.Slime
             var idle = new SlimeStateIdle<SlimeStatesEnum>();
             var followRoute = new SlimeStatesFollowRoute<SlimeStatesEnum>();
             var powerUp = new SlimeStatePowerUp<SlimeStatesEnum>();
-            var spin = new SlimeStateSpin<SlimeStatesEnum>();
             var die = new SlimeStatesDead<SlimeStatesEnum>();
             
             states.Add(idle);
             states.Add(followRoute);
             states.Add(powerUp);
-            states.Add(spin);
             states.Add(die);
             
             idle.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
             {
                 { SlimeStatesEnum.FollowRoute, followRoute },
                 { SlimeStatesEnum.PowerUp, powerUp },
-                { SlimeStatesEnum.Spin, spin },
                 { SlimeStatesEnum.Die, die }
             });
             
@@ -87,7 +77,6 @@ namespace Game.Entities.Slime
             {
                 { SlimeStatesEnum.Idle, idle },
                 { SlimeStatesEnum.PowerUp, powerUp },
-                { SlimeStatesEnum.Spin, spin },
                 { SlimeStatesEnum.Die, die }
             });
             
@@ -95,15 +84,6 @@ namespace Game.Entities.Slime
             {
                 { SlimeStatesEnum.Idle, idle },
                 { SlimeStatesEnum.FollowRoute, followRoute },
-                { SlimeStatesEnum.Spin, spin },
-                { SlimeStatesEnum.Die, die }
-            });
-            
-            spin.AddTransition(new Dictionary<SlimeStatesEnum, IState<SlimeStatesEnum>>
-            {
-                { SlimeStatesEnum.Idle, idle },
-                { SlimeStatesEnum.FollowRoute, followRoute },
-                { SlimeStatesEnum.PowerUp, powerUp },
                 { SlimeStatesEnum.Die, die }
             });
 
@@ -120,9 +100,6 @@ namespace Game.Entities.Slime
             var death = new TreeAction(ActionDead);
             var roulette = new TreeAction(CheckRoulette);
 
-            /*var hasToMove = new TreeQuestion(HasToMove, move, idle);
-            var isAlive = new TreeQuestion(IsAlive, hasToMove, death);*/
-            
             var isAlive = new TreeQuestion(IsAlive, roulette, death);
 
             _root = isAlive;
@@ -135,7 +112,6 @@ namespace Game.Entities.Slime
             {
                 { ActionMove, _data.MoveOdds},
                 { ActionIdle, _data.IdleOdds},
-                { ActionSpin, _data.SpinOdds},
                 { ActionPowerUp, _data.PowerUpOdds}
             });
             
@@ -160,12 +136,6 @@ namespace Game.Entities.Slime
         {
             if (Fsm == null) return;
             Fsm.Transitions(SlimeStatesEnum.PowerUp);
-        }
-
-        private void ActionSpin()
-        {
-            if (Fsm == null) return;
-            Fsm.Transitions(SlimeStatesEnum.Spin);
         }
 
         private void ActionDead()

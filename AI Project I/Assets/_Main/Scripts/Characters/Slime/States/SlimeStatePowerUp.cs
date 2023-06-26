@@ -4,8 +4,6 @@ namespace Game.Entities.Slime.States
 {
     public sealed class SlimeStatePowerUp<T> : SlimeStateBase<T>
     {
-        private bool _pass;
-        
         public override void Awake()
         {
             base.Awake();
@@ -20,7 +18,6 @@ namespace Game.Entities.Slime.States
                 Model.ClearJumpDelay();
                 Model.Jump(Vector3.zero, 3);
                 Model.SetTimer(2f);
-                Debug.Log($"Curr Level: {Model.GetCurrentLevel()}");
             }
 
         }

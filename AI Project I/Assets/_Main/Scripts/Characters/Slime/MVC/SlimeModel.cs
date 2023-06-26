@@ -14,7 +14,8 @@ namespace Game.Entities.Slime
     public class SlimeModel : EnemyModel, IBoid
     {
         private Transform _cube;
-        private BoxCollider _collider;
+        private BoxCollider _boxCollider;
+        private CapsuleCollider _capsuleCollider;
         private float _currJumpDelay;
         private SlimeFlockingManager _slimeFlocking;
         private SlimeSO _slimeData;
@@ -33,27 +34,21 @@ namespace Game.Entities.Slime
             _isDataNull = _slimeData == null;
 
             _cube = transform.GetChild(0);
-            _collider = GetComponent<BoxCollider>();
+            _boxCollider = GetComponent<BoxCollider>();
+            _capsuleCollider = GetComponent<CapsuleCollider>();
             
             CanJump = true;
         }
 
         private void Start()
         {
-            SetSize();
+            SetInitSize();
         }
 
         #region Movement
 
-        public override void Move(Vector3 dir)
-        {
-            Jump(dir);
-        }
-
         public void Jump(Vector3 dir, float multiplier = 1)
         {
-            if (!CanJump || _currJumpDelay > 0) return;
-            
             var jumpForce = _slimeData.JumpForce;
             var finalDir = (dir + transform.up).normalized;
             Rigidbody.AddForce(finalDir * (jumpForce * multiplier), ForceMode.Impulse);
@@ -101,16 +96,18 @@ namespace Game.Entities.Slime
             
             var newSize = Vector3.one * currScale;
             _cube.localScale = newSize;
-            _collider.size = newSize;
+            _boxCollider.size = newSize;
+            _capsuleCollider.radius = currScale;
         }
 
-        private void SetSize()
+        private void SetInitSize()
         {
             if (_isDataNull) return;
 
             var size =GetTargetSize() * Vector3.one;
             _cube.localScale = size;
-            _collider.size = size;
+            _boxCollider.size = size;
+            _capsuleCollider.radius = GetTargetSize()/2;
         }
 
         private float GetTargetSize()
@@ -129,39 +126,6 @@ namespace Game.Entities.Slime
 
         #endregion
         
-        #region Nodes
-
-        public bool HasTargetNode()
-        {
-            return GetPathfinder().Target;
-        }
-
-        public void GetRandomNode()
-        {
-            var randPoint = Random.insideUnitSphere;
-            var finalValue = randPoint * _slimeData.RandomPointRadius;
-            finalValue.y = 0;
-            var targetNode = NodeGrid.GetInstance().GetClosestNode(finalValue);
-            
-            SetTarget(targetNode.transform);
-        }
-
-        public void ClearTarget()
-        {
-            SetTarget(null);
-        }
-
-        public bool HasReachedTarget()
-        {
-            var targetPos = GetPathfinder().Target.position;
-            targetPos.y = 0;
-            var distance = Vector3.Distance(transform.position, targetPos);
-
-            return distance <= _slimeData.AttackRange;
-        }
-
-        #endregion
-
         #region Collision
 
         private void OnCollisionEnter(Collision other)
@@ -198,6 +162,10 @@ namespace Game.Entities.Slime
             //RandomPoint
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().RandomPointRadius);
+            
+            //Separate
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, GetData<SlimeSO>().PersonalRange);
         }
 
         protected override void OnDrawGizmos()

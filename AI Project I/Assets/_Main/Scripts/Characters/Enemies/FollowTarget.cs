@@ -26,6 +26,16 @@ public class FollowTarget
         _model.Move(dir);
         _model.Rotate(dir);
     }
+    
+    public void Follow(Vector3 target,Vector3 flocking, ISteering obsAvoidance)
+    {
+        var transform1 = _origin;
+        var dir = target - transform1.position;
+        var finalDir = (dir + flocking + obsAvoidance.GetDir() * _data.ObsMultiplier).normalized;
+        finalDir.y = 0;
+        _model.Move(finalDir);
+        _model.Rotate(finalDir);
+    }
 
     public void Follow(Transform target, ISteering obsAvoidance)
     {

@@ -21,6 +21,8 @@ namespace Game.SO
 
         public float BoidRadius => boidRadius;
 
+        public float PersonalRange => personalRange;
+
         public float PredatorRange => predatorRange;
 
         public int MaxPredators => maxPredators;
@@ -35,11 +37,11 @@ namespace Game.SO
 
         public float CohesionMultiplier => cohesionMultiplier;
 
+        public float AvoidanceMultiplier => avoidanceMultiplier;
+
         public float MoveOdds => moveOdds;
 
         public float IdleOdds => idleOdds;
-
-        public float SpinOdds => spinOdds;
 
         public float PowerUpOdds => powerUpOdds;
 
@@ -54,6 +56,7 @@ namespace Game.SO
         [Range(1,15)][SerializeField] private int maxBoids;
         [SerializeField] private LayerMask whatIsBoid;
         [Range(0.1f,25)][SerializeField] private float boidRadius = 5;
+        [Range(0.1f,25)][SerializeField] private float personalRange = 5;
         [Header("Predator")]
         [Range(1,10)][SerializeField] private float predatorRange;
         [Range(1,10)][SerializeField] private int maxPredators;
@@ -64,11 +67,11 @@ namespace Game.SO
         [Range(0f,10f)][SerializeField] private float predatorMultiplier;
         [Range(0f,10f)][SerializeField] private float alignmentMultiplier;
         [Range(0f,10f)][SerializeField] private float cohesionMultiplier;
-
+        [Range(0f,10f)][SerializeField] private float avoidanceMultiplier;
+        [Space]
         [Header("Roulette")]
         [Range(0.1f,100f)][SerializeField]private float moveOdds = 1;
         [Range(0.1f,100f)][SerializeField]private float idleOdds = 1;
-        [Range(0.1f,100f)][SerializeField]private float spinOdds = 1;
         [Range(0.1f, 100f)] [SerializeField] private float powerUpOdds = 1;
     }
 }

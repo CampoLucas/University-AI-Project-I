@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game.Scripts.VisionCone;
+using UnityEngine;
 
 namespace Game.Enemies.States
 {
@@ -8,6 +9,7 @@ namespace Game.Enemies.States
         {
             base.Awake();
             Model.SetMovement(Model.GetWalkingMovement());
+            Model.SetVisionConeColor(VisionConeEnum.Clear);
         }
 
         public override void Execute()
