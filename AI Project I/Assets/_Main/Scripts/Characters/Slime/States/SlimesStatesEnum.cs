@@ -3,7 +3,9 @@
     public enum SlimeStatesEnum
     {
         Idle,
-        Move,
+        FollowRoute,
+        PowerUp,
+        Spin,
         Die
     }
 }

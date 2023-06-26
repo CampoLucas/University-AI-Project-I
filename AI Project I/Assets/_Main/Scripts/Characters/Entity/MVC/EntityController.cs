@@ -38,6 +38,8 @@ namespace Game.Entities
         public T1 GetModel<T1>() where T1 : EntityModel => (T1)_model ? (T1)_model : default;
         public EntityView GetView() => _view;
         public T1 GetView<T1>() where T1 : EntityView => (T1)_view ? (T1)_view : default;
+        
+        public string GetCurrentState() => Fsm.CurrentState.ToString();
 
         protected virtual void OnDestroy()
         {

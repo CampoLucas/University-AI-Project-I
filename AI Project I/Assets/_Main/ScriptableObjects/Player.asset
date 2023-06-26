@@ -20,3 +20,5 @@ MonoBehaviour:
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
   deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}
+  level: 2
+  maxLevel: 1

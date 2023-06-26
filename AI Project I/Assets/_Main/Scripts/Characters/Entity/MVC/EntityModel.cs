@@ -11,8 +11,7 @@ namespace Game.Entities
     public class EntityModel : MonoBehaviour
     {
         public Damageable Damageable { get; private set; }
-        public int Level { get; private set; }
-        
+
         [SerializeField] private bool spawnable;
         [SerializeField] private StatSO stats;
         [SerializeField] private Weapon weapon;
@@ -25,6 +24,7 @@ namespace Game.Entities
         private IAttack _lightAttack;
         private IAttack _heavyAttack;
         private WaitTimer _waitTimer;
+        private Levelable _level;
 
         protected virtual void Awake()
         {
@@ -38,8 +38,7 @@ namespace Game.Entities
             _heavyAttack = GetComponent<HeavyAttack>();
             Damageable = GetComponent<Damageable>();
             _waitTimer = new WaitTimer();
-            
-            //Level = stats.Level;
+            _level = new Levelable(stats.Level, stats.MaxLevel);
         }
 
         public virtual void Move(Vector3 dir) => _movement?.Move(dir);
@@ -56,8 +55,12 @@ namespace Game.Entities
         public void CancelLightAttack() => _lightAttack.CancelAttack();
         public void HeavyAttack() => _heavyAttack.Attack();
         public void CancelHeavyAttack() => _heavyAttack.CancelAttack();
-        public void IncreaseLevel() => Level++;
-        
+        public void IncreaseLevel() => _level.IncreaseLevel();
+        public int GetCurrentLevel() => _level.CurrentLevel;
+
+        public bool HasReachedMaxLevel() => _level.HasReachedMaxLevel();
+        public Levelable GetLevelable() => _level;
+
         #region Timer Methods
 
         public bool GetTimerComplete() => _waitTimer?.TimerComplete() ?? default;

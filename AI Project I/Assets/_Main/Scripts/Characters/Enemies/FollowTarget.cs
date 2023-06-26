@@ -101,7 +101,7 @@ public class FollowTarget
 
         finalDir.y = 0;
 
-        _model.Move(_origin.forward);
+        _model.Move(finalDir);
         _model.Rotate(finalDir);
     }
 }

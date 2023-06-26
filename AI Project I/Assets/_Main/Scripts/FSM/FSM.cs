@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game.FSM
 {
@@ -7,6 +10,7 @@ namespace Game.FSM
     /// </summary>
     public class FSM<T> : IDisposable
     {
+        public T CurrentState { get; private set; }
         private IState<T> _current;
         
         /// <summary>
@@ -54,6 +58,8 @@ namespace Game.FSM
             _current.Sleep();
             _current = newState;
             _current.Awake();
+
+            CurrentState = input;
         }
 
         /// <summary>

@@ -6,7 +6,6 @@ namespace Game.Entities.Flocking
 {
     public abstract class FlockingManager
     {
-        
         protected IFlocking[] Flocking { private get; set; }
         private readonly List<IBoid> _boids;
         private readonly IBoid _self;
