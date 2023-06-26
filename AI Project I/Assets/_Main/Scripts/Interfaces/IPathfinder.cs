@@ -18,6 +18,6 @@ namespace Game.Interfaces
         void SetTarget(Transform target);
         void Run();
         void SetNextPoint();
-        void SetNodes(Vector3 origin, Vector3 target);
+        bool SetNodes(Vector3 origin, Vector3 target);
     }
 }

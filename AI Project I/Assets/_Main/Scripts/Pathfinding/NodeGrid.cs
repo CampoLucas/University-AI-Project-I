@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,17 +10,40 @@ namespace Game.Pathfinding
         public float NodeDiameter => nodeRadius * 2;
         public Vector3Int GridSize => new Vector3Int(Mathf.RoundToInt(gridWorldSize.x / NodeDiameter), Mathf.RoundToInt(gridWorldSize.y / NodeDiameter), Mathf.RoundToInt(gridWorldSize.z / NodeDiameter));
         
+        
+        [Header("Position Settings")]
         [SerializeField] private Vector3 gridWorldSize;
-        [SerializeField] private float nodeRadius;
+        [SerializeField] private bool clampToFloor;
+        [SerializeField] private float clampOffset;
+        
+        [Header("Masks Settings")]
         [SerializeField] private LayerMask floorMask;
         [SerializeField] private LayerMask obsMask;
         [SerializeField] private LayerMask trapMask;
-        [SerializeField] private Node prefab;
-        [SerializeField] private List<Node> nodes;
-        [SerializeField] private bool previewNodes;
         
+        [Header("Node Settings")]
+        [SerializeField] private Node prefab;
+        [SerializeField] private float nodeRadius;
+        [SerializeField] private List<Node> nodes;
+
+        [Header("Condition Settings")] 
+        [Range(0.1f, 10)] [SerializeField] private float radius = 2f;
+        
+        private Collider[] _closestNodes;
         private static NodeGrid _instance;
         private static readonly object _lock = new();
+        
+#if UNITY_EDITOR
+        public bool HideGizmos => hideGizmos;
+        public int NodeCount => nodes != null ? nodes.Count : 0;
+        [Header("Gizmos Settings")]
+        [SerializeField] private bool hideGizmos;
+        [SerializeField] private bool hideNodes;
+        [SerializeField] private bool hideLabels;
+        [SerializeField] private bool hideNeighbours;
+        [SerializeField] private bool onSelected = true;
+        [SerializeField] private bool previewNodes;
+#endif
         
         private void Awake()
         {
@@ -33,6 +57,8 @@ namespace Game.Pathfinding
                     }
                 }
             }
+            
+            _closestNodes = new Collider[15];
         }
 
         public static NodeGrid GetInstance()
@@ -65,12 +91,19 @@ namespace Game.Pathfinding
                     for (int z = 0; z < GridSize.z; z++)
                     {
                         var position = GetWorldPosition(x, y, z);
-                        if (Condition(position, out var walkable, out var hasTrap))
+                        if (Condition(position, out var trap))
                         {
-                            if (!walkable) continue;
+                            if (clampToFloor && Physics.Raycast(position, Vector3.down, out var hit, NodeDiameter * 2, floorMask))
+                            {
+                                var pos = hit.point;
+                                pos.y += nodeRadius + clampOffset;
+                                position = pos;
+                            }
+                            
+                            
                             var n = Instantiate(prefab, position, Quaternion.identity, transform);
                             n.transform.localScale = Vector3.one * NodeDiameter;
-                            n.Init(walkable, hasTrap, $"{x}, {y}, {z}");
+                            n.Init(trap, $"{x}, {y}, {z}");
                             nodes.Add(n);
                         }
                     }
@@ -90,8 +123,8 @@ namespace Game.Pathfinding
 
         public Node GetClosestNode(Vector3 position)
         {
-            float multiplierTrap = 2f;
-            float multiplierUnwalkable = 8f;
+            LoggingTwo.Log("There is a better method that gets the closest nodes from a group of nodes in the given position", LoggingType.Warning);
+            const float multiplierTrap = 5f;
 
             Node closestNode = null;
             var closestDistance = Mathf.Infinity;
@@ -105,8 +138,6 @@ namespace Game.Pathfinding
                 var distance = (node.transform.position - position).sqrMagnitude;
                 if (node.IsTrap)
                     distance += multiplierTrap;
-                if (!node.Walkable)
-                    distance += multiplierUnwalkable;
 
                 if (distance < closestDistance)
                 {
@@ -116,6 +147,35 @@ namespace Game.Pathfinding
             }
 
             return closestNode;
+        }
+        
+        public bool GetClosestNode(Vector3 position, float range, out Node closestNode, LayerMask layer, float yOffset = .05f)
+        {
+            const float multiplierTrap = 5f;
+
+            closestNode = null;
+            var overlaps = Physics.OverlapSphereNonAlloc(position, range, _closestNodes, layer);
+
+            if (overlaps <= 0) return false;
+            var closestDistance = Mathf.Infinity;
+            var pos = position;
+            pos.y = yOffset;
+
+            
+            for (var i = 0; i < overlaps; i++)
+            {
+                var node = _closestNodes[i].gameObject.GetComponent<Node>();
+                
+                var distance = Vector3.Distance(node.transform.position, pos);
+                
+                if (node.IsTrap) distance += multiplierTrap;
+                
+                if (!(distance < closestDistance)) continue;
+                closestDistance = distance;
+                closestNode = node;
+            }
+
+            return true;
         }
 
         public void SearchNeightbourds()
@@ -142,73 +202,134 @@ namespace Game.Pathfinding
             return position;
         }
 
-        private bool Condition(Vector3 pos, out bool walkable, out bool hasTrap)
+        // private bool Condition(Vector3 pos, out bool walkable, out bool hasTrap)
+        // {
+        //     walkable = !(Physics.OverlapSphere(pos, nodeRadius, obsMask).Length > 0);
+        //     hasTrap = Physics.OverlapSphere(pos, nodeRadius, trapMask).Length > 0;
+        //
+        //     RaycastHit hit;
+        //     if (Physics.SphereCast(pos, nodeRadius, Vector3.down, out hit, nodeRadius, floorMask))
+        //     {
+        //         return true;
+        //     }
+        //
+        //     return false;
+        //
+        // }
+        
+        private bool Condition(Vector3 pos, out bool hasTrap)
         {
-            walkable = !(Physics.OverlapSphere(pos, nodeRadius, obsMask).Length > 0);
-            hasTrap = Physics.OverlapSphere(pos, nodeRadius, trapMask).Length > 0;
+            //hasTrap = Physics.OverlapSphere(pos, nodeRadius, trapMask).Length > 0;
+            hasTrap = Physics.OverlapBox(pos, Vector3.one * nodeRadius, Quaternion.identity, trapMask).Length > 0;
 
-            RaycastHit hit;
-            if (Physics.SphereCast(pos, nodeRadius, Vector3.down, out hit, nodeRadius, floorMask))
-            {
-                return true;
-            }
+            var e = new Collider[1];
+            var hits = new RaycastHit[1];
 
-            return false;
+            var nRadius = nodeRadius / 2;
+            var forwardPos = pos + Vector3.forward * nRadius;
+            var backwardPos = pos + Vector3.back * nRadius;
+            var rightPos = pos + Vector3.right * nRadius;
+            var leftPos = pos + Vector3.left * nRadius;
+            
+            var maxDistance = NodeDiameter * 2;
+            var forward = Physics.Raycast(forwardPos, Vector3.down, maxDistance, floorMask);
+            var backward = Physics.Raycast(backwardPos, Vector3.down, maxDistance, floorMask);
+            var right = Physics.Raycast(rightPos, Vector3.down, maxDistance, floorMask);
+            var left = Physics.Raycast(leftPos, Vector3.down, maxDistance, floorMask);
 
+
+            //var insideFloor = Physics.OverlapSphereNonAlloc(pos, nodeRadius, e, floorMask) > 0;
+            var insideFloor =
+                Physics.OverlapBoxNonAlloc(pos, Vector3.one * nodeRadius, e, Quaternion.identity, floorMask) > 0;
+            
+            //var insideUnWalkable = Physics.OverlapSphereNonAlloc(pos, nodeRadius * radius, e, obsMask) > 0;
+            
+            var insideUnWalkable =
+                Physics.OverlapBoxNonAlloc(pos, Vector3.one * nodeRadius, e, Quaternion.identity, obsMask) > 0;
+            
+            if (!forward || !backward || !right || !left || insideFloor || insideUnWalkable) return false;
+            var overlapUp = Physics.SphereCastNonAlloc(pos, nodeRadius, Vector3.up, hits, NodeDiameter, floorMask) > 0;
+            if (overlapUp) return false;
+            var overlapDown = Physics.SphereCastNonAlloc(pos, nodeRadius, Vector3.down, hits, NodeDiameter, floorMask) > 0;
+            return overlapDown;
         }
+        
 
 #if UNITY_EDITOR
-        private void OnDrawGizmosSelected()
+        private void DebugGizmos()
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(transform.position, gridWorldSize);
 
             if (previewNodes)
             {
-                for (int x = 0; x < GridSize.x; x++)
+                for (var x = 0; x < GridSize.x; x++)
                 {
-                    for (int y = 0; y < GridSize.y; y++)
+                    for (var y = 0; y < GridSize.y; y++)
                     {
-                        for (int z = 0; z < GridSize.z; z++)
+                        for (var z = 0; z < GridSize.z; z++)
                         {
                             var position = GetWorldPosition(x, y, z);
-                            if (Condition(position, out var walkable, out var hasTrap))
+                            
+                            if (!Condition(position, out var hasTrap)) continue;
+                            var color = new Color(0, 0, 1, 0.5f);
+                            if (hasTrap)
+                                color = new Color(1, 0, 0, 0.5f);
+                                
+                            if (clampToFloor && Physics.Raycast(position, Vector3.down, out var hit, NodeDiameter * 2, floorMask))
                             {
-                                var color = new Color(0, 0, 1, 0.5f);
-                                if (!walkable)
-                                    color = new Color(.2f, .2f, .2f, 0.5f);
-                                else if (hasTrap)
-                                    color = new Color(1, 0, 0, 0.5f);
-                                Gizmos.color = color;
-                                Gizmos.DrawSphere(position, nodeRadius/2);
+                                var pos = hit.point;
+                                pos.y += nodeRadius + clampOffset;
+                                position = pos;
                             }
-                        }
-                    }
-                }
-            }            
-            else if (nodes != null)
-            {
-                foreach (var node in nodes)
-                {
-                    if (node.Neightbourds != null)
-                    {
-                        var color = new Color(0, 0, 1, 0.5f);
-                        if (!node.Walkable)
-                            color = new Color(.2f, .2f, .2f, 0.5f);
-                        else if (node.IsTrap)
-                            color = new Color(1, 0, 0, 0.5f);
-                        Gizmos.color = color;
-                        Gizmos.DrawSphere(node.transform.position, nodeRadius/2);
-                        UnityEditor.Handles.Label(node.transform.position, node.Name);
-                        foreach (var neightbour in node.Neightbourds)
-                        {
-                            Gizmos.color = new Color(0.5f, 0, 0.5f, 1);
-                            Gizmos.DrawLine(node.transform.position, neightbour.transform.position);
+                                
+                            Gizmos.color = color;
+                            Gizmos.DrawSphere(position, nodeRadius/2);
                         }
                     }
                 }
             }
+            else if (nodes != null)
+            {
+                foreach (var node in nodes)
+                {
 
+                    var color = new Color(0, 0, 1, 0.5f);
+                    if (node.IsTrap)
+                        color = new Color(1, 0, 0, 0.5f);
+                    Gizmos.color = color;
+                    var position = node.transform.position;
+                    
+                    if (!hideNodes) Gizmos.DrawSphere(position, nodeRadius/2);
+
+                    if (!hideLabels)
+                    {
+                        var style = new GUIStyle(GUI.skin.label)
+                            { alignment = TextAnchor.MiddleCenter, fontSize = (int)(20 * (nodeRadius * 0.5f)) };
+                        style.normal.textColor = Color.white - color;
+                        UnityEditor.Handles.Label(position, node.Name, style);
+                    }
+                    
+                    if (node.Neightbourds == null || hideNeighbours) continue;
+                    foreach (var neighbour in node.Neightbourds)
+                    {
+                        Gizmos.color = new Color(0.5f, 0, 0.5f, 1);
+                        Gizmos.DrawLine(node.transform.position, neighbour.transform.position);
+                    }
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (hideGizmos || onSelected) return;
+            DebugGizmos();
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (hideGizmos || !onSelected) return;
+            DebugGizmos();
         }
 #endif
     }

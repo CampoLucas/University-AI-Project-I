@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 8626599789361412475}
   - component: {fileID: 8626599789361412467}
   - component: {fileID: 8626599789361412468}
-  - component: {fileID: 3238385871410511036}
   - component: {fileID: 2010629574342885615}
   - component: {fileID: 8626599789361412465}
   - component: {fileID: 8626599789361412466}
@@ -52,6 +51,7 @@ GameObject:
   - component: {fileID: 1350172195834378973}
   - component: {fileID: 577561869}
   - component: {fileID: 577561871}
+  - component: {fileID: 3110932148499037557}
   m_Layer: 7
   m_Name: Wizzard
   m_TagString: Untagged
@@ -105,19 +105,6 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &3238385871410511036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8626599789361412476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f68cdee563244388fa32e58c1bf84a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Player>k__BackingField: {fileID: 0}
 --- !u!114 &2010629574342885615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,13 +180,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 0}
   radius: 2
-  mask:
+  nodeLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2048
   maskObs:
     serializedVersion: 2
-    m_Bits: 264
+    m_Bits: 1288
   inViewRadius: 0.5
+  closestNodeRange: 5
+  hideGizmos: 0
 --- !u!114 &577561869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,8 +214,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnable: 0
-  stats: {fileID: 11400000, guid: 7b3ae7296cbab2747a1b37744df2637d, type: 2}
+  stats: {fileID: 11400000, guid: b7bb14d8a5b867040840c9a5f5fa6d19, type: 2}
   weapon: {fileID: 5024770118941797238}
+--- !u!114 &3110932148499037557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8626599789361412476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b03399fef2f6e9646b177ea8b7676617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Player>k__BackingField: {fileID: 0}
 --- !u!1001 &4743623857317057145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -330,6 +332,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1649925535}
     m_Modifications:
+    - target: {fileID: 2176907259847339942, guid: 5e823c39fcadd1f4e83b29f89e948494, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 6841013934773914876, guid: 5e823c39fcadd1f4e83b29f89e948494, type: 3}
       propertyPath: m_Name
       value: Staff

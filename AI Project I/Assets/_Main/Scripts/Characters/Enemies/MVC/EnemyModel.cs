@@ -26,7 +26,7 @@ namespace Game.Enemies
         {
             base.Awake();
             _data = GetData<EnemySO>();
-            _fieldOfView = new FieldOfView(_data, transform);
+            _fieldOfView = new FieldOfView(_data.FOV, transform);
             _path = GetComponent<PathToFollow>();
             _range = new InRange(transform);
             _followTarget = new FollowTarget(transform, this, _data);
@@ -91,9 +91,9 @@ namespace Game.Enemies
             _followTarget.Follow(pathfinder, flocking, obsAvoidance);
         }
 
-        public void SetNodes(Vector3 origin, Vector3 target)
+        public bool SetNodes(Vector3 origin, Vector3 target)
         {
-            _pathfinder.SetNodes(origin, target);
+            return _pathfinder.SetNodes(origin, target);
         }
 
         public void CalculatePath()
@@ -143,25 +143,10 @@ namespace Game.Enemies
             var transform1 = transform;
             var forward = transform1.forward;
             var position = transform1.position;
+            
             #region FOV
 
-            Gizmos.color = Color.red;
-            var halfFOV = GetData<EnemySO>().FovAngle / 2f;
-            var leftRayRotation = Quaternion.AngleAxis(-halfFOV, Vector3.up);
-            var rightRayRotation = Quaternion.AngleAxis(halfFOV, Vector3.up);
-
-            
-            var leftRayDirection = leftRayRotation * forward;
-            var rightRayDirection = rightRayRotation * forward;
-
-            
-            Gizmos.DrawRay(position, leftRayDirection * GetData<EnemySO>().FovRange);
-            Gizmos.DrawRay(position, rightRayDirection * GetData<EnemySO>().FovRange);
-
-            Handles.color = new Color(1f, 0f, 0f, 0.1f);
-            Handles.DrawSolidArc(position, Vector3.up, leftRayDirection, GetData<EnemySO>().FovAngle, GetData<EnemySO>().FovRange);
-            Handles.color = Color.red;
-            Handles.DrawWireArc(position, Vector3.up, leftRayDirection, GetData<EnemySO>().FovAngle, GetData<EnemySO>().FovRange);
+            GetData<EnemySO>().FOV.DebugGizmos(transform, Color.red);
 
             #endregion
 

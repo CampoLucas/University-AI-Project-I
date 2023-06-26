@@ -14,19 +14,28 @@ namespace Game.Pathfinding
         [field: SerializeField] public Transform Target { get; private set; }
 
         [SerializeField] private float radius;
-        [SerializeField] private LayerMask mask;
+        [SerializeField] private LayerMask nodeLayer;
         [SerializeField] private LayerMask maskObs;
         [SerializeField] private float inViewRadius = 2f;
+        [SerializeField] private float closestNodeRange = 15f;
+        [SerializeField] private bool hideGizmos;
 
         private AStar<Node> _aStar = new();
         private Dictionary<Vector3[], List<Node>> _waypointsDictionary = new();
         private Node _startNode;
         private Node _endNode;
+        private NodeGrid _grid;
+
+        private void Start()
+        {
+            _grid = NodeGrid.GetInstance();
+        }
 
         public bool IsTargetInRange()
         {
+            if (!_endNode || !Target) return false;
+            
             var endPos = _endNode.transform.position;
-            Logging.LogError("Target is null", () => !Target);
             endPos.y = Target.transform.position.y;
             return Vector3.Distance(Target.position, endPos) <= radius;
         }
@@ -47,26 +56,26 @@ namespace Game.Pathfinding
             
             // checks if the nodes are in the dictionary
             List<Node> nodePath;
-            if (InView(_startNode, _endNode))
+            if (InView(transform.position, Target.position))
             {
                 nodePath = new List<Node> { _startNode, _endNode };
                 LoggingTwo.Log("Return path from: View", LoggingType.Debug);
             }
             else
             {
-                nodePath = _aStar.Run(_startNode, Satisfies, GetConections, GetCost, Heuristic);
+                nodePath = _aStar.Run(_startNode, Satisfies, GetConnections, GetCost, Heuristic);
                 LoggingTwo.Log("Return path from: A*", LoggingType.Debug);
             }
-
+        
             // Convert the node list into a Vector3 list with its position at the start and the target position at the end
             var cleanedPath = new List<Vector3> { transform.position };
-
+        
             for (var i = 0; i < nodePath.Count; i++)
             {
                 cleanedPath.Add(nodePath[i].transform.position);
             }
             cleanedPath.Add(Target.position);
-
+        
             // Cleans the path
             _aStar.CleanPath(cleanedPath, InView, out cleanedPath);
             
@@ -78,37 +87,40 @@ namespace Game.Pathfinding
             return curr == _endNode;
         }
 
-        private List<Node> GetConections(Node curr)
+        private List<Node> GetConnections(Node curr)
         {
             return curr.Neightbourds;
         }
 
         private bool InView(Node from, Node to)
         {
-            var startPos = from.transform.position;
-            var endPos = to.transform.position;
-            var dir = startPos - endPos;
-            //return !Physics.Linecast(startPos, endPos, maskObs);
-            return !Physics.SphereCast(startPos, inViewRadius, dir.normalized, out var hit, dir.magnitude, maskObs);
+            return InView(from.transform.position, to.transform.position);
         }
 
         private bool InView(Vector3 from, Vector3 to)
         {
-            return !Physics.Linecast(from, to, maskObs);
+            var dir = from - to;
+            var right = transform.right;
+            var lineRight = !Physics.Linecast(from + right * inViewRadius, to);
+            var lineMiddle = !Physics.Linecast(from, to, maskObs);
+            var lineLeft = !Physics.Linecast(from + right * -inViewRadius, to);
+            
+            return lineLeft && lineRight && lineMiddle;
+            //return !Physics.SphereCast(from, inViewRadius, dir.normalized, out var hit, dir.magnitude, maskObs);
         }
 
         private float Heuristic(Node curr)
         {
-            float multiplierDistance = 2;
-            float multiplierTrap = 20f;
-            float cost = 0;
+            const float multiplierDistance = 2f;
+            const float multiplierTrap = 20f;
+            var cost = 0f;
 
             cost += Vector3.Distance(curr.transform.position, _endNode.transform.position) * multiplierDistance;
 
             if (curr.IsTrap)
-                cost += multiplierTrap;
+                cost *= multiplierTrap;
             if (_endNode.IsTrap)
-                cost += multiplierTrap;
+                cost *= multiplierTrap;
             
             
             return cost;
@@ -116,16 +128,13 @@ namespace Game.Pathfinding
 
         private float GetCost(Node parent, Node son)
         {
-            float multiplierDistance = 1f;
-            float multiplierTrap = 20f;
-            //float multiplierUnwalkable = 80f;
-            float cost = 0f;
+            const float multiplierDistance = 1f;
+            const float multiplierTrap = 20f;
+            var cost = 0f;
 
             cost += Vector3.Distance(parent.transform.position, son.transform.position) * multiplierDistance;
             if (son.IsTrap)
-                cost += multiplierTrap;
-            //if (!son.Walkable)
-            //    cost += multiplierUnwalkable;
+                cost *= multiplierTrap;
 
             return cost;
         }
@@ -153,22 +162,49 @@ namespace Game.Pathfinding
         public void SetNextPoint() => NextPoint++;
 
 
-        private void SetNode(Vector3 origin, ref Node node)
+        private bool SetNode(Vector3 origin, ref Node node)
         {
-            node = NodeGrid.GetInstance().GetClosestNode(origin);
+            return _grid && _grid.GetClosestNode(origin, closestNodeRange, out node, nodeLayer); // 11 = Node layer
         }
 
-        public void SetNodes(Vector3 origin, Vector3 target)
+        public bool SetNodes(Vector3 origin, Vector3 target)
         {
-            SetNode(origin, ref _startNode);
-            SetNode(target, ref _endNode);
+            if (SetNode(target, ref _endNode))
+                SetNode(origin, ref _startNode);
+            else
+                return false;
+            return true;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+#if UNITY_EDITOR
+            if (hideGizmos) return;
+            
+            UnityEditor.Handles.color = new Color(0, 1, 0, 0.1f);
+            var transform1 = transform;
+            var position = transform1.position;
+            var forward = transform1.forward;
+            var up = transform1.up;
+            UnityEditor.Handles.DrawSolidArc(position, up, forward, 360, inViewRadius);
+            UnityEditor.Handles.color = Color.green;
+            UnityEditor.Handles.DrawWireArc(position, up, forward, 360, inViewRadius);
+            
+            
+            Gizmos.color = new Color(0.3f, 0.1f, 1, 1);
+            Gizmos.DrawWireSphere(position, closestNodeRange);
+            
+            if (Target)
+                Gizmos.DrawWireSphere(Target.transform.position, closestNodeRange);
+            
+            
+#endif
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, inViewRadius);
-            
+            if (hideGizmos) return;
+
             if (_startNode != null)
             {
                 Gizmos.color = Color.blue;
@@ -178,8 +214,9 @@ namespace Game.Pathfinding
             if (_endNode != null)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawSphere(_endNode.transform.position, 0.2f);
-                Gizmos.DrawWireSphere(_endNode.transform.position, radius);
+                var position = _endNode.transform.position;
+                Gizmos.DrawSphere(position, 0.2f);
+                Gizmos.DrawWireSphere(position, radius);
             }
 
             if (Waypoints != null && Waypoints.Count > 0)

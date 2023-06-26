@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3342454051689867234}
   - component: {fileID: 3342454051689867235}
   - component: {fileID: 3342454051689867232}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 3342454052288671879}
   - component: {fileID: 3342454052288671874}
   - component: {fileID: 867574063}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Saw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6539829406367522670}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point A
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -265,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4801409805478737589}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point B
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -297,7 +297,8 @@ GameObject:
   m_Component:
   - component: {fileID: 54835672730926153}
   - component: {fileID: 1513865528706992899}
-  m_Layer: 0
+  - component: {fileID: 1084921086995794893}
+  m_Layer: 10
   m_Name: Saw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,3 +340,16 @@ MonoBehaviour:
   pointA: {fileID: 6539829406367522670}
   pointB: {fileID: 4801409805478737589}
   speed: 1
+--- !u!65 &1084921086995794893
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7261742344718881376}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.54, y: 6.54, z: 1.75}
+  m_Center: {x: 0, y: 0, z: 0}

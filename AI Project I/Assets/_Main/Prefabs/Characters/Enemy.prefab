@@ -175,13 +175,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 0}
   radius: 2
-  mask:
+  nodeLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2048
   maskObs:
     serializedVersion: 2
-    m_Bits: 264
+    m_Bits: 1288
   inViewRadius: 0.5
+  closestNodeRange: 5
+  hideGizmos: 0
 --- !u!1 &2941201905607459326
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,33 +1,18 @@
 ﻿namespace Game.Enemies.States
 {
-    public class EnemyStateHeavyAttack<T> : EnemyStateBase<T>
+    public class EnemyStateHeavyAttack<T> : EnemyStateLightAttack<T>
     {
-        public override void Awake()
+        protected override void Attack()
         {
-            base.Awake();
-            Model.LightAttack();
+            Model.HeavyAttack();
             View.PlayTargetAnimation(Model.CurrentWeapon().GetData().HeavyAttack01.EventHash);
             var timer = Model.CurrentWeapon().GetData().HeavyAttack01.Duration;
             Model.SetTimer(timer);
         }
 
-        public override void Execute()
+        protected override void CancelAttack()
         {
-            base.Execute();
-            if (Model.GetTimerComplete())
-            {
-                Model.RunTimer();
-            }
-            else
-            {
-                Tree.Execute();
-            }       
-        }
-
-        public override void Sleep()
-        {
-            base.Sleep();
-            Model.SetTimer(0);
+            base.CancelAttack();
             Model.CancelHeavyAttack();
         }
     }

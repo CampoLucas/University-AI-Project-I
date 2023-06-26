@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 608ccf55bea54614b8ea87d5d9fddf9e, type: 3}
+  m_Name: WizzardStats
+  m_EditorClassIdentifier: 
+  moveSpeed: 3.5
+  walkSpeed: 1.5
+  moveLerpSpeed: 10
+  rotSpeed: 10
+  maxHealth: 5
+  invulnerableCooldown: 0.1
+  hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
+  deathAnimation: {fileID: 11400000, guid: 6f1558d83ff2f6243bcbf1465fc1a564, type: 2}
+  attackRange: 3.5
+  fieldOfView:
+    range: 8
+    angle: 120
+    mask:
+      serializedVersion: 2
+      m_Bits: 8
+  obsRange: 1
+  obsAngle: 180
+  maxObs: 5
+  obsMultiplier: 2
+  obsMask:
+    serializedVersion: 2
+    m_Bits: 384
+  pursuitTime: 0.5
+  attackFov:
+    range: 6
+    angle: 10
+    mask:
+      serializedVersion: 2
+      m_Bits: 0

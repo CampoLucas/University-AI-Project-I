@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1c9fe052d94f8bb74a51af2a67cb8a, type: 3}
   m_Name: EnemyStats 1
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 3.5
   walkSpeed: 1.5
   moveLerpSpeed: 10
-  rotSpeed: 2
+  rotSpeed: 10
   maxHealth: 3
   invulnerableCooldown: 0.1
   hitAnimation: {fileID: 11400000, guid: d48f0b50d9785464fbcfe906275ae1cb, type: 2}
