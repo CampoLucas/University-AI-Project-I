@@ -23,7 +23,7 @@ public class FollowTarget
         var transform1 = _origin;
         var dir = (target - transform1.position).normalized + obsAvoidance.GetDir() * _data.ObsMultiplier;
         dir.y = 0;
-        _model.Move(transform1.forward);
+        _model.Move(dir);
         _model.Rotate(dir);
     }
 
@@ -45,7 +45,7 @@ public class FollowTarget
     {
         var dir = (steering.GetDir() + obsAvoindance.GetDir() * _data.ObsMultiplier).normalized;
         dir.y = 0;
-        _model.Move(_origin.forward);
+        _model.Move(dir);
         _model.Rotate(dir);
     }
 
@@ -76,7 +76,7 @@ public class FollowTarget
         finalDir.y = 0;
 
         
-        _model.Move(_origin.forward);
+        _model.Move(finalDir);
         _model.Rotate(finalDir);
     }
     
