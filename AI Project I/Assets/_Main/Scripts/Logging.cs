@@ -72,7 +72,24 @@ namespace Game
     
     public static class LoggingTwo
     {
-        [Conditional("ENABLE_LOG")]
+        private const string definedSymbol = "ENABLE_LOG"; //Default = MY_LOGGER
+
+        private const string infoColorA = "#00E01A";
+        private const string infoColorB = "#8BFA5F";
+        
+        private const string debugColorA = "#3DBAB8";
+        private const string debugColorB = "#52FAF7";
+        
+        private const string warningColorA = "#E0D900";
+        private const string warningColorB = "yellow";
+        
+        private const string errorColorA = "orange";
+        private const string errorColorB = "#BD5E00";
+        
+        private const string criticalColorA = "red";
+        private const string criticalColorB = "#BD2A00";
+        
+        [Conditional(definedSymbol)]
         public static void Log(object message)
         {
 #if UNITY_EDITOR
@@ -80,7 +97,7 @@ namespace Game
 #endif
         }
         
-        [Conditional("ENABLE_LOG")]
+        [Conditional(definedSymbol)]
         public static void Log(object message, Object context)
         {
 #if UNITY_EDITOR
@@ -88,7 +105,7 @@ namespace Game
 #endif
         }
         
-        [Conditional("ENABLE_LOG")]
+        [Conditional(definedSymbol)]
         public static void Log(object message, LoggingType type = LoggingType.Info, Object context = null)
         {
 #if UNITY_EDITOR
@@ -99,24 +116,24 @@ namespace Game
             switch (type)
             {
                 case LoggingType.Debug:
-                    color = IsDarkMode() ? "#00E01A" : "#8BFA5F";
+                    color = IsDarkMode() ? infoColorA : infoColorB;
                     
                     Debug.Log($"{GetSourceInformation()} <color={color}><b>DEBUG:</b> {message}</color>", context);
                     break;
                 case LoggingType.Info:
-                    color = IsDarkMode() ? "#3DBAB8" : "#52FAF7";
+                    color = IsDarkMode() ? debugColorA : debugColorB;
                     Debug.Log($"{GetSourceInformation()} <color={color}><b>INFO:</b> {message}</color>", context);
                     break;
                 case LoggingType.Warning:
-                    color = IsDarkMode() ? "#E0D900" : "yellow";
+                    color = IsDarkMode() ? warningColorA : warningColorB;
                     Debug.LogWarning($"{GetSourceInformation()} <color={color}><b>WARNING:</b> {message}</color>", context);
                     break;
                 case LoggingType.Error:
-                    color = IsDarkMode() ? "orange" : "#BD5E00";
+                    color = IsDarkMode() ? errorColorA : errorColorB;
                     Debug.LogError($"{GetSourceInformation()} <color={color}><b>ERROR:</b> {message}</color>", context);
                     break;
                 case LoggingType.Critical:
-                    color = IsDarkMode() ? "red" : "#BD2A00";
+                    color = IsDarkMode() ? criticalColorA : criticalColorB;
                     Debug.LogError($"{GetSourceInformation()} <color={color}><b>CRITICAL:</b> {message}</color>", context);
                     Debug.Break();
                     break;
@@ -126,7 +143,7 @@ namespace Game
 #endif
         }
 
-        [Conditional("ENABLE_LOG")]
+        [Conditional(definedSymbol)]
         public static void Log(object message, Func<bool> condition, LoggingType type = LoggingType.Info, Object context = null)
         {
 #if UNITY_EDITOR
